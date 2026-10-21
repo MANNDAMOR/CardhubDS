@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Create Account - CardHub</title>
+
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+    <main class="app">
+
+        <!-- Brand -->
+        <div class="brand">
+            <div class="logo">C</div>
+            <h1>CardHub</h1>
+            <p>Your cards. One place.</p>
+        </div>
+
+        <!-- Registration Card -->
+        <section class="login-card">
+
+            <h2>Create Account</h2>
+            <p class="subtitle">Create your CardHub account</p>
+
+            <form id="registerForm">
+
+                <div class="input-group">
+                    <label for="name">Full Name</label>
+
+                    <input
+                        type="text"
+                        id="name"
+                        placeholder="Enter your full name"
+                        required
+                    >
+                </div>
+
+                <div class="input-group">
+                    <label for="mobile">Mobile Number</label>
+
+                    <input
+                        type="tel"
+                        id="mobile"
+                        placeholder="Enter 10-digit mobile number"
+                        maxlength="10"
+                        required
+                    >
+                </div>
+
+                <div class="input-group">
+                    <label for="password">Password</label>
+
+                    <input
+                        type="password"
+                        id="password"
+                        placeholder="Create a password"
+                        required
+                    >
+                </div>
+
+                <div class="input-group">
+                    <label for="confirmPassword">Confirm Password</label>
+
+                    <input
+                        type="password"
+                        id="confirmPassword"
+                        placeholder="Confirm your password"
+                        required
+                    >
+                </div>
+
+                <button type="submit" class="login-button">
+                    Create Account
+                </button>
+
+            </form>
+
+            <p class="register-text">
+                Already have an account?
+
+                <button
+                    type="button"
+                    class="link-button"
+                    onclick="window.location.href='index.html'"
+                >
+                    Login
+                </button>
+            </p>
+
+        </section>
+
+        <div class="demo-info">
+            <span>Semester 3 PBL</span>
+            <span>•</span>
+            <span>Card Management Platform</span>
+        </div>
+
+    </main>
+
+    <script>
+
+        const registerForm = document.getElementById("registerForm");
+
+        registerForm.addEventListener("submit", function(event) {
+
+            event.preventDefault();
+
+            const name = document.getElementById("name").value.trim();
+            const mobile = document.getElementById("mobile").value.trim();
+            const password = document.getElementById("password").value;
+            const confirmPassword = document.getElementById("confirmPassword").value;
+
+            if (mobile.length !== 10) {
+                alert("Please enter a valid 10-digit mobile number.");
+                return;
+            }
+
+            if (password.length < 4) {
+                alert("Password must contain at least 4 characters.");
+                return;
+            }
+
+            if (password !== confirmPassword) {
+                alert("Passwords do not match.");
+                return;
+            }
+
+            alert("Account created successfully. Backend will be connected later.");
+
+        });
+
+    </script>
+
+</body>
+</html>

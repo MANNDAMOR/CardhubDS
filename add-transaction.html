@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Add Transaction - CardHub</title>
+
+    <link rel="stylesheet" href="css/style.css">
+
+</head>
+
+
+<body>
+
+<main class="dashboard">
+
+
+    <!-- Header -->
+
+    <header class="dashboard-header">
+
+        <div>
+
+            <p class="welcome-text">
+                CardHub
+            </p>
+
+            <h1>
+                Add Transaction
+            </h1>
+
+        </div>
+
+
+        <button
+            class="notification-button"
+            onclick="window.location.href='transactions.html'"
+        >
+            ←
+        </button>
+
+    </header>
+
+
+
+    <!-- Introduction -->
+
+    <section class="add-card-intro">
+
+        <h2>
+            Record a transaction
+        </h2>
+
+        <p>
+            Add your income or expense to CardHub.
+        </p>
+
+    </section>
+
+
+
+    <!-- Form -->
+
+    <section class="add-card-form">
+
+        <form id="transactionForm">
+
+
+            <!-- Transaction Type -->
+
+            <div class="form-group">
+
+                <label for="transactionType">
+                    Transaction Type
+                </label>
+
+                <select
+                    id="transactionType"
+                    required
+                >
+
+                    <option value="">
+                        Select type
+                    </option>
+
+                    <option value="expense">
+                        Expense
+                    </option>
+
+                    <option value="income">
+                        Income
+                    </option>
+
+                </select>
+
+            </div>
+
+
+
+            <!-- Amount -->
+
+            <div class="form-group">
+
+                <label for="amount">
+                    Amount
+                </label>
+
+                <input
+                    type="number"
+                    id="amount"
+                    placeholder="₹0"
+                    min="1"
+                    required
+                >
+
+            </div>
+
+
+
+            <!-- Merchant -->
+
+            <div class="form-group">
+
+                <label for="merchant">
+                    Merchant / Description
+                </label>
+
+                <input
+                    type="text"
+                    id="merchant"
+                    placeholder="Example: Amazon"
+                    required
+                >
+
+            </div>
+
+
+
+            <!-- Date -->
+
+            <div class="form-group">
+
+                <label for="transactionDate">
+                    Date
+                </label>
+
+                <input
+                    type="date"
+                    id="transactionDate"
+                    required
+                >
+
+            </div>
+
+
+
+            <!-- Card -->
+
+            <div class="form-group">
+
+                <label for="cardName">
+                    Card Used
+                </label>
+
+                <select
+                    id="cardName"
+                    required
+                >
+
+                    <option value="">
+                        Select card
+                    </option>
+
+                </select>
+
+            </div>
+
+
+
+            <!-- Category -->
+
+            <div class="form-group">
+
+                <label for="category">
+                    Category
+                </label>
+
+                <select
+                    id="category"
+                    required
+                >
+
+                    <option value="">
+                        Select category
+                    </option>
+
+                    <option value="Food">
+                        Food
+                    </option>
+
+                    <option value="Shopping">
+                        Shopping
+                    </option>
+
+                    <option value="Travel">
+                        Travel
+                    </option>
+
+                    <option value="Bills">
+                        Bills
+                    </option>
+
+                    <option value="Education">
+                        Education
+                    </option>
+
+                    <option value="Entertainment">
+                        Entertainment
+                    </option>
+
+                    <option value="Other">
+                        Other
+                    </option>
+
+                </select>
+
+            </div>
+
+
+
+            <!-- Notes -->
+
+            <div class="form-group">
+
+                <label for="notes">
+                    Notes
+                </label>
+
+                <textarea
+                    id="notes"
+                    rows="4"
+                    placeholder="Optional notes..."
+                ></textarea>
+
+            </div>
+
+
+
+            <!-- Buttons -->
+
+            <div class="form-buttons">
+
+                <button
+                    type="button"
+                    class="cancel-button"
+                    onclick="window.location.href='transactions.html'"
+                >
+                    Cancel
+                </button>
+
+
+                <button
+                    type="submit"
+                    class="save-card-button"
+                >
+                    Add Transaction
+                </button>
+
+            </div>
+
+
+        </form>
+
+    </section>
+
+
+</main>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script>
+
+const SUPABASE_URL =
+    "https://wrsqhsuktqldnyjrbuma.supabase.co";
+
+const SUPABASE_PUBLISHABLE_KEY =
+    "sb_publishable_1-wC9ij9iOkR0txvg6j5bA_i1XLPSj7";
+
+const supabaseClient =
+    window.supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_PUBLISHABLE_KEY
+    );
+
+
+const cardSelect =
+    document.getElementById("cardName");
+
+
+/* =========================
+   LOAD CARDS FROM SUPABASE
+   ========================= */
+
+async function loadCards() {
+
+    const { data, error } =
+        await supabaseClient
+            .from("cards")
+            .select("id, name, issuer")
+            .order("name", {
+                ascending: true
+            });
+
+
+    if (error) {
+
+        console.error(error);
+
+        alert(
+            "Could not load cards.\n\n" +
+            error.message
+        );
+
+        return;
+    }
+
+
+    cardSelect.innerHTML = `
+        <option value="">
+            Select card
+        </option>
+    `;
+
+
+    (data || []).forEach(function(card) {
+
+        const option =
+            document.createElement("option");
+
+
+        option.value =
+            card.id;
+
+
+        option.textContent =
+            card.issuer
+                ? card.name + " — " + card.issuer
+                : card.name;
+
+
+        cardSelect.appendChild(option);
+
+    });
+
+}
+
+
+/* =========================
+   TODAY'S DATE
+   ========================= */
+
+document.getElementById(
+    "transactionDate"
+).value =
+    new Date()
+        .toISOString()
+        .split("T")[0];
+
+
+/* =========================
+   SAVE TRANSACTION
+   ========================= */
+
+document
+    .getElementById("transactionForm")
+    .addEventListener(
+        "submit",
+        async function(event) {
+
+            event.preventDefault();
+
+
+            const type =
+                document.getElementById(
+                    "transactionType"
+                ).value;
+
+
+            const amount =
+                Number(
+                    document.getElementById(
+                        "amount"
+                    ).value
+                );
+
+
+            const merchant =
+                document.getElementById(
+                    "merchant"
+                ).value.trim();
+
+
+            const transactionDate =
+                document.getElementById(
+                    "transactionDate"
+                ).value;
+
+
+            const cardId =
+                document.getElementById(
+                    "cardName"
+                ).value;
+
+
+            const category =
+                document.getElementById(
+                    "category"
+                ).value;
+
+
+            const notes =
+                document.getElementById(
+                    "notes"
+                ).value.trim();
+
+
+            if (
+                !type ||
+                !amount ||
+                amount <= 0 ||
+                !merchant ||
+                !transactionDate ||
+                !cardId ||
+                !category
+            ) {
+
+                alert(
+                    "Please fill all required fields."
+                );
+
+                return;
+
+            }
+
+
+            const submitButton =
+                document.querySelector(
+                    '#transactionForm button[type="submit"]'
+                );
+
+
+            submitButton.disabled = true;
+
+            submitButton.textContent =
+                "Saving...";
+
+
+            /*
+             * Your transactions table currently
+             * needs the fields used by the website.
+             *
+             * card_id links the transaction
+             * to the selected Supabase card.
+             */
+
+            const transaction = {
+
+                type: type,
+
+                amount: amount,
+
+                merchant: merchant,
+
+                transaction_date:
+                    transactionDate,
+
+                card_id: cardId,
+
+                category: category
+
+            };
+
+
+            const { error } =
+                await supabaseClient
+                    .from("transactions")
+                    .insert(transaction);
+
+
+            if (error) {
+
+                console.error(error);
+
+                alert(
+                    "Could not save transaction.\n\n" +
+                    error.message
+                );
+
+
+                submitButton.disabled =
+                    false;
+
+                submitButton.textContent =
+                    "Add Transaction";
+
+                return;
+
+            }
+
+
+            alert(
+                "Transaction added successfully!"
+            );
+
+
+            window.location.href =
+                "transactions.html";
+
+        }
+    );
+
+
+loadCards();
+
+</script>
+
+
+</body>
+
+</html>

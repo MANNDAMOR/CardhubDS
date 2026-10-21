@@ -1,0 +1,1174 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Explore Cards - CardHub</title>
+
+    <link
+        rel="stylesheet"
+        href="css/style.css"
+    >
+
+    <style>
+
+        .explore-page {
+            padding: 20px;
+            padding-bottom: 100px;
+        }
+
+
+        /* SEARCH */
+
+        .search-box {
+            width: 100%;
+            padding: 14px 16px;
+
+            border: 1px solid #ddd;
+            border-radius: 12px;
+
+            font-size: 15px;
+            outline: none;
+
+            margin-bottom: 15px;
+            box-sizing: border-box;
+        }
+
+
+        .search-box:focus {
+            border-color: #111827;
+        }
+
+
+        /* FILTERS */
+
+        .filter-row {
+            display: flex;
+            gap: 10px;
+
+            margin-bottom: 20px;
+
+            overflow-x: auto;
+            padding-bottom: 4px;
+        }
+
+
+        .filter-button {
+            border: 1px solid #ddd;
+
+            background: white;
+
+            padding: 10px 18px;
+
+            border-radius: 20px;
+
+            cursor: pointer;
+
+            white-space: nowrap;
+
+            font-size: 14px;
+        }
+
+
+        .filter-button.active {
+            background: #111827;
+            color: white;
+
+            border-color: #111827;
+        }
+
+
+        /* COUNT */
+
+        .card-count {
+            color: #666;
+
+            font-size: 14px;
+
+            margin-bottom: 15px;
+        }
+
+
+        /* GRID */
+
+        .explore-grid {
+            display: grid;
+
+            grid-template-columns: 1fr;
+
+            gap: 15px;
+        }
+
+
+        /* CARD */
+
+        .explore-card {
+            background: white;
+
+            border-radius: 18px;
+
+            padding: 18px;
+
+            box-shadow:
+                0 5px 20px
+                rgba(0, 0, 0, 0.08);
+        }
+
+
+        /* CARD VISUAL */
+
+        .card-visual {
+            background:
+                linear-gradient(
+                    135deg,
+                    #111827,
+                    #374151
+                );
+
+            color: white;
+
+            border-radius: 15px;
+
+            padding: 20px;
+
+            min-height: 140px;
+
+            display: flex;
+
+            flex-direction: column;
+
+            justify-content: space-between;
+
+            margin-bottom: 15px;
+        }
+
+
+        .card-issuer {
+            font-size: 14px;
+            opacity: 0.85;
+        }
+
+
+        .card-name {
+            font-size: 20px;
+
+            font-weight: 700;
+
+            margin: 10px 0;
+        }
+
+
+        .card-type {
+            font-size: 13px;
+
+            opacity: 0.85;
+        }
+
+
+        /* FEES */
+
+        .card-info {
+            display: grid;
+
+            grid-template-columns: 1fr 1fr;
+
+            gap: 10px;
+
+            margin: 15px 0;
+        }
+
+
+        .info-box {
+            background: #f5f5f5;
+
+            border-radius: 10px;
+
+            padding: 10px;
+        }
+
+
+        .info-box span {
+            display: block;
+
+            color: #777;
+
+            font-size: 11px;
+
+            margin-bottom: 4px;
+        }
+
+
+        .info-box strong {
+            font-size: 14px;
+        }
+
+
+        /* REWARD */
+
+        .reward {
+            font-size: 14px;
+
+            font-weight: 600;
+
+            margin-bottom: 15px;
+        }
+
+
+        /* VIEW BUTTON */
+
+        .view-button {
+            width: 100%;
+
+            padding: 13px;
+
+            border: none;
+
+            border-radius: 11px;
+
+            background: #111827;
+
+            color: white;
+
+            font-size: 15px;
+
+            font-weight: 600;
+
+            cursor: pointer;
+        }
+
+
+        .view-button:hover {
+            opacity: 0.9;
+        }
+
+
+        /* MESSAGE */
+
+        .message {
+            text-align: center;
+
+            padding: 40px 20px;
+
+            color: #666;
+        }
+
+    
+/* CardHub consistent desktop-only website theme */
+html { min-width: 1024px; }
+body { min-width: 1024px; background: #f3f6fb; color: #17243b; }
+main.dashboard {
+  width: auto; max-width: none; min-height: 100vh;
+  margin: 0; padding: 34px 46px 54px 282px; box-sizing: border-box;
+}
+.dashboard-header {
+  max-width: 1500px; margin: 0 auto 28px;
+  padding: 0 0 22px; border-bottom: 1px solid #e5eaf2;
+}
+.dashboard-header h1 { color: #17243b; font-size: 32px; letter-spacing: -.035em; }
+.dashboard-header .welcome-text { color: #7a8597; font-size: 14px; }
+.notification-button {
+  border: 1px solid #e5eaf2; border-radius: 14px; background: #fff;
+  box-shadow: 0 5px 18px rgba(23,36,59,.06);
+}
+.bottom-navigation {
+  position: fixed; inset: 0 auto 0 0; transform: none;
+  width: 230px; max-width: none; height: 100vh; box-sizing: border-box;
+  padding: 34px 18px; background: #fff; border: 0; border-right: 1px solid #e5eaf2;
+  border-radius: 0; box-shadow: 8px 0 30px rgba(23,36,59,.035);
+  display: flex; flex-direction: column; justify-content: flex-start;
+  align-items: stretch; gap: 10px; z-index: 100;
+}
+.bottom-navigation::before {
+  content: "CARDHUB"; display: block; padding: 8px 14px 30px;
+  color: #17243b; font-size: 22px; font-weight: 800; letter-spacing: .08em;
+}
+.nav-item {
+  display: flex; align-items: center; gap: 14px; min-width: 0;
+  padding: 14px 15px; border-radius: 12px; text-align: left; color: #69768b;
+}
+.nav-item:hover, .nav-item.active { color: #17243b; background: #eef3fa; }
+.nav-item span { width: 24px; margin: 0; text-align: center; font-size: 19px; }
+.nav-item p { font-size: 14px; font-weight: 600; margin: 0; }
+input, select, button { font: inherit; }
+
+/* Explore page */
+.explore-page { padding: 0 0 30px; max-width: 1500px; margin: 0 auto; }
+.search-box {
+  width: 100%; min-height: 52px; padding: 14px 18px; box-sizing: border-box;
+  border: 1px solid #e1e7f0; border-radius: 13px; background: #fff;
+  color: #17243b; font-size: 15px; outline: none; margin-bottom: 18px;
+}
+.search-box:focus { border-color: #64748b; box-shadow: 0 0 0 3px rgba(100,116,139,.12); }
+.filter-row { display: flex; gap: 10px; margin: 0 0 20px; overflow: visible; padding-bottom: 0; }
+.filter-button {
+  border: 1px solid #e1e7f0; background: #fff; color: #526078;
+  padding: 11px 20px; border-radius: 10px; cursor: pointer; white-space: nowrap; font-size: 14px;
+}
+.filter-button.active { background: #17243b; color: #fff; border-color: #17243b; }
+.card-count { color: #7a8597; font-size: 14px; margin: 0 0 16px; }
+.explore-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 22px; }
+.explore-card {
+  min-width: 0; background: #fff; border: 1px solid #e5eaf2; border-radius: 18px;
+  padding: 20px; box-shadow: 0 8px 26px rgba(23,36,59,.055);
+  transition: transform .18s ease, box-shadow .18s ease;
+}
+.explore-card:hover { transform: translateY(-3px); box-shadow: 0 15px 32px rgba(23,36,59,.11); }
+.card-visual { min-height: 175px; padding: 22px; border-radius: 15px; margin-bottom: 18px; }
+.card-name { font-size: 19px; line-height: 1.35; }
+.card-info { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin: 16px 0; }
+.explore-card .info-box { min-width: 0; background: #f3f6fb; border: 1px solid #edf0f5; border-radius: 11px; padding: 13px; }
+.explore-card .info-box span { color: #7a8597; font-size: 11px; display: block; margin-bottom: 5px; }
+.explore-card .info-box strong { font-size: 14px; overflow-wrap: anywhere; }
+.reward { font-size: 14px; font-weight: 600; line-height: 1.5; min-height: 42px; margin-bottom: 16px; }
+.view-button { width: 100%; padding: 13px; border: none; border-radius: 11px; background: #17243b; color: #fff; font-size: 14px; font-weight: 650; cursor: pointer; }
+.view-button:hover { background: #2b3c59; }
+.message { grid-column: 1 / -1; text-align: center; padding: 50px 20px; color: #7a8597; background: #fff; border: 1px solid #e5eaf2; border-radius: 16px; }
+
+</style>
+
+</head>
+
+
+<body>
+
+<main class="dashboard">
+
+
+    <!-- =========================
+         HEADER
+         ========================= -->
+
+    <header class="dashboard-header">
+
+        <div>
+
+            <p class="welcome-text">
+                CardHub
+            </p>
+
+            <h1>
+                Explore Cards
+            </h1>
+
+        </div>
+
+
+        <button
+            class="notification-button"
+            onclick="window.location.href='dashboard.html'"
+        >
+            ←
+        </button>
+
+    </header>
+
+
+    <!-- =========================
+         MAIN CONTENT
+         ========================= -->
+
+    <section class="explore-page">
+
+
+        <!-- SEARCH -->
+
+        <input
+            type="text"
+            id="searchInput"
+            class="search-box"
+            placeholder="Search cards..."
+        >
+
+
+        <!-- =========================
+             FILTERS
+             ========================= -->
+
+        <div class="filter-row">
+
+
+            <button
+                class="filter-button active"
+                data-filter="all"
+                onclick="setFilter('all')"
+            >
+                All
+            </button>
+
+
+            <button
+                class="filter-button"
+                data-filter="credit"
+                onclick="setFilter('credit')"
+            >
+                Credit
+            </button>
+
+
+            <button
+                class="filter-button"
+                data-filter="debit"
+                onclick="setFilter('debit')"
+            >
+                Debit
+            </button>
+
+
+            <button
+                class="filter-button"
+                data-filter="prepaid"
+                onclick="setFilter('prepaid')"
+            >
+                Prepaid
+            </button>
+
+
+            <button
+                class="filter-button"
+                data-filter="transport"
+                onclick="setFilter('transport')"
+            >
+                Transport / NCMC
+            </button>
+
+
+        </div>
+
+
+        <!-- =========================
+             CARD COUNT
+             ========================= -->
+
+        <div
+            id="cardCount"
+            class="card-count"
+        >
+            Loading cards...
+        </div>
+
+
+        <!-- =========================
+             CARDS
+             ========================= -->
+
+        <div
+            id="cardsContainer"
+            class="explore-grid"
+        >
+
+            <div class="message">
+                Loading cards...
+            </div>
+
+        </div>
+
+
+    </section>
+
+
+    <!-- =========================
+         BOTTOM NAVIGATION
+         ========================= -->
+
+    <nav class="bottom-navigation">
+
+
+        <a
+            href="dashboard.html"
+            class="nav-item"
+        >
+
+            <span>
+                ⌂
+            </span>
+
+            <p>
+                Home
+            </p>
+
+        </a>
+
+
+        <a
+            href="cards.html"
+            class="nav-item"
+        >
+
+            <span>
+                💳
+            </span>
+
+            <p>
+                Cards
+            </p>
+
+        </a>
+
+
+        <a
+            href="explore.html"
+            class="nav-item active"
+        >
+
+            <span>
+                🔎
+            </span>
+
+            <p>
+                Explore
+            </p>
+
+        </a>
+
+
+        <a
+            href="transactions.html"
+            class="nav-item"
+        >
+
+            <span>
+                ↕
+            </span>
+
+            <p>
+                Transactions
+            </p>
+
+        </a>
+
+
+        <a
+            href="profile.html"
+            class="nav-item"
+        >
+
+            <span>
+                👤
+            </span>
+
+            <p>
+                Profile
+            </p>
+
+        </a>
+
+
+    </nav>
+
+
+</main>
+
+
+<!-- =========================
+     SUPABASE
+     ========================= -->
+
+<script
+    src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"
+></script>
+
+
+<script>
+
+
+/* ==========================================
+   SUPABASE CONFIG
+   ========================================== */
+
+const SUPABASE_URL =
+    "https://wrsqhsuktqldnyjrbuma.supabase.co";
+
+
+const SUPABASE_PUBLISHABLE_KEY =
+    "sb_publishable_1-wC9ij9iOkR0txvg6j5bA_i1XLPSj7";
+
+
+const supabaseClient =
+    window.supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_PUBLISHABLE_KEY
+    );
+
+
+/* ==========================================
+   VARIABLES
+   ========================================== */
+
+let allCards = [];
+
+let currentFilter = "all";
+
+
+/* ==========================================
+   SAFE HTML
+   ========================================== */
+
+function escapeHtml(value) {
+
+    return String(value ?? "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+
+}
+
+
+/* ==========================================
+   GET CARD CATEGORY
+   ========================================== */
+
+function getCategory(card) {
+
+    const type =
+        String(card.type || "")
+            .toLowerCase()
+            .trim();
+
+
+    if (type.includes("credit")) {
+
+        return "credit";
+
+    }
+
+
+    if (type.includes("debit")) {
+
+        return "debit";
+
+    }
+
+
+    if (type.includes("prepaid")) {
+
+        return "prepaid";
+
+    }
+
+
+    if (
+        type.includes("transport") ||
+        type.includes("ncmc")
+    ) {
+
+        return "transport";
+
+    }
+
+
+    return null;
+
+}
+
+
+/* ==========================================
+   LOAD EXPLORE CARDS
+   ========================================== */
+
+async function loadCards() {
+
+
+    /* CHECK LOGIN */
+
+    const {
+
+        data: { user },
+
+        error: authError
+
+    } =
+        await supabaseClient
+            .auth
+            .getUser();
+
+
+    if (
+        authError ||
+        !user
+    ) {
+
+        window.location.href =
+            "index.html";
+
+        return;
+
+    }
+
+
+    /* GET EXPLORE CARDS */
+
+    const {
+
+        data,
+
+        error
+
+    } =
+        await supabaseClient
+
+            .from("explore_cards")
+
+            .select("*")
+
+            .order(
+                "created_at",
+                {
+                    ascending: false
+                }
+            );
+
+
+    if (error) {
+
+        console.error(
+            "Supabase error:",
+            error
+        );
+
+
+        document.getElementById(
+            "cardsContainer"
+        ).innerHTML = `
+
+            <div class="message">
+
+                <h3>
+                    Could not load cards
+                </h3>
+
+                <p>
+                    ${escapeHtml(error.message)}
+                </p>
+
+            </div>
+
+        `;
+
+
+        document.getElementById(
+            "cardCount"
+        ).textContent =
+            "Could not load cards";
+
+
+        return;
+
+    }
+
+
+    /*
+       Only allow the four
+       Semester 3 card types.
+    */
+
+    allCards =
+        (data || []).filter(
+            function(card) {
+
+                return (
+                    getCategory(card) !== null
+                );
+
+            }
+        );
+
+
+    renderCards();
+
+}
+
+
+/* ==========================================
+   RENDER CARDS
+   ========================================== */
+
+function renderCards() {
+
+
+    const container =
+        document.getElementById(
+            "cardsContainer"
+        );
+
+
+    const searchValue =
+        document
+            .getElementById(
+                "searchInput"
+            )
+            .value
+            .toLowerCase()
+            .trim();
+
+
+    const filteredCards =
+        allCards.filter(
+            function(card) {
+
+
+                const category =
+                    getCategory(card);
+
+
+                /* SEARCH */
+
+                const searchableText = [
+
+                    card.name,
+
+                    card.issuer,
+
+                    card.type,
+
+                    card.reward_rate,
+
+                    card.benefits
+
+                ]
+                    .filter(Boolean)
+                    .join(" ")
+                    .toLowerCase();
+
+
+                const matchesSearch =
+                    !searchValue ||
+                    searchableText.includes(
+                        searchValue
+                    );
+
+
+                /* FILTER */
+
+                const matchesFilter =
+                    currentFilter === "all" ||
+                    category === currentFilter;
+
+
+                return (
+                    matchesSearch &&
+                    matchesFilter
+                );
+
+            }
+        );
+
+
+    /* COUNT */
+
+    document.getElementById(
+        "cardCount"
+    ).textContent =
+
+        `${filteredCards.length} card${
+            filteredCards.length !== 1
+                ? "s"
+                : ""
+        } found`;
+
+
+    /* EMPTY */
+
+    if (
+        filteredCards.length === 0
+    ) {
+
+        container.innerHTML = `
+
+            <div class="message">
+
+                <h3>
+                    No cards found
+                </h3>
+
+                <p>
+                    Try another search or filter.
+                </p>
+
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+
+    /* DISPLAY */
+
+    container.innerHTML =
+
+        filteredCards
+            .map(
+                function(card) {
+
+
+                    const category =
+                        getCategory(card);
+
+
+                    let displayType =
+                        "Card";
+
+
+                    if (
+                        category ===
+                        "credit"
+                    ) {
+
+                        displayType =
+                            "Credit";
+
+                    }
+
+
+                    else if (
+                        category ===
+                        "debit"
+                    ) {
+
+                        displayType =
+                            "Debit";
+
+                    }
+
+
+                    else if (
+                        category ===
+                        "prepaid"
+                    ) {
+
+                        displayType =
+                            "Prepaid";
+
+                    }
+
+
+                    else if (
+                        category ===
+                        "transport"
+                    ) {
+
+                        displayType =
+                            "Transport / NCMC";
+
+                    }
+
+
+                    return `
+
+                        <div class="explore-card">
+
+
+                            <!-- CARD VISUAL -->
+
+                            <div class="card-visual">
+
+
+                                <div class="card-issuer">
+
+                                    ${escapeHtml(
+                                        card.issuer ||
+                                        "Unknown Issuer"
+                                    )}
+
+                                </div>
+
+
+                                <div class="card-name">
+
+                                    ${escapeHtml(
+                                        card.name ||
+                                        "Unnamed Card"
+                                    )}
+
+                                </div>
+
+
+                                <div class="card-type">
+
+                                    ${displayType}
+
+                                </div>
+
+
+                            </div>
+
+
+                            <!-- FEES -->
+
+                            <div class="card-info">
+
+
+                                <div class="info-box">
+
+                                    <span>
+                                        Annual Fee
+                                    </span>
+
+                                    <strong>
+
+                                        ₹${Number(
+                                            card.annual_fee ?? 0
+                                        ).toLocaleString(
+                                            "en-IN"
+                                        )}
+
+                                    </strong>
+
+                                </div>
+
+
+                                <div class="info-box">
+
+                                    <span>
+                                        Joining Fee
+                                    </span>
+
+                                    <strong>
+
+                                        ₹${Number(
+                                            card.joining_fee ?? 0
+                                        ).toLocaleString(
+                                            "en-IN"
+                                        )}
+
+                                    </strong>
+
+                                </div>
+
+
+                            </div>
+
+
+                            <!-- REWARD -->
+
+                            <div class="reward">
+
+                                🎁
+
+                                ${escapeHtml(
+                                    card.reward_rate ||
+                                    "Rewards information unavailable"
+                                )}
+
+                            </div>
+
+
+                            <!-- DETAILS -->
+
+                            <button
+                                class="view-button"
+                                onclick="viewCard('${encodeURIComponent(card.id)}')"
+                            >
+
+                                View Details
+
+                            </button>
+
+
+                        </div>
+
+                    `;
+
+                }
+            )
+            .join("");
+
+}
+
+
+/* ==========================================
+   FILTER
+   ========================================== */
+
+function setFilter(filter) {
+
+
+    currentFilter =
+        filter;
+
+
+    document
+        .querySelectorAll(
+            ".filter-button"
+        )
+        .forEach(
+            function(button) {
+
+                button.classList.remove(
+                    "active"
+                );
+
+            }
+        );
+
+
+    const activeButton =
+        document.querySelector(
+            `.filter-button[data-filter="${filter}"]`
+        );
+
+
+    if (activeButton) {
+
+        activeButton.classList.add(
+            "active"
+        );
+
+    }
+
+
+    renderCards();
+
+}
+
+
+/* ==========================================
+   SEARCH
+   ========================================== */
+
+document
+    .getElementById(
+        "searchInput"
+    )
+    .addEventListener(
+        "input",
+        renderCards
+    );
+
+
+/* ==========================================
+   VIEW DETAILS
+   ========================================== */
+
+function viewCard(cardId) {
+
+    window.location.href =
+        "explore-card-details.html?id=" +
+        cardId;
+
+}
+
+
+/* ==========================================
+   START
+   ========================================== */
+
+loadCards();
+
+
+</script>
+
+
+</body>
+
+</html>

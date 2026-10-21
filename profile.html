@@ -1,0 +1,1625 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Profile - CardHub</title>
+
+    <link rel="stylesheet" href="css/style.css">
+
+    <style>
+
+        /* =========================================
+           PAGE
+        ========================================= */
+
+        .profile-page {
+            min-height: 100vh;
+            padding: 24px 18px 110px;
+            box-sizing: border-box;
+        }
+
+        .profile-wrapper {
+            max-width: 680px;
+            margin: auto;
+        }
+
+
+        /* =========================================
+           TOP BAR
+        ========================================= */
+
+        .profile-topbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 24px;
+        }
+
+        .profile-topbar h1 {
+            margin: 0;
+            font-size: 25px;
+            font-weight: 700;
+        }
+
+        .top-button {
+            width: 42px;
+            height: 42px;
+            border: none;
+            border-radius: 13px;
+            background: #fff;
+            box-shadow: 0 5px 20px rgba(0,0,0,.08);
+            cursor: pointer;
+            font-size: 20px;
+        }
+
+
+        /* =========================================
+           HERO
+        ========================================= */
+
+        .profile-hero {
+            position: relative;
+            overflow: hidden;
+
+            padding: 30px 20px;
+
+            border-radius: 27px;
+
+            color: white;
+
+            text-align: center;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #111827,
+                    #273449
+                );
+
+            box-shadow:
+                0 15px 35px
+                rgba(0,0,0,.16);
+        }
+
+        .profile-avatar {
+            width: 95px;
+            height: 95px;
+
+            margin: auto;
+            margin-bottom: 15px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 50%;
+
+            background:
+                rgba(255,255,255,.13);
+
+            border:
+                3px solid
+                rgba(255,255,255,.25);
+
+            font-size: 36px;
+            font-weight: 700;
+        }
+
+        .profile-name {
+            margin: 0;
+
+            font-size: 25px;
+            font-weight: 700;
+        }
+
+        .profile-email {
+            margin: 7px 0 16px;
+
+            font-size: 14px;
+
+            opacity: .75;
+        }
+
+        .active-badge {
+            display: inline-flex;
+
+            align-items: center;
+            gap: 7px;
+
+            padding: 8px 14px;
+
+            border-radius: 30px;
+
+            background:
+                rgba(255,255,255,.12);
+
+            font-size: 13px;
+        }
+
+        .active-dot {
+            width: 8px;
+            height: 8px;
+
+            border-radius: 50%;
+
+            background: #4ade80;
+        }
+
+
+        /* =========================================
+           SECTION
+        ========================================= */
+
+        .profile-section {
+            margin-top: 28px;
+        }
+
+        .section-title {
+            margin: 0 0 12px 4px;
+
+            font-size: 13px;
+            font-weight: 700;
+
+            color: #777;
+
+            text-transform: uppercase;
+
+            letter-spacing: .08em;
+        }
+
+
+        /* =========================================
+           INFORMATION CARD
+        ========================================= */
+
+        .info-card {
+            background: #fff;
+
+            border-radius: 20px;
+
+            padding: 5px 18px;
+
+            box-shadow:
+                0 5px 25px
+                rgba(0,0,0,.06);
+        }
+
+        .info-row {
+            display: flex;
+
+            align-items: center;
+
+            gap: 14px;
+
+            padding: 16px 0;
+
+            border-bottom:
+                1px solid #eeeeee;
+        }
+
+        .info-row:last-child {
+            border-bottom: none;
+        }
+
+        .info-icon {
+            width: 43px;
+            height: 43px;
+
+            flex-shrink: 0;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 13px;
+
+            background: #f4f5f7;
+
+            font-size: 18px;
+        }
+
+        .info-content {
+            flex: 1;
+
+            min-width: 0;
+        }
+
+        .info-label {
+            margin-bottom: 4px;
+
+            color: #888;
+
+            font-size: 12px;
+        }
+
+        .info-value {
+            font-size: 14px;
+
+            font-weight: 600;
+
+            word-break: break-word;
+        }
+
+        .verified {
+            color: #16a34a;
+        }
+
+        .not-verified {
+            color: #dc2626;
+        }
+
+
+        /* =========================================
+           USER ID
+        ========================================= */
+
+        .user-id-value {
+            font-size: 11px;
+
+            font-family: monospace;
+
+            color: #555;
+
+            word-break: break-all;
+        }
+
+
+        /* =========================================
+           STATISTICS
+        ========================================= */
+
+        .stats-grid {
+            display: grid;
+
+            grid-template-columns:
+                repeat(2, 1fr);
+
+            gap: 12px;
+        }
+
+        .stat-card {
+            background: #fff;
+
+            border-radius: 20px;
+
+            padding: 20px;
+
+            box-shadow:
+                0 5px 25px
+                rgba(0,0,0,.06);
+        }
+
+        .stat-icon {
+            font-size: 22px;
+
+            margin-bottom: 10px;
+        }
+
+        .stat-number {
+            font-size: 25px;
+
+            font-weight: 750;
+
+            margin-bottom: 4px;
+        }
+
+        .stat-label {
+            font-size: 12px;
+
+            color: #888;
+        }
+
+
+        /* =========================================
+           QUICK ACTIONS
+        ========================================= */
+
+        .quick-grid {
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
+            gap: 10px;
+        }
+
+        .quick-card {
+            border: none;
+
+            background: #fff;
+
+            border-radius: 18px;
+
+            padding: 18px 8px;
+
+            text-align: center;
+
+            cursor: pointer;
+
+            box-shadow:
+                0 5px 25px
+                rgba(0,0,0,.06);
+
+            transition:
+                transform .2s ease;
+        }
+
+        .quick-card:hover {
+            transform: translateY(-3px);
+        }
+
+        .quick-icon {
+            width: 45px;
+            height: 45px;
+
+            margin: auto;
+            margin-bottom: 9px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 14px;
+
+            background: #f4f5f7;
+
+            font-size: 20px;
+        }
+
+        .quick-card p {
+            margin: 0;
+
+            font-size: 12px;
+
+            font-weight: 650;
+        }
+
+
+        /* =========================================
+           SECURITY
+        ========================================= */
+
+        .security-card {
+            background: #fff;
+
+            border-radius: 20px;
+
+            padding: 18px;
+
+            box-shadow:
+                0 5px 25px
+                rgba(0,0,0,.06);
+        }
+
+        .security-header {
+            display: flex;
+
+            align-items: center;
+
+            gap: 12px;
+        }
+
+        .security-icon {
+            width: 45px;
+            height: 45px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 14px;
+
+            background: #f4f5f7;
+
+            font-size: 20px;
+        }
+
+        .security-title {
+            margin: 0;
+
+            font-size: 15px;
+        }
+
+        .security-text {
+            margin: 12px 0 0;
+
+            font-size: 13px;
+
+            line-height: 1.6;
+
+            color: #777;
+        }
+
+
+        /* =========================================
+           LOGOUT
+        ========================================= */
+
+        .logout-card {
+            margin-top: 28px;
+
+            padding: 8px;
+
+            background: #fff;
+
+            border-radius: 20px;
+
+            box-shadow:
+                0 5px 25px
+                rgba(0,0,0,.06);
+        }
+
+        .logout-button {
+            width: 100%;
+
+            border: none;
+
+            padding: 15px;
+
+            border-radius: 15px;
+
+            background: #fff1f1;
+
+            color: #dc2626;
+
+            font-size: 15px;
+
+            font-weight: 700;
+
+            cursor: pointer;
+        }
+
+        .logout-button:disabled {
+            opacity: .6;
+        }
+
+
+        /* =========================================
+           LOADING
+        ========================================= */
+
+        .loading {
+            text-align: center;
+
+            padding: 70px 20px;
+
+            color: #777;
+        }
+
+
+        /* =========================================
+           MOBILE
+        ========================================= */
+
+        @media(max-width:500px) {
+
+            .profile-page {
+                padding-left: 14px;
+                padding-right: 14px;
+            }
+
+            .stats-grid {
+                gap: 9px;
+            }
+
+            .stat-card {
+                padding: 17px;
+            }
+
+            .quick-grid {
+                gap: 8px;
+            }
+
+            .quick-card {
+                padding:
+                    16px 5px;
+            }
+
+            .profile-name {
+                font-size: 23px;
+            }
+
+        }
+
+    
+
+        /* Desktop website layout: wider, structured profile workspace */
+        .profile-page {
+            min-height: 100vh;
+            padding: 34px clamp(28px, 4vw, 64px) 56px;
+            box-sizing: border-box;
+        }
+        .profile-wrapper {
+            width: 100%;
+            max-width: 1440px;
+            margin: 0 auto;
+        }
+        .profile-topbar {
+            justify-content: flex-start;
+            gap: 18px;
+            margin-bottom: 30px;
+            padding-bottom: 22px;
+            border-bottom: 1px solid #e4e9f1;
+        }
+        .profile-topbar h1 {
+            margin-right: auto;
+            font-size: 30px;
+            letter-spacing: -.5px;
+            color: #172033;
+        }
+        .top-button {
+            width: 44px;
+            height: 44px;
+            border: 1px solid #e4e9f1;
+            border-radius: 12px;
+            box-shadow: none;
+            color: #26344b;
+            transition: background .2s, border-color .2s;
+        }
+        .top-button:hover { background: #eef3fb; border-color: #cbd7e8; }
+        #profileContent { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 1.4fr); gap: 28px; align-items: start; }
+        .profile-hero {
+            grid-column: 1;
+            min-height: 260px;
+            padding: 34px;
+            border-radius: 18px;
+            text-align: left;
+            display: grid;
+            grid-template-columns: 94px minmax(0, 1fr);
+            grid-template-rows: auto auto auto;
+            column-gap: 24px;
+            align-content: center;
+            align-items: center;
+            box-shadow: 0 8px 24px rgba(20, 32, 52, .10);
+        }
+        .profile-avatar { grid-column: 1; grid-row: 1 / 4; width: 88px; height: 88px; margin: 0; font-size: 32px; }
+        .profile-name { grid-column: 2; grid-row: 1; font-size: 27px; line-height: 1.25; overflow-wrap: anywhere; }
+        .profile-email { grid-column: 2; grid-row: 2; margin: 8px 0 14px; font-size: 14px; overflow-wrap: anywhere; }
+        .active-badge { grid-column: 2; grid-row: 3; justify-self: start; padding: 8px 12px; }
+        .profile-section { margin-top: 0; }
+        .profile-section:nth-of-type(2) { grid-column: 2; grid-row: 1 / span 2; }
+        .profile-section:nth-of-type(3), .profile-section:nth-of-type(4) { grid-column: 1 / -1; }
+        .section-title { margin: 0 0 14px; font-size: 12px; color: #66748a; letter-spacing: .1em; }
+        .info-card { border: 1px solid #e6ebf2; border-radius: 16px; padding: 8px 22px; box-shadow: 0 3px 12px rgba(25, 40, 65, .035); }
+        .info-row { min-height: 70px; }
+        .info-icon { border-radius: 10px; }
+        .profile-section:nth-of-type(3) .info-card,
+        .profile-section:nth-of-type(4) .info-card { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 28px; }
+        .profile-section:nth-of-type(3) .info-row,
+        .profile-section:nth-of-type(4) .info-row { min-width: 0; }
+        .profile-section:nth-of-type(3) .section-title,
+        .profile-section:nth-of-type(4) .section-title { margin-top: 4px; }
+        @media (max-width: 1000px) {
+            .profile-page { padding: 28px 24px 42px; }
+            #profileContent { grid-template-columns: minmax(0, 1fr); }
+            .profile-hero, .profile-section:nth-of-type(2), .profile-section:nth-of-type(3), .profile-section:nth-of-type(4) { grid-column: 1; grid-row: auto; }
+            .profile-section:nth-of-type(2) { margin-top: 2px; }
+        }
+        @media (max-width: 620px) {
+            .profile-page { padding: 18px 14px 32px; }
+            .profile-topbar { gap: 10px; margin-bottom: 20px; }
+            .profile-topbar h1 { font-size: 24px; }
+            .profile-hero { grid-template-columns: 64px minmax(0,1fr); padding: 22px 18px; column-gap: 15px; min-height: 0; }
+            .profile-avatar { width: 62px; height: 62px; font-size: 25px; }
+            .profile-name { font-size: 20px; }
+            .profile-email { font-size: 12px; }
+            .profile-section:nth-of-type(3) .info-card,
+            .profile-section:nth-of-type(4) .info-card { grid-template-columns: minmax(0, 1fr); }
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+<main class="dashboard">
+
+<div class="profile-page">
+
+<div class="profile-wrapper">
+
+
+    <!-- =====================================
+         TOP BAR
+    ====================================== -->
+
+    <div class="profile-topbar">
+
+        <button
+            class="top-button"
+            onclick="goDashboard()"
+        >
+            ←
+        </button>
+
+        <h1>Profile</h1>
+
+        <button
+            class="top-button"
+            onclick="showInfo()"
+        >
+            ⋮
+        </button>
+
+    </div>
+
+
+    <!-- =====================================
+         LOADING
+    ====================================== -->
+
+    <div
+        id="loading"
+        class="loading"
+    >
+        Loading your profile...
+    </div>
+
+
+    <!-- =====================================
+         CONTENT
+    ====================================== -->
+
+    <div
+        id="profileContent"
+        style="display:none;"
+    >
+
+
+        <!-- =================================
+             PROFILE HERO
+        ================================== -->
+
+        <section class="profile-hero">
+
+            <div
+                class="profile-avatar"
+                id="avatar"
+            >
+                M
+            </div>
+
+            <h2
+                class="profile-name"
+                id="profileName"
+            >
+                User
+            </h2>
+
+            <p
+                class="profile-email"
+                id="profileEmail"
+            >
+                -
+            </p>
+
+            <div class="active-badge">
+
+                <span class="active-dot"></span>
+
+                Account Active
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================
+             PERSONAL / ACCOUNT INFORMATION
+        ================================== -->
+
+        <section class="profile-section">
+
+            <h3 class="section-title">
+                Account Information
+            </h3>
+
+
+            <div class="info-card">
+
+
+                <!-- NAME -->
+
+                <div class="info-row">
+
+                    <div class="info-icon">
+                        👤
+                    </div>
+
+                    <div class="info-content">
+
+                        <div class="info-label">
+                            Full Name
+                        </div>
+
+                        <div
+                            class="info-value"
+                            id="fullName"
+                        >
+                            -
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- EMAIL -->
+
+                <div class="info-row">
+
+                    <div class="info-icon">
+                        📧
+                    </div>
+
+                    <div class="info-content">
+
+                        <div class="info-label">
+                            Email Address
+                        </div>
+
+                        <div
+                            class="info-value"
+                            id="email"
+                        >
+                            -
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- USER ID -->
+
+                <div class="info-row">
+
+                    <div class="info-icon">
+                        🆔
+                    </div>
+
+                    <div class="info-content">
+
+                        <div class="info-label">
+                            User ID
+                        </div>
+
+                        <div
+                            class="user-id-value"
+                            id="userId"
+                        >
+                            -
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- LOGIN METHOD -->
+
+                <div class="info-row">
+
+                    <div class="info-icon">
+                        🔐
+                    </div>
+
+                    <div class="info-content">
+
+                        <div class="info-label">
+                            Login Method
+                        </div>
+
+                        <div
+                            class="info-value"
+                            id="loginMethod"
+                        >
+                            -
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- VERIFICATION -->
+
+                <div class="info-row">
+
+                    <div class="info-icon">
+                        ✉️
+                    </div>
+
+                    <div class="info-content">
+
+                        <div class="info-label">
+                            Email Verification
+                        </div>
+
+                        <div
+                            class="info-value"
+                            id="verification"
+                        >
+                            -
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- CREATED -->
+
+                <div class="info-row">
+
+                    <div class="info-icon">
+                        📅
+                    </div>
+
+                    <div class="info-content">
+
+                        <div class="info-label">
+                            Account Created
+                        </div>
+
+                        <div
+                            class="info-value"
+                            id="createdAt"
+                        >
+                            -
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- LAST LOGIN -->
+
+                <div class="info-row">
+
+                    <div class="info-icon">
+                        🕐
+                    </div>
+
+                    <div class="info-content">
+
+                        <div class="info-label">
+                            Last Sign-In
+                        </div>
+
+                        <div
+                            class="info-value"
+                            id="lastLogin"
+                        >
+                            -
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- ACCOUNT STATUS -->
+
+                <div class="info-row">
+
+                    <div class="info-icon">
+                        🟢
+                    </div>
+
+                    <div class="info-content">
+
+                        <div class="info-label">
+                            Account Status
+                        </div>
+
+                        <div
+                            class="info-value verified"
+                            id="accountStatus"
+                        >
+                            Active
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================
+             CARDHUB STATISTICS
+        ================================== -->
+
+        
+
+
+        <!-- =================================
+             QUICK ACCESS
+        ================================== -->
+
+        
+
+
+        <!-- =================================
+             SECURITY
+        ================================== -->
+
+        <section class="profile-section">
+
+            <h3 class="section-title">
+                Security
+            </h3>
+
+
+            <div class="security-card">
+
+
+                <div class="security-header">
+
+                    <div class="security-icon">
+                        🔒
+                    </div>
+
+                    <div>
+
+                        <h3 class="security-title">
+                            Your CardHub Data
+                        </h3>
+
+                    </div>
+
+                </div>
+
+
+                <p class="security-text">
+
+                    CardHub stores only safe card information.
+                    Never store your full card number, CVV,
+                    PIN, OTP or internet banking password.
+
+                </p>
+
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================
+             LOGOUT
+        ================================== -->
+
+        <div class="logout-card">
+
+            <button
+                class="logout-button"
+                id="logoutButton"
+            >
+
+                🚪 &nbsp; Logout
+
+            </button>
+
+        </div>
+
+
+    </div>
+
+
+</div>
+
+</div>
+
+
+<!-- =====================================
+     BOTTOM NAVIGATION
+====================================== -->
+
+<nav class="bottom-navigation">
+
+
+    <a
+        href="dashboard.html"
+        class="nav-item"
+    >
+
+        <span>⌂</span>
+
+        <p>Home</p>
+
+    </a>
+
+
+    <a
+        href="cards.html"
+        class="nav-item"
+    >
+
+        <span>💳</span>
+
+        <p>Cards</p>
+
+    </a>
+
+
+    <a
+        href="explore.html"
+        class="nav-item"
+    >
+
+        <span>🔎</span>
+
+        <p>Explore</p>
+
+    </a>
+
+
+    <a
+        href="transactions.html"
+        class="nav-item"
+    >
+
+        <span>↕</span>
+
+        <p>Transactions</p>
+
+    </a>
+
+
+    <a
+        href="profile.html"
+        class="nav-item active"
+    >
+
+        <span>👤</span>
+
+        <p>Profile</p>
+
+    </a>
+
+
+</nav>
+
+
+</main>
+
+
+<!-- =====================================
+     SUPABASE
+====================================== -->
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+
+<script>
+
+
+/* =========================================
+   SUPABASE
+========================================= */
+
+const SUPABASE_URL =
+    "https://wrsqhsuktqldnyjrbuma.supabase.co";
+
+const SUPABASE_PUBLISHABLE_KEY =
+    "sb_publishable_1-wC9ij9iOkR0txvg6j5bA_i1XLPSj7";
+
+
+const supabaseClient =
+    window.supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_PUBLISHABLE_KEY
+    );
+
+
+/* =========================================
+   ELEMENTS
+========================================= */
+
+const loading =
+    document.getElementById("loading");
+
+const profileContent =
+    document.getElementById("profileContent");
+
+const avatar =
+    document.getElementById("avatar");
+
+const profileName =
+    document.getElementById("profileName");
+
+const profileEmail =
+    document.getElementById("profileEmail");
+
+const fullName =
+    document.getElementById("fullName");
+
+const email =
+    document.getElementById("email");
+
+const userId =
+    document.getElementById("userId");
+
+const loginMethod =
+    document.getElementById("loginMethod");
+
+const verification =
+    document.getElementById("verification");
+
+const createdAt =
+    document.getElementById("createdAt");
+
+const lastLogin =
+    document.getElementById("lastLogin");
+
+const accountStatus =
+    document.getElementById("accountStatus");
+
+const totalCards =
+    document.getElementById("totalCards");
+
+const activeCards =
+    document.getElementById("activeCards");
+
+const totalExpenses =
+    document.getElementById("totalExpenses");
+
+const totalTransactions =
+    document.getElementById("totalTransactions");
+
+const logoutButton =
+    document.getElementById("logoutButton");
+
+
+/* =========================================
+   NAVIGATION
+========================================= */
+
+function goDashboard() {
+    window.location.href = "dashboard.html";
+}
+
+function goCards() {
+    window.location.href = "cards.html";
+}
+
+function goAddCard() {
+    window.location.href = "add-card.html";
+}
+
+function goExplore() {
+    window.location.href = "explore.html";
+}
+
+function goTransactions() {
+    window.location.href = "transactions.html";
+}
+
+function goAddTransaction() {
+    window.location.href = "add-transaction.html";
+}
+
+
+/* =========================================
+   FORMAT DATE
+========================================= */
+
+function formatDate(value) {
+
+    if (!value) {
+        return "-";
+    }
+
+    return new Date(value).toLocaleString(
+        "en-IN",
+        {
+            day: "2-digit",
+            month: "short",
+            year: "numeric",
+            hour: "2-digit",
+            minute: "2-digit"
+        }
+    );
+
+}
+
+
+/* =========================================
+   LOAD PROFILE
+========================================= */
+
+async function loadProfile() {
+
+
+    /* ---------------------------------------
+       GET USER
+    --------------------------------------- */
+
+    const {
+        data,
+        error
+    } =
+        await supabaseClient
+            .auth
+            .getUser();
+
+
+    if (
+        error ||
+        !data ||
+        !data.user
+    ) {
+
+        window.location.href =
+            "index.html";
+
+        return;
+
+    }
+
+
+    const user =
+        data.user;
+
+
+    /* ---------------------------------------
+       USER METADATA
+    --------------------------------------- */
+
+    const metadata =
+        user.user_metadata || {};
+
+
+    const name =
+        metadata.full_name ||
+        metadata.name ||
+        metadata.display_name ||
+        user.email?.split("@")[0] ||
+        "User";
+
+
+    const userEmail =
+        user.email ||
+        "-";
+
+
+    /* ---------------------------------------
+       AVATAR
+    --------------------------------------- */
+
+    avatar.textContent =
+        name
+            .trim()
+            .charAt(0)
+            .toUpperCase();
+
+
+    profileName.textContent =
+        name;
+
+
+    profileEmail.textContent =
+        userEmail;
+
+
+    /* ---------------------------------------
+       ACCOUNT INFORMATION
+    --------------------------------------- */
+
+    fullName.textContent =
+        name;
+
+
+    email.textContent =
+        userEmail;
+
+
+    userId.textContent =
+        user.id;
+
+
+    /* ---------------------------------------
+       LOGIN PROVIDER
+    --------------------------------------- */
+
+    let provider =
+        user.app_metadata?.provider ||
+        "email";
+
+
+    if (
+        provider === "email"
+    ) {
+
+        loginMethod.textContent =
+            "Email";
+
+    } else {
+
+        loginMethod.textContent =
+            provider
+                .charAt(0)
+                .toUpperCase() +
+            provider.slice(1);
+
+    }
+
+
+    /* ---------------------------------------
+       EMAIL VERIFICATION
+    --------------------------------------- */
+
+    if (
+        user.email_confirmed_at
+    ) {
+
+        verification.textContent =
+            "Verified ✓";
+
+        verification.className =
+            "info-value verified";
+
+    } else {
+
+        verification.textContent =
+            "Not Verified";
+
+        verification.className =
+            "info-value not-verified";
+
+    }
+
+
+    /* ---------------------------------------
+       DATES
+    --------------------------------------- */
+
+    createdAt.textContent =
+        formatDate(
+            user.created_at
+        );
+
+
+    lastLogin.textContent =
+        formatDate(
+            user.last_sign_in_at
+        );
+
+
+    /* ---------------------------------------
+       ACCOUNT STATUS
+    --------------------------------------- */
+
+    accountStatus.textContent =
+        "Active";
+
+
+    /* =======================================
+       LOAD CARD STATISTICS
+    ======================================= */
+
+    const {
+        data: cards,
+        error: cardsError
+    } =
+        await supabaseClient
+            .from("cards")
+            .select(
+                "id,status"
+            )
+            .eq(
+                "user_id",
+                user.id
+            );
+
+
+    if (!cardsError) {
+
+        const cardList =
+            cards || [];
+
+
+        if (totalCards) {
+            totalCards.textContent = cardList.length;
+        }
+
+
+        const active =
+            cardList.filter(
+                card =>
+                    String(
+                        card.status || ""
+                    ).toLowerCase()
+                    === "active"
+            ).length;
+
+
+        if (activeCards) {
+            activeCards.textContent = active;
+        }
+
+    }
+
+
+    /* =======================================
+       LOAD TRANSACTIONS
+    ======================================= */
+
+    const {
+        data: transactions,
+        error: transactionError
+    } =
+        await supabaseClient
+            .from("transactions")
+            .select(
+                "amount,type"
+            )
+            .eq(
+                "type",
+                "expense"
+            );
+
+
+    if (!transactionError) {
+
+        const list =
+            transactions || [];
+
+
+        if (totalTransactions) {
+            totalTransactions.textContent = list.length;
+        }
+
+
+        const expense =
+            list.reduce(
+                (
+                    total,
+                    transaction
+                ) => {
+
+                    return total +
+                        Number(
+                            transaction.amount || 0
+                        );
+
+                },
+                0
+            );
+
+
+        if (totalExpenses) {
+            totalExpenses.textContent =
+                "₹" +
+                expense.toLocaleString(
+                    "en-IN",
+                    {
+                        maximumFractionDigits: 2
+                    }
+                );
+        }
+
+    }
+
+
+    /* =======================================
+       SHOW PAGE
+    ======================================= */
+
+    loading.style.display =
+        "none";
+
+
+    profileContent.style.display =
+        "block";
+
+}
+
+
+/* =========================================
+   ACCOUNT MENU
+========================================= */
+
+function showInfo() {
+
+    alert(
+        "CardHub Profile\n\n" +
+        "Your profile information is loaded " +
+        "directly from your CardHub account."
+    );
+
+}
+
+
+/* =========================================
+   LOGOUT
+========================================= */
+
+logoutButton.addEventListener(
+    "click",
+    async function() {
+
+
+        const confirmed =
+            confirm(
+                "Are you sure you want to logout?"
+            );
+
+
+        if (!confirmed) {
+            return;
+        }
+
+
+        logoutButton.disabled =
+            true;
+
+
+        logoutButton.textContent =
+            "Logging out...";
+
+
+        const {
+            error
+        } =
+            await supabaseClient
+                .auth
+                .signOut();
+
+
+        if (error) {
+
+            console.error(
+                error
+            );
+
+
+            alert(
+                "Unable to logout. Please try again."
+            );
+
+
+            logoutButton.disabled =
+                false;
+
+
+            logoutButton.textContent =
+                "🚪  Logout";
+
+
+            return;
+
+        }
+
+
+        window.location.href =
+            "index.html";
+
+    }
+);
+
+
+/* =========================================
+   START
+========================================= */
+
+loadProfile();
+
+</script>
+
+
+</body>
+
+</html>

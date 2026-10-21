@@ -1,0 +1,1537 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Add Card - CardHub</title>
+
+    <link
+        rel="stylesheet"
+        href="css/style.css"
+    >
+
+</head>
+
+
+<body>
+
+<main class="dashboard">
+
+
+    <!-- =========================
+         HEADER
+    ========================== -->
+
+    <header class="dashboard-header">
+
+        <div>
+
+            <p class="welcome-text">
+                CardHub
+            </p>
+
+            <h1>
+                Add Card
+            </h1>
+
+        </div>
+
+
+        <button
+            class="notification-button"
+            onclick="window.location.href='cards.html'"
+        >
+            ←
+        </button>
+
+    </header>
+
+
+
+    <!-- =========================
+         INTRO
+    ========================== -->
+
+    <section class="add-card-intro">
+
+        <h2>
+            Add an existing card
+        </h2>
+
+        <p>
+            Add a card you already own and manage its information
+            from CardHub.
+        </p>
+
+    </section>
+
+
+
+    <!-- =========================
+         FORM
+    ========================== -->
+
+    <section class="add-card-form">
+
+        <form id="addCardForm">
+
+
+            <!-- =========================
+                 BASIC INFORMATION
+            ========================== -->
+
+            <h2>
+                Basic Information
+            </h2>
+
+
+            <!-- CARD TYPE -->
+
+            <div class="form-group">
+
+                <label for="cardType">
+                    Card Type
+                </label>
+
+                <select id="cardType" required>
+                    <option value="">Select card type</option>
+                    <option value="credit">Credit Card</option>
+                    <option value="debit" disabled>Debit Card — Coming Later</option>
+                    <option value="prepaid" disabled>Prepaid Card — Coming Later</option>
+                    <option value="transport" disabled>Transport / NCMC Card — Coming Later</option>
+                </select>
+
+            </div>
+
+
+
+            <!-- CARD NAME -->
+
+            <div class="form-group">
+
+                <label for="cardName">
+                    Card Name
+                </label>
+
+                <select id="cardName" required disabled>
+                    <option value="">First select Credit Card above</option>
+                </select>
+                <small id="cardLoadMessage" aria-live="polite">Choose Credit Card to load products from Explore Cards.</small>
+
+            </div>
+
+
+
+            <!-- ISSUER -->
+
+            <div class="form-group">
+
+                <label for="issuer">
+                    Issuer / Bank
+                </label>
+
+                <input
+                    type="text"
+                    id="issuer"
+                    placeholder="Example: HDFC Bank"
+                    required
+                >
+
+            </div>
+
+
+
+            <!-- CARD NETWORK -->
+
+            <div class="form-group">
+
+                <label for="cardNetwork">
+                    Card Network
+                </label>
+
+                <select id="cardNetwork">
+
+                    <option value="">
+                        Select network
+                    </option>
+
+                    <option value="Visa">
+                        Visa
+                    </option>
+
+                    <option value="Mastercard">
+                        Mastercard
+                    </option>
+
+                    <option value="RuPay">
+                        RuPay
+                    </option>
+
+                    <option value="American Express">
+                        American Express
+                    </option>
+
+                    <option value="Other">
+                        Other
+                    </option>
+
+                </select>
+
+            </div>
+
+
+
+            <!-- LAST 4 -->
+
+            <div class="form-group">
+
+                <label for="cardNumber">
+                    Last 4 Digits
+                </label>
+
+                <input
+                    type="text"
+                    id="cardNumber"
+                    placeholder="Example: 4521"
+                    maxlength="4"
+                    inputmode="numeric"
+                    required
+                >
+
+                <small>
+                    For security, CardHub stores only the last 4 digits.
+                </small>
+
+            </div>
+
+
+
+            <!-- EXPIRY + STATUS -->
+
+            <div class="form-row">
+
+
+                <div class="form-group">
+
+                    <label for="expiry">
+                        Expiry Date
+                    </label>
+
+                    <input
+                        type="month"
+                        id="expiry"
+                    >
+
+                </div>
+
+
+
+                <div class="form-group">
+
+                    <label for="status">
+                        Card Status
+                    </label>
+
+                    <select id="status">
+
+                        <option value="Active">
+                            Active
+                        </option>
+
+                        <option value="Inactive">
+                            Inactive
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+            </div>
+
+
+
+            <!-- =========================
+                 FEES & CHARGES
+            ========================== -->
+
+            <h2>
+                Fees & Charges
+            </h2>
+
+
+            <div class="form-row">
+
+
+                <div class="form-group">
+
+                    <label for="joiningFee">
+                        Joining Fee
+                    </label>
+
+                    <input
+                        type="number"
+                        id="joiningFee"
+                        min="0"
+                        step="0.01"
+                        placeholder="₹0"
+                    >
+
+                </div>
+
+
+
+                <div class="form-group">
+
+                    <label for="annualFee">
+                        Annual / Renewal Fee
+                    </label>
+
+                    <input
+                        type="number"
+                        id="annualFee"
+                        min="0"
+                        step="0.01"
+                        placeholder="₹0"
+                    >
+
+                </div>
+
+
+            </div>
+
+
+
+            <div class="form-row">
+
+
+                <div class="form-group">
+
+                    <label for="foreignFee">
+                        Foreign Transaction Fee
+                    </label>
+
+                    <input
+                        type="text"
+                        id="foreignFee"
+                        placeholder="Example: 3.5%"
+                    >
+
+                </div>
+
+
+
+                <div class="form-group">
+
+                    <label for="cashFee">
+                        Cash Withdrawal Fee
+                    </label>
+
+                    <input
+                        type="text"
+                        id="cashFee"
+                        placeholder="Example: ₹500"
+                    >
+
+                </div>
+
+
+            </div>
+
+
+
+            <div class="form-row">
+
+
+                <div class="form-group">
+
+                    <label for="lateFee">
+                        Late Payment Fee
+                    </label>
+
+                    <input
+                        type="text"
+                        id="lateFee"
+                        placeholder="Example: ₹500"
+                    >
+
+                </div>
+
+
+
+                <div class="form-group">
+
+                    <label for="overLimitFee">
+                        Over-limit Fee
+                    </label>
+
+                    <input
+                        type="text"
+                        id="overLimitFee"
+                        placeholder="Example: ₹600"
+                    >
+
+                </div>
+
+
+            </div>
+
+
+
+            <div class="form-group">
+
+                <label for="replacementFee">
+                    Replacement Fee
+                </label>
+
+                <input
+                    type="text"
+                    id="replacementFee"
+                    placeholder="Example: ₹100"
+                >
+
+            </div>
+
+
+
+            <div class="form-group">
+
+                <label for="otherCharges">
+                    Other Charges
+                </label>
+
+                <textarea
+                    id="otherCharges"
+                    rows="3"
+                    placeholder="Add other charges or important fee information..."
+                ></textarea>
+
+            </div>
+
+
+
+            <!-- =========================
+                 CUSTOMER SUPPORT
+            ========================== -->
+
+            <h2>
+                Customer Support
+            </h2>
+
+
+            <div class="form-group">
+
+                <label for="customerCare">
+                    Customer Care Number
+                </label>
+
+                <input
+                    type="tel"
+                    id="customerCare"
+                    placeholder="Example: 1800 123 4567"
+                >
+
+            </div>
+
+
+
+            <div class="form-group">
+
+                <label for="emergencyNumber">
+                    Emergency / Block Card Number
+                </label>
+
+                <input
+                    type="tel"
+                    id="emergencyNumber"
+                    placeholder="Emergency card blocking number"
+                >
+
+            </div>
+
+
+
+            <div class="form-group">
+
+                <label for="supportEmail">
+                    Support Email
+                </label>
+
+                <input
+                    type="email"
+                    id="supportEmail"
+                    placeholder="support@bank.com"
+                >
+
+            </div>
+
+
+
+            <div class="form-group">
+
+                <label for="officialWebsite">
+                    Official Website
+                </label>
+
+                <input
+                    type="url"
+                    id="officialWebsite"
+                    placeholder="https://www.example.com"
+                >
+
+            </div>
+
+
+
+            <!-- =========================
+                 LINKED CONTACT
+            ========================== -->
+
+            <h2>
+                Linked Contact
+            </h2>
+
+
+            <div class="form-group">
+
+                <label for="linkedMobile">
+                    Linked Mobile Number
+                </label>
+
+                <input
+                    type="tel"
+                    id="linkedMobile"
+                    placeholder="Mobile number linked to this card"
+                >
+
+            </div>
+
+
+
+            <div class="form-group">
+
+                <label for="linkedEmail">
+                    Linked Email ID
+                </label>
+
+                <input
+                    type="email"
+                    id="linkedEmail"
+                    placeholder="Email linked to this card"
+                >
+
+            </div>
+
+
+
+            <!-- =========================
+                 BENEFITS
+            ========================== -->
+
+            <h2>
+                Benefits
+            </h2>
+
+
+            <div class="form-group">
+
+                <label for="benefits">
+                    Card Benefits
+                </label>
+
+                <textarea
+                    id="benefits"
+                    rows="5"
+                    placeholder="Example: 5% cashback, lounge access, fuel benefits..."
+                ></textarea>
+
+            </div>
+
+
+
+            <!-- =========================
+                 PERSONAL
+            ========================== -->
+
+            <h2>
+                Personal Information
+            </h2>
+
+
+            <div class="form-group">
+
+                <label for="nickname">
+                    Card Nickname
+                </label>
+
+                <input
+                    type="text"
+                    id="nickname"
+                    placeholder="Example: My Main Credit Card"
+                >
+
+            </div>
+
+
+
+            <div class="form-group">
+
+                <label for="notes">
+                    Personal Notes
+                </label>
+
+                <textarea
+                    id="notes"
+                    rows="4"
+                    placeholder="Add personal notes about this card..."
+                ></textarea>
+
+            </div>
+
+
+
+            <!-- =========================
+                 SECURITY WARNING
+            ========================== -->
+
+            <div class="security-warning">
+
+                <strong>
+                    🔐 Security Reminder
+                </strong>
+
+                <p>
+                    Never enter your CVV, PIN, OTP, full card number
+                    or banking password in CardHub.
+                </p>
+
+            </div>
+
+
+
+            <!-- =========================
+                 BUTTONS
+            ========================== -->
+
+            <div class="form-buttons">
+
+
+                <button
+                    type="button"
+                    class="cancel-button"
+                    onclick="window.location.href='cards.html'"
+                >
+                    Cancel
+                </button>
+
+
+                <button
+                    type="submit"
+                    class="save-card-button"
+                >
+                    Add Card
+                </button>
+
+
+            </div>
+
+
+        </form>
+
+    </section>
+
+
+
+    <!-- =========================
+         BOTTOM NAVIGATION
+    ========================== -->
+
+    <nav class="bottom-navigation">
+
+
+        <a
+            href="dashboard.html"
+            class="nav-item"
+        >
+
+            <span>
+                ⌂
+            </span>
+
+            <p>
+                Home
+            </p>
+
+        </a>
+
+
+        <a
+            href="cards.html"
+            class="nav-item active"
+        >
+
+            <span>
+                💳
+            </span>
+
+            <p>
+                Cards
+            </p>
+
+        </a>
+
+
+        <a
+            href="explore.html"
+            class="nav-item"
+        >
+
+            <span>
+                🔎
+            </span>
+
+            <p>
+                Explore
+            </p>
+
+        </a>
+
+
+        <a
+            href="transactions.html"
+            class="nav-item"
+        >
+
+            <span>
+                ↕
+            </span>
+
+            <p>
+                Transactions
+            </p>
+
+        </a>
+
+
+        <a
+            href="profile.html"
+            class="nav-item"
+        >
+
+            <span>
+                👤
+            </span>
+
+            <p>
+                Profile
+            </p>
+
+        </a>
+
+
+    </nav>
+
+
+</main>
+
+
+
+<!-- =========================
+     SUPABASE
+========================== -->
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+
+<script>
+
+
+/* ==============================
+   SUPABASE CONNECTION
+============================== */
+
+const SUPABASE_URL =
+    "https://wrsqhsuktqldnyjrbuma.supabase.co";
+
+
+const SUPABASE_PUBLISHABLE_KEY =
+    "sb_publishable_1-wC9ij9iOkR0txvg6j5bA_i1XLPSj7";
+
+
+const supabaseClient =
+    window.supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_PUBLISHABLE_KEY
+    );
+
+
+
+/* ==============================
+   GET CURRENT USER
+============================== */
+
+async function getCurrentUser() {
+
+
+    const {
+        data,
+        error
+    } =
+        await supabaseClient.auth.getUser();
+
+
+    if (error) {
+
+        console.error(
+            "Authentication error:",
+            error
+        );
+
+        return null;
+
+    }
+
+
+    return data.user;
+
+}
+
+
+
+/* ==============================
+   LOAD CREDIT CARD PRODUCTS
+============================== */
+
+let availableCardProducts = [];
+let selectedExploreCard = null;
+
+function normalizeCardType(value) {
+    return String(value || "")
+        .toLowerCase()
+        .replace(/[^a-z]/g, "");
+}
+
+function setFieldValue(id, value) {
+    const field = document.getElementById(id);
+    if (!field) return;
+    field.value = value === null || value === undefined ? "" : String(value);
+}
+
+function fillFromCardProduct(card) {
+    selectedExploreCard = card || null;
+    if (!card) {
+        setFieldValue("issuer", "");
+        setFieldValue("cardNetwork", "");
+        ["joiningFee", "annualFee", "foreignFee", "cashFee", "lateFee",
+         "overLimitFee", "replacementFee", "customerCare", "emergencyNumber",
+         "supportEmail", "officialWebsite", "benefits"].forEach(id => setFieldValue(id, ""));
+        return;
+    }
+
+    setFieldValue("issuer", card.issuer || "");
+    const network = String(card.card_network || "").trim();
+    const networkSelect = document.getElementById("cardNetwork");
+    if (networkSelect) {
+        const matchingOption = Array.from(networkSelect.options).find(
+            option => option.value.toLowerCase() === network.toLowerCase()
+        );
+        networkSelect.value = matchingOption ? matchingOption.value : (network ? "Other" : "");
+    }
+    setFieldValue("joiningFee", card.joining_fee);
+    setFieldValue("annualFee", card.annual_fee);
+    setFieldValue("foreignFee", card.foreign_transaction_fee);
+    setFieldValue("cashFee", card.cash_withdrawal_fee);
+    setFieldValue("lateFee", card.late_payment_fee);
+    setFieldValue("overLimitFee", card.over_limit_fee);
+    setFieldValue("replacementFee", card.replacement_fee);
+    setFieldValue("customerCare", card.customer_care);
+    setFieldValue("emergencyNumber", card.emergency_block_number);
+    setFieldValue("supportEmail", card.support_email);
+    setFieldValue("officialWebsite", card.official_website);
+    setFieldValue("benefits", card.benefits);
+}
+
+async function loadAvailableCardProducts() {
+    const type = document.getElementById("cardType").value;
+    const cardNameSelect = document.getElementById("cardName");
+    const message = document.getElementById("cardLoadMessage");
+
+    selectedExploreCard = null;
+    cardNameSelect.innerHTML = '<option value="">Loading credit cards...</option>';
+    cardNameSelect.disabled = true;
+    fillFromCardProduct(null);
+
+    if (type !== "credit") {
+        cardNameSelect.innerHTML = '<option value="">Select Credit Card first</option>';
+        message.textContent = "Only Credit Card is available right now. Other types are coming later.";
+        return;
+    }
+
+    message.textContent = "Loading products from Supabase...";
+    const { data, error } = await supabaseClient
+        .from("explore_cards")
+        .select("*")
+        .order("name", { ascending: true });
+
+    if (error) {
+        console.error("Could not load Explore Cards:", error);
+        cardNameSelect.innerHTML = '<option value="">Could not load cards</option>';
+        message.textContent = "Could not load cards from Supabase. Check the browser console and Explore Cards table permissions.";
+        return;
+    }
+
+    availableCardProducts = (data || []).filter(card => {
+        const typeValue = normalizeCardType(card.type);
+        return typeValue === "credit" || typeValue === "creditcard";
+    });
+
+    cardNameSelect.innerHTML = '<option value="">Select your credit card</option>';
+    availableCardProducts.forEach(card => {
+        const option = document.createElement("option");
+        option.value = card.id;
+        option.textContent = `${card.name || "Unnamed card"}${card.issuer ? " — " + card.issuer : ""}`;
+        cardNameSelect.appendChild(option);
+    });
+
+    cardNameSelect.disabled = availableCardProducts.length === 0;
+    message.textContent = availableCardProducts.length
+        ? `${availableCardProducts.length} credit card product(s) loaded. Select yours to fill available details.`
+        : "No credit cards found in Explore Cards. Add products there first.";
+}
+
+document.getElementById("cardType").addEventListener("change", loadAvailableCardProducts);
+document.getElementById("cardName").addEventListener("change", function () {
+    const chosenId = this.value;
+    const card = availableCardProducts.find(item => String(item.id) === String(chosenId));
+    fillFromCardProduct(card || null);
+});
+
+/* ==============================
+   CARD NUMBER
+============================== */
+
+document
+    .getElementById("cardNumber")
+    .addEventListener(
+        "input",
+        function() {
+
+
+            this.value =
+                this.value
+                    .replace(/\D/g, "")
+                    .slice(0, 4);
+
+
+        }
+    );
+
+
+
+/* ==============================
+   ADD CARD
+============================== */
+
+document
+    .getElementById("addCardForm")
+    .addEventListener(
+        "submit",
+        async function(event) {
+
+
+            event.preventDefault();
+
+
+
+            /* =========================
+               USER
+            ========================== */
+
+            const user =
+                await getCurrentUser();
+
+
+            if (!user) {
+
+                alert(
+                    "You must be logged in to add a card."
+                );
+
+                window.location.href =
+                    "index.html";
+
+                return;
+
+            }
+
+
+
+            /* =========================
+               VALUES
+            ========================== */
+
+            const type =
+                document
+                    .getElementById("cardType")
+                    .value
+                    .trim();
+
+
+            const name =
+                selectedExploreCard?.name || "";
+
+
+            const issuer =
+                document
+                    .getElementById("issuer")
+                    .value
+                    .trim();
+
+
+            const cardNetwork =
+                document
+                    .getElementById("cardNetwork")
+                    .value
+                    .trim();
+
+
+            const last4 =
+                document
+                    .getElementById("cardNumber")
+                    .value
+                    .trim();
+
+
+            const expiry =
+                document
+                    .getElementById("expiry")
+                    .value;
+
+
+            const status =
+                document
+                    .getElementById("status")
+                    .value;
+
+
+            const notes =
+                document
+                    .getElementById("notes")
+                    .value
+                    .trim();
+
+
+
+            /* =========================
+               VALIDATION
+            ========================== */
+
+            if (!type) {
+
+                alert(
+                    "Please select a card type."
+                );
+
+                return;
+
+            }
+
+
+            if (
+                ![
+                    "credit",
+                    "debit",
+                    "prepaid",
+                    "transport"
+                ].includes(type)
+            ) {
+
+                alert(
+                    "Invalid card type."
+                );
+
+                return;
+
+            }
+
+
+            if (!selectedExploreCard || !name) {
+                alert("Please select a credit card product from the list.");
+                return;
+            }
+
+
+            if (!issuer) {
+
+                alert(
+                    "Please enter the issuer."
+                );
+
+                return;
+
+            }
+
+
+            if (
+                !/^\d{4}$/.test(last4)
+            ) {
+
+                alert(
+                    "Please enter exactly the last 4 digits of the card."
+                );
+
+                return;
+
+            }
+
+
+
+            /* =========================
+               CHECK DUPLICATE
+            ========================== */
+
+            const {
+                data: existingCards,
+                error: duplicateError
+
+            } = await supabaseClient
+
+                .from("cards")
+
+                .select("id, name")
+
+                .eq(
+                    "user_id",
+                    user.id
+                );
+
+
+
+            if (duplicateError) {
+
+                console.error(
+                    "Duplicate check error:",
+                    duplicateError
+                );
+
+            }
+            else {
+
+
+                const duplicate =
+                    (
+                        existingCards || []
+                    ).some(
+                        function(card) {
+
+                            return (
+                                String(
+                                    card.name || ""
+                                )
+                                .toLowerCase()
+                                ===
+                                name.toLowerCase()
+                            );
+
+                        }
+                    );
+
+
+                if (duplicate) {
+
+                    alert(
+                        "A card with this name already exists."
+                    );
+
+                    return;
+
+                }
+
+            }
+
+
+
+            /* =========================
+               SAVE TO SUPABASE
+            ========================== */
+
+            const {
+                data,
+                error
+
+            } = await supabaseClient
+
+                .from("cards")
+
+                .insert({
+
+                    user_id:
+                        user.id,
+
+                    name:
+                        name,
+
+                    type:
+                        type,
+
+                    issuer:
+                        issuer,
+
+                    number_last4:
+                        last4,
+
+                    expiry:
+                        expiry || null,
+
+                    status:
+                        status,
+
+                    notes:
+                        buildNotes({
+
+                            cardNetwork,
+                            joiningFee:
+                                document.getElementById(
+                                    "joiningFee"
+                                ).value,
+
+                            annualFee:
+                                document.getElementById(
+                                    "annualFee"
+                                ).value,
+
+                            foreignFee:
+                                document.getElementById(
+                                    "foreignFee"
+                                ).value,
+
+                            cashFee:
+                                document.getElementById(
+                                    "cashFee"
+                                ).value,
+
+                            lateFee:
+                                document.getElementById(
+                                    "lateFee"
+                                ).value,
+
+                            overLimitFee:
+                                document.getElementById(
+                                    "overLimitFee"
+                                ).value,
+
+                            replacementFee:
+                                document.getElementById(
+                                    "replacementFee"
+                                ).value,
+
+                            otherCharges:
+                                document.getElementById(
+                                    "otherCharges"
+                                ).value,
+
+                            customerCare:
+                                document.getElementById(
+                                    "customerCare"
+                                ).value,
+
+                            emergencyNumber:
+                                document.getElementById(
+                                    "emergencyNumber"
+                                ).value,
+
+                            supportEmail:
+                                document.getElementById(
+                                    "supportEmail"
+                                ).value,
+
+                            officialWebsite:
+                                document.getElementById(
+                                    "officialWebsite"
+                                ).value,
+
+                            linkedMobile:
+                                document.getElementById(
+                                    "linkedMobile"
+                                ).value,
+
+                            linkedEmail:
+                                document.getElementById(
+                                    "linkedEmail"
+                                ).value,
+
+                            benefits:
+                                document.getElementById(
+                                    "benefits"
+                                ).value,
+
+                            nickname:
+                                document.getElementById(
+                                    "nickname"
+                                ).value,
+
+                            notes:
+                                notes
+
+                        })
+
+                })
+
+                .select()
+
+                .single();
+
+
+
+            /* =========================
+               ERROR
+            ========================== */
+
+            if (error) {
+
+                console.error(
+                    "Supabase error:",
+                    error
+                );
+
+                alert(
+                    "Could not save card.\n\n" +
+                    error.message
+                );
+
+                return;
+
+            }
+
+
+
+            /* =========================
+               SUCCESS
+            ========================== */
+
+            alert(
+                "Card added successfully! 🎉"
+            );
+
+
+            window.location.href =
+                "card-details.html?id=" +
+                encodeURIComponent(
+                    data.id
+                );
+
+
+        }
+    );
+
+
+
+/* ==============================
+   BUILD NOTES
+============================== */
+
+function buildNotes(data) {
+
+
+    const sections = [];
+
+
+
+    if (data.cardNetwork) {
+
+        sections.push(
+            "Card Network: " +
+            data.cardNetwork
+        );
+
+    }
+
+
+    if (data.joiningFee) {
+
+        sections.push(
+            "Joining Fee: ₹" +
+            data.joiningFee
+        );
+
+    }
+
+
+    if (data.annualFee) {
+
+        sections.push(
+            "Annual/Renewal Fee: ₹" +
+            data.annualFee
+        );
+
+    }
+
+
+    if (data.foreignFee) {
+
+        sections.push(
+            "Foreign Transaction Fee: " +
+            data.foreignFee
+        );
+
+    }
+
+
+    if (data.cashFee) {
+
+        sections.push(
+            "Cash Withdrawal Fee: " +
+            data.cashFee
+        );
+
+    }
+
+
+    if (data.lateFee) {
+
+        sections.push(
+            "Late Payment Fee: " +
+            data.lateFee
+        );
+
+    }
+
+
+    if (data.overLimitFee) {
+
+        sections.push(
+            "Over-limit Fee: " +
+            data.overLimitFee
+        );
+
+    }
+
+
+    if (data.replacementFee) {
+
+        sections.push(
+            "Replacement Fee: " +
+            data.replacementFee
+        );
+
+    }
+
+
+    if (data.otherCharges) {
+
+        sections.push(
+            "Other Charges: " +
+            data.otherCharges
+        );
+
+    }
+
+
+    if (data.customerCare) {
+
+        sections.push(
+            "Customer Care: " +
+            data.customerCare
+        );
+
+    }
+
+
+    if (data.emergencyNumber) {
+
+        sections.push(
+            "Emergency/Block Card: " +
+            data.emergencyNumber
+        );
+
+    }
+
+
+    if (data.supportEmail) {
+
+        sections.push(
+            "Support Email: " +
+            data.supportEmail
+        );
+
+    }
+
+
+    if (data.officialWebsite) {
+
+        sections.push(
+            "Official Website: " +
+            data.officialWebsite
+        );
+
+    }
+
+
+    if (data.linkedMobile) {
+
+        sections.push(
+            "Linked Mobile: " +
+            data.linkedMobile
+        );
+
+    }
+
+
+    if (data.linkedEmail) {
+
+        sections.push(
+            "Linked Email: " +
+            data.linkedEmail
+        );
+
+    }
+
+
+    if (data.benefits) {
+
+        sections.push(
+            "Benefits: " +
+            data.benefits
+        );
+
+    }
+
+
+    if (data.nickname) {
+
+        sections.push(
+            "Card Nickname: " +
+            data.nickname
+        );
+
+    }
+
+
+    if (data.notes) {
+
+        sections.push(
+            "Personal Notes: " +
+            data.notes
+        );
+
+    }
+
+
+    return sections.join("\n");
+
+}
+
+
+</script>
+
+
+</body>
+
+</html>

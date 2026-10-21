@@ -1,0 +1,1195 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Edit Card - CardHub</title>
+
+    <link
+        rel="stylesheet"
+        href="css/style.css"
+    >
+
+    <style>
+
+        .edit-page {
+            max-width: 650px;
+            margin: 0 auto;
+
+            padding: 20px 18px 110px;
+        }
+
+
+        .edit-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+
+            margin-bottom: 25px;
+        }
+
+
+        .back-button {
+            width: 42px;
+            height: 42px;
+
+            border: none;
+            border-radius: 13px;
+
+            background: white;
+
+            box-shadow:
+                0 5px 20px
+                rgba(0,0,0,.07);
+
+            font-size: 20px;
+
+            cursor: pointer;
+        }
+
+
+        .edit-header h1 {
+            margin: 0;
+
+            font-size: 24px;
+        }
+
+
+        .edit-card-container {
+            background: white;
+
+            border-radius: 22px;
+
+            padding: 22px;
+
+            box-shadow:
+                0 7px 28px
+                rgba(0,0,0,.07);
+        }
+
+
+        .security-note {
+            padding: 14px;
+
+            margin-bottom: 22px;
+
+            border-radius: 14px;
+
+            background: #f5f6f8;
+
+            color: #666;
+
+            font-size: 12px;
+
+            line-height: 1.5;
+        }
+
+
+        .form-group {
+            margin-bottom: 19px;
+        }
+
+
+        .form-group label {
+            display: block;
+
+            margin-bottom: 8px;
+
+            font-size: 13px;
+
+            font-weight: 650;
+        }
+
+
+        .form-group input,
+        .form-group select {
+
+            width: 100%;
+
+            box-sizing: border-box;
+
+            padding: 14px;
+
+            border: 1px solid #ddd;
+
+            border-radius: 12px;
+
+            background: white;
+
+            font-size: 14px;
+
+            outline: none;
+
+        }
+
+
+        .form-group input:focus,
+        .form-group select:focus {
+
+            border-color: #111827;
+
+        }
+
+
+        .helper-text {
+
+            margin-top: 6px;
+
+            font-size: 11px;
+
+            color: #888;
+
+        }
+
+
+        .form-buttons {
+
+            display: grid;
+
+            grid-template-columns:
+                1fr 1fr;
+
+            gap: 10px;
+
+            margin-top: 25px;
+
+        }
+
+
+        .cancel-button,
+        .save-button {
+
+            border: none;
+
+            padding: 15px;
+
+            border-radius: 13px;
+
+            font-size: 14px;
+
+            font-weight: 700;
+
+            cursor: pointer;
+
+        }
+
+
+        .cancel-button {
+
+            background: #f1f2f4;
+
+            color: #222;
+
+        }
+
+
+        .save-button {
+
+            background: #111827;
+
+            color: white;
+
+        }
+
+
+        .save-button:disabled {
+
+            opacity: .6;
+
+            cursor: not-allowed;
+
+        }
+
+
+        @media(max-width:500px) {
+
+            .edit-page {
+
+                padding-left: 14px;
+                padding-right: 14px;
+
+            }
+
+
+            .edit-card-container {
+
+                padding: 18px;
+
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<main class="dashboard">
+
+
+    <section class="edit-page">
+
+
+        <!-- HEADER -->
+
+        <div class="edit-header">
+
+            <button
+                class="back-button"
+                type="button"
+                onclick="goBack()"
+            >
+                ←
+            </button>
+
+
+            <h1>
+                Edit Card
+            </h1>
+
+        </div>
+
+
+        <!-- FORM -->
+
+        <div class="edit-card-container">
+
+
+            <div class="security-note">
+
+                🔒 <strong>Safe card information only.</strong>
+
+                CardHub never stores your full card number,
+                CVV, PIN or OTP.
+
+            </div>
+
+
+            <form id="editCardForm">
+
+
+                <!-- CARD TYPE -->
+
+                <div class="form-group">
+
+                    <label>
+                        Card Type
+                    </label>
+
+
+                    <select
+                        id="cardType"
+                        required
+                    >
+
+                        <option value="Credit">
+                            Credit Card
+                        </option>
+
+                        <option value="Debit">
+                            Debit Card
+                        </option>
+
+                        <option value="Prepaid">
+                            Prepaid Card
+                        </option>
+
+                        <option value="Transport">
+                            Transport / NCMC
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <!-- CARD NAME -->
+
+                <div class="form-group">
+
+                    <label>
+                        Card Name
+                    </label>
+
+
+                    <input
+                        type="text"
+                        id="cardName"
+                        placeholder="Example: HDFC Millennia"
+                        required
+                    >
+
+                </div>
+
+
+                <!-- ISSUER -->
+
+                <div class="form-group">
+
+                    <label>
+                        Bank / Issuer
+                    </label>
+
+
+                    <input
+                        type="text"
+                        id="issuer"
+                        placeholder="Example: HDFC Bank"
+                        required
+                    >
+
+                </div>
+
+
+                <!-- CARD NETWORK -->
+
+                <div class="form-group">
+
+                    <label>
+                        Card Network
+                    </label>
+
+
+                    <input
+                        type="text"
+                        id="cardNetwork"
+                        placeholder="Visa / Mastercard / RuPay / Amex"
+                    >
+
+                </div>
+
+
+                <!-- LAST 4 -->
+
+                <div class="form-group">
+
+                    <label>
+                        Last 4 Digits
+                    </label>
+
+
+                    <input
+                        type="text"
+                        id="last4"
+                        inputmode="numeric"
+                        maxlength="4"
+                        pattern="[0-9]{4}"
+                        placeholder="1234"
+                    >
+
+
+                    <div class="helper-text">
+
+                        Only the last 4 digits are stored.
+
+                    </div>
+
+                </div>
+
+
+                <!-- EXPIRY -->
+
+                <div class="form-group">
+
+                    <label>
+                        Expiry Date
+                    </label>
+
+
+                    <input
+                        type="month"
+                        id="expiry"
+                    >
+
+                </div>
+
+
+                <!-- STATUS -->
+
+                <div class="form-group">
+
+                    <label>
+                        Card Status
+                    </label>
+
+
+                    <select id="status">
+
+                        <option value="Active">
+                            Active
+                        </option>
+
+                        <option value="Inactive">
+                            Inactive
+                        </option>
+
+                        <option value="Blocked">
+                            Blocked
+                        </option>
+
+                        <option value="Expired">
+                            Expired
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <!-- BUTTONS -->
+
+                <div class="form-buttons">
+
+
+                    <button
+                        type="button"
+                        class="cancel-button"
+                        onclick="goBack()"
+                    >
+                        Cancel
+                    </button>
+
+
+                    <button
+                        type="submit"
+                        class="save-button"
+                        id="saveButton"
+                    >
+                        Save Changes
+                    </button>
+
+
+                </div>
+
+
+            </form>
+
+
+        </div>
+
+
+    </section>
+
+
+    <!-- BOTTOM NAVIGATION -->
+
+    <nav class="bottom-navigation">
+
+
+        <a
+            href="dashboard.html"
+            class="nav-item"
+        >
+
+            <span>⌂</span>
+
+            <p>Home</p>
+
+        </a>
+
+
+        <a
+            href="cards.html"
+            class="nav-item active"
+        >
+
+            <span>💳</span>
+
+            <p>Cards</p>
+
+        </a>
+
+
+        <a
+            href="explore.html"
+            class="nav-item"
+        >
+
+            <span>🔎</span>
+
+            <p>Explore</p>
+
+        </a>
+
+
+        <a
+            href="transactions.html"
+            class="nav-item"
+        >
+
+            <span>↕</span>
+
+            <p>Transactions</p>
+
+        </a>
+
+
+        <a
+            href="profile.html"
+            class="nav-item"
+        >
+
+            <span>👤</span>
+
+            <p>Profile</p>
+
+        </a>
+
+
+    </nav>
+
+
+</main>
+
+
+<script
+    src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"
+></script>
+
+
+<script>
+
+
+/* =========================================
+   SUPABASE
+========================================= */
+
+const SUPABASE_URL =
+    "https://wrsqhsuktqldnyjrbuma.supabase.co";
+
+
+const SUPABASE_PUBLISHABLE_KEY =
+    "sb_publishable_1-wC9ij9iOkR0txvg6j5bA_i1XLPSj7";
+
+
+const supabaseClient =
+    window.supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_PUBLISHABLE_KEY
+    );
+
+
+/* =========================================
+   CARD ID
+========================================= */
+
+const params =
+    new URLSearchParams(
+        window.location.search
+    );
+
+
+const cardId =
+    params.get("id");
+
+
+let currentCard =
+    null;
+
+
+/* =========================================
+   BACK
+========================================= */
+
+function goBack() {
+
+    window.location.href =
+        "cards.html";
+
+}
+
+
+/* =========================================
+   GET NOTE VALUE
+========================================= */
+
+function getNoteValue(
+    notes,
+    label
+) {
+
+    if (!notes) {
+        return "";
+    }
+
+
+    const lines =
+        String(notes)
+            .split("\n");
+
+
+    const line =
+        lines.find(
+            function(item) {
+
+                return item
+                    .toLowerCase()
+                    .startsWith(
+                        label.toLowerCase()
+                    );
+
+            }
+        );
+
+
+    if (!line) {
+        return "";
+    }
+
+
+    return line
+        .substring(
+            label.length
+        )
+        .trim();
+
+}
+
+
+/* =========================================
+   UPDATE NOTE VALUE
+========================================= */
+
+function updateNoteValue(
+    notes,
+    label,
+    value
+) {
+
+    let lines =
+        String(notes || "")
+            .split("\n")
+            .filter(
+                function(line) {
+
+                    return !line
+                        .toLowerCase()
+                        .startsWith(
+                            label.toLowerCase()
+                        );
+
+                }
+            );
+
+
+    if (value) {
+
+        lines.push(
+            label + value
+        );
+
+    }
+
+
+    return lines
+        .filter(
+            line =>
+                line.trim() !== ""
+        )
+        .join("\n");
+
+}
+
+
+/* =========================================
+   LOAD CARD
+========================================= */
+
+async function loadCard() {
+
+
+    if (!cardId) {
+
+        alert(
+            "Card ID not found."
+        );
+
+        goBack();
+
+        return;
+
+    }
+
+
+    /* AUTH */
+
+    const {
+
+        data: {
+            user
+        },
+
+        error: authError
+
+    } =
+        await supabaseClient
+            .auth
+            .getUser();
+
+
+    if (
+        authError ||
+        !user
+    ) {
+
+        window.location.href =
+            "index.html";
+
+        return;
+
+    }
+
+
+    /* GET CARD */
+
+    const {
+
+        data: card,
+
+        error
+
+    } =
+        await supabaseClient
+            .from("cards")
+            .select("*")
+            .eq(
+                "id",
+                cardId
+            )
+            .eq(
+                "user_id",
+                user.id
+            )
+            .maybeSingle();
+
+
+    if (
+        error ||
+        !card
+    ) {
+
+        console.error(
+            error
+        );
+
+        alert(
+            "Card not found."
+        );
+
+        goBack();
+
+        return;
+
+    }
+
+
+    currentCard =
+        card;
+
+
+    /* BASIC INFORMATION */
+
+    document
+        .getElementById(
+            "cardType"
+        )
+        .value =
+            card.type || "Credit";
+
+
+    document
+        .getElementById(
+            "cardName"
+        )
+        .value =
+            card.name || "";
+
+
+    document
+        .getElementById(
+            "issuer"
+        )
+        .value =
+            card.issuer || "";
+
+
+    /* CARD NETWORK
+       Stored inside notes because
+       current cards table has no
+       card_network column.
+    */
+
+    document
+        .getElementById(
+            "cardNetwork"
+        )
+        .value =
+            getNoteValue(
+                card.notes,
+                "Card Network:"
+            );
+
+
+    /* LAST 4 */
+
+    document
+        .getElementById(
+            "last4"
+        )
+        .value =
+            card.number_last4 || "";
+
+
+    /* EXPIRY */
+
+    document
+        .getElementById(
+            "expiry"
+        )
+        .value =
+            card.expiry || "";
+
+
+    /* STATUS */
+
+    document
+        .getElementById(
+            "status"
+        )
+        .value =
+            card.status || "Active";
+
+}
+
+
+/* =========================================
+   SAVE
+========================================= */
+
+document
+    .getElementById(
+        "editCardForm"
+    )
+    .addEventListener(
+        "submit",
+        async function(event) {
+
+
+            event.preventDefault();
+
+
+            if (!currentCard) {
+
+                alert(
+                    "Card data is not loaded."
+                );
+
+                return;
+
+            }
+
+
+            const saveButton =
+                document.getElementById(
+                    "saveButton"
+                );
+
+
+            /* GET VALUES */
+
+            const type =
+                document
+                    .getElementById(
+                        "cardType"
+                    )
+                    .value;
+
+
+            const name =
+                document
+                    .getElementById(
+                        "cardName"
+                    )
+                    .value
+                    .trim();
+
+
+            const issuer =
+                document
+                    .getElementById(
+                        "issuer"
+                    )
+                    .value
+                    .trim();
+
+
+            const network =
+                document
+                    .getElementById(
+                        "cardNetwork"
+                    )
+                    .value
+                    .trim();
+
+
+            const last4 =
+                document
+                    .getElementById(
+                        "last4"
+                    )
+                    .value
+                    .trim();
+
+
+            const expiry =
+                document
+                    .getElementById(
+                        "expiry"
+                    )
+                    .value;
+
+
+            const status =
+                document
+                    .getElementById(
+                        "status"
+                    )
+                    .value;
+
+
+            /* VALIDATION */
+
+            if (
+                !type ||
+                !name ||
+                !issuer
+            ) {
+
+                alert(
+                    "Please fill all required fields."
+                );
+
+                return;
+
+            }
+
+
+            if (
+                last4 &&
+                !/^[0-9]{4}$/.test(
+                    last4
+                )
+            ) {
+
+                alert(
+                    "Last 4 digits must contain exactly 4 numbers."
+                );
+
+                return;
+
+            }
+
+
+            /* =====================================
+               UPDATE CARD NETWORK ONLY INSIDE NOTES
+               
+               All other information already stored
+               inside notes remains untouched.
+            ===================================== */
+
+            const updatedNotes =
+                updateNoteValue(
+                    currentCard.notes,
+                    "Card Network:",
+                    network
+                );
+
+
+            saveButton.disabled =
+                true;
+
+
+            saveButton.textContent =
+                "Saving...";
+
+
+            /* =====================================
+               UPDATE SUPABASE
+            ===================================== */
+
+            const {
+
+                error
+
+            } =
+                await supabaseClient
+                    .from("cards")
+                    .update({
+
+                        type:
+                            type,
+
+                        name:
+                            name,
+
+                        issuer:
+                            issuer,
+
+                        number_last4:
+                            last4 || null,
+
+                        expiry:
+                            expiry || null,
+
+                        status:
+                            status,
+
+                        notes:
+                            updatedNotes || null
+
+                    })
+                    .eq(
+                        "id",
+                        currentCard.id
+                    )
+                    .eq(
+                        "user_id",
+                        currentCard.user_id
+                    );
+
+
+            if (error) {
+
+                console.error(
+                    "Update error:",
+                    error
+                );
+
+
+                alert(
+                    "Could not update card.\n\n" +
+                    error.message
+                );
+
+
+                saveButton.disabled =
+                    false;
+
+
+                saveButton.textContent =
+                    "Save Changes";
+
+
+                return;
+
+            }
+
+
+            /* =====================================
+               LOCAL STORAGE SYNC
+            ===================================== */
+
+            let cards =
+                JSON.parse(
+                    localStorage.getItem(
+                        "cardhubCards"
+                    )
+                ) || [];
+
+
+            cards =
+                cards.map(
+                    function(card) {
+
+
+                        if (
+                            String(card.id) ===
+                            String(
+                                currentCard.id
+                            )
+                        ) {
+
+                            return {
+
+                                ...card,
+
+                                type:
+                                    type,
+
+                                name:
+                                    name,
+
+                                issuer:
+                                    issuer,
+
+                                number_last4:
+                                    last4,
+
+                                expiry:
+                                    expiry,
+
+                                status:
+                                    status,
+
+                                notes:
+                                    updatedNotes
+
+                            };
+
+                        }
+
+
+                        return card;
+
+                    }
+                );
+
+
+            localStorage.setItem(
+                "cardhubCards",
+                JSON.stringify(
+                    cards
+                )
+            );
+
+
+            /* SUCCESS */
+
+            alert(
+                "Card updated successfully! ✅"
+            );
+
+
+            window.location.href =
+                "card-details.html?id=" +
+                encodeURIComponent(
+                    currentCard.id
+                );
+
+        }
+    );
+
+
+/* =========================================
+   START
+========================================= */
+
+loadCard();
+
+
+</script>
+
+
+</body>
+
+</html>

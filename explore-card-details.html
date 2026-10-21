@@ -1,0 +1,1548 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Card Details - CardHub</title>
+
+    <link
+        rel="stylesheet"
+        href="css/style.css"
+    >
+
+
+    <style>
+
+        /* =========================================
+           PAGE
+        ========================================= */
+
+        .explore-details {
+            max-width: 680px;
+            margin: 0 auto;
+
+            padding: 20px 18px 110px;
+        }
+
+
+        /* =========================================
+           BACK
+        ========================================= */
+
+        .back-button {
+            border: none;
+            background: transparent;
+
+            font-size: 15px;
+            font-weight: 600;
+
+            cursor: pointer;
+
+            padding: 8px 0;
+            margin-bottom: 15px;
+        }
+
+
+        /* =========================================
+           MAIN CARD
+        ========================================= */
+
+        .detail-card {
+            background: #fff;
+
+            border-radius: 24px;
+
+            padding: 18px;
+
+            box-shadow:
+                0 8px 30px
+                rgba(0,0,0,.07);
+        }
+
+
+        /* =========================================
+           CARD VISUAL
+        ========================================= */
+
+        .card-visual {
+            position: relative;
+
+            overflow: hidden;
+
+            min-height: 205px;
+
+            padding: 24px;
+
+            border-radius: 20px;
+
+            display: flex;
+            flex-direction: column;
+
+            justify-content: space-between;
+
+            color: white;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #111827,
+                    #374151
+                );
+
+            box-shadow:
+                0 10px 25px
+                rgba(0,0,0,.15);
+        }
+
+
+        .card-visual::before {
+            content: "";
+
+            position: absolute;
+
+            width: 180px;
+            height: 180px;
+
+            border-radius: 50%;
+
+            background:
+                rgba(255,255,255,.06);
+
+            right: -70px;
+            top: -70px;
+        }
+
+
+        .card-visual::after {
+            content: "";
+
+            position: absolute;
+
+            width: 120px;
+            height: 120px;
+
+            border-radius: 50%;
+
+            background:
+                rgba(255,255,255,.04);
+
+            left: -50px;
+            bottom: -60px;
+        }
+
+
+        .card-visual > * {
+            position: relative;
+            z-index: 2;
+        }
+
+
+        .card-top {
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+        }
+
+
+        .card-issuer {
+            font-size: 13px;
+
+            font-weight: 600;
+
+            opacity: .85;
+        }
+
+
+        .card-chip {
+            width: 42px;
+            height: 30px;
+
+            border-radius: 7px;
+
+            background:
+                rgba(255,255,255,.20);
+
+            border:
+                1px solid
+                rgba(255,255,255,.25);
+        }
+
+
+        .card-name {
+            font-size: 22px;
+
+            font-weight: 750;
+
+            line-height: 1.25;
+
+            max-width: 90%;
+        }
+
+
+        .card-bottom {
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+        }
+
+
+        .card-type {
+            font-size: 12px;
+
+            opacity: .75;
+        }
+
+
+        .card-network {
+            font-size: 11px;
+
+            opacity: .65;
+        }
+
+
+        /* =========================================
+           TITLE
+        ========================================= */
+
+        .detail-title {
+            margin: 24px 0 5px;
+
+            font-size: 24px;
+
+            line-height: 1.25;
+        }
+
+
+        .issuer {
+            margin: 0;
+
+            color: #737b8c;
+
+            font-size: 14px;
+        }
+
+
+        /* =========================================
+           FEE GRID
+        ========================================= */
+
+        .detail-grid {
+            display: grid;
+
+            grid-template-columns:
+                repeat(2, 1fr);
+
+            gap: 10px;
+
+            margin-top: 22px;
+        }
+
+
+        .detail-box {
+            padding: 16px;
+
+            border-radius: 16px;
+
+            background: #f5f6f8;
+        }
+
+
+        .detail-box span {
+            display: block;
+
+            margin-bottom: 6px;
+
+            color: #7a8291;
+
+            font-size: 11px;
+        }
+
+
+        .detail-box strong {
+            display: block;
+
+            font-size: 15px;
+
+            line-height: 1.35;
+        }
+
+
+        /* =========================================
+           INFORMATION
+        ========================================= */
+
+        .info-section {
+            margin-top: 26px;
+        }
+
+
+        .info-section h3 {
+            margin: 0 0 9px;
+
+            font-size: 16px;
+        }
+
+
+        .info-section p {
+            margin: 0;
+
+            color: #5f6775;
+
+            font-size: 14px;
+
+            line-height: 1.65;
+        }
+
+
+        /* =========================================
+           ACTIONS
+        ========================================= */
+
+        .action-buttons {
+            display: grid;
+
+            grid-template-columns:
+                1fr 1fr;
+
+            gap: 10px;
+
+            margin-top: 28px;
+        }
+
+
+        .action-button {
+            width: 100%;
+
+            border: none;
+
+            border-radius: 14px;
+
+            padding: 15px 10px;
+
+            font-size: 14px;
+
+            font-weight: 700;
+
+            cursor: pointer;
+        }
+
+
+        .add-card-button {
+            background: #111827;
+
+            color: white;
+        }
+
+
+        .apply-button {
+            background: #eef1f5;
+
+            color: #111827;
+        }
+
+
+        .action-button:disabled {
+            opacity: .6;
+
+            cursor: not-allowed;
+        }
+
+
+        /* =========================================
+           NOTE
+        ========================================= */
+
+        .source-note {
+            margin-top: 18px;
+
+            padding: 12px 14px;
+
+            border-radius: 12px;
+
+            background: #f7f7f8;
+
+            color: #777;
+
+            font-size: 11px;
+
+            line-height: 1.5;
+        }
+
+
+        /* =========================================
+           MESSAGE
+        ========================================= */
+
+        .message {
+            text-align: center;
+
+            padding: 50px 20px;
+
+            color: #777;
+        }
+
+
+        .message h3 {
+            margin-bottom: 8px;
+
+            color: #222;
+        }
+
+
+        /* =========================================
+           MOBILE
+        ========================================= */
+
+        @media(max-width:500px) {
+
+            .explore-details {
+                padding-left: 14px;
+                padding-right: 14px;
+            }
+
+
+            .detail-card {
+                padding: 14px;
+            }
+
+
+            .card-visual {
+                min-height: 190px;
+
+                padding: 20px;
+            }
+
+
+            .card-name {
+                font-size: 20px;
+            }
+
+
+            .action-buttons {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<main class="dashboard">
+
+
+    <!-- =========================================
+         HEADER
+    ========================================== -->
+
+    <header class="dashboard-header">
+
+        <div>
+
+            <p class="welcome-text">
+                CardHub
+            </p>
+
+            <h1>
+                Card Details
+            </h1>
+
+        </div>
+
+
+        <button
+            class="notification-button"
+            onclick="goBack()"
+            type="button"
+        >
+            ←
+        </button>
+
+    </header>
+
+
+    <!-- =========================================
+         DETAILS
+    ========================================== -->
+
+    <section class="explore-details">
+
+
+        <button
+            class="back-button"
+            onclick="goBack()"
+            type="button"
+        >
+            ← Back to Explore
+        </button>
+
+
+        <div id="detailsContainer">
+
+            <div class="message">
+                Loading card...
+            </div>
+
+        </div>
+
+
+    </section>
+
+
+    <!-- =========================================
+         BOTTOM NAVIGATION
+    ========================================== -->
+
+    <nav class="bottom-navigation">
+
+
+        <a
+            href="dashboard.html"
+            class="nav-item"
+        >
+
+            <span>⌂</span>
+
+            <p>Home</p>
+
+        </a>
+
+
+        <a
+            href="cards.html"
+            class="nav-item"
+        >
+
+            <span>💳</span>
+
+            <p>Cards</p>
+
+        </a>
+
+
+        <a
+            href="explore.html"
+            class="nav-item active"
+        >
+
+            <span>🔎</span>
+
+            <p>Explore</p>
+
+        </a>
+
+
+        <a
+            href="transactions.html"
+            class="nav-item"
+        >
+
+            <span>↕</span>
+
+            <p>Transactions</p>
+
+        </a>
+
+
+        <a
+            href="profile.html"
+            class="nav-item"
+        >
+
+            <span>👤</span>
+
+            <p>Profile</p>
+
+        </a>
+
+
+    </nav>
+
+
+</main>
+
+
+<!-- =========================================
+     SUPABASE
+========================================= -->
+
+<script
+    src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"
+></script>
+
+
+<script>
+
+
+/* =========================================
+   SUPABASE
+========================================= */
+
+const SUPABASE_URL =
+    "https://wrsqhsuktqldnyjrbuma.supabase.co";
+
+
+const SUPABASE_PUBLISHABLE_KEY =
+    "sb_publishable_1-wC9ij9iOkR0txvg6j5bA_i1XLPSj7";
+
+
+const supabaseClient =
+    window.supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_PUBLISHABLE_KEY
+    );
+
+
+/* =========================================
+   URL
+========================================= */
+
+const params =
+    new URLSearchParams(
+        window.location.search
+    );
+
+
+const cardId =
+    params.get("id");
+
+
+const detailsContainer =
+    document.getElementById(
+        "detailsContainer"
+    );
+
+
+/* =========================================
+   BACK
+========================================= */
+
+function goBack() {
+
+    window.location.href =
+        "explore.html";
+
+}
+
+
+/* =========================================
+   ESCAPE HTML
+========================================= */
+
+function escapeHTML(value) {
+
+    return String(
+        value ?? ""
+    )
+    .replace(
+        /&/g,
+        "&amp;"
+    )
+    .replace(
+        /</g,
+        "&lt;"
+    )
+    .replace(
+        />/g,
+        "&gt;"
+    )
+    .replace(
+        /"/g,
+        "&quot;"
+    )
+    .replace(
+        /'/g,
+        "&#039;"
+    );
+
+}
+
+
+/* =========================================
+   FORMAT FEE
+========================================= */
+
+function formatFee(value) {
+
+    const amount =
+        Number(value || 0);
+
+
+    if (amount === 0) {
+
+        return "₹0";
+
+    }
+
+
+    return "₹" +
+        amount.toLocaleString(
+            "en-IN"
+        );
+
+}
+
+
+/* =========================================
+   LOAD CARD
+========================================= */
+
+async function loadCard() {
+
+
+    if (!cardId) {
+
+        detailsContainer.innerHTML = `
+
+            <div class="message">
+
+                <h3>
+                    Card ID not found
+                </h3>
+
+                <p>
+                    No card was selected.
+                </p>
+
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+
+    /* =====================================
+       AUTH
+    ===================================== */
+
+    const {
+
+        data: {
+            user
+        },
+
+        error: authError
+
+    } =
+        await supabaseClient
+            .auth
+            .getUser();
+
+
+    if (
+        authError ||
+        !user
+    ) {
+
+        window.location.href =
+            "index.html";
+
+        return;
+
+    }
+
+
+    /* =====================================
+       GET EXPLORE CARD
+    ===================================== */
+
+    const {
+
+        data: card,
+
+        error
+
+    } =
+        await supabaseClient
+            .from("explore_cards")
+            .select("*")
+            .eq("id", cardId)
+            .maybeSingle();
+
+
+    if (error) {
+
+        console.error(
+            "Supabase error:",
+            error
+        );
+
+
+        detailsContainer.innerHTML = `
+
+            <div class="message">
+
+                <h3>
+                    Could not load card
+                </h3>
+
+                <p>
+                    ${escapeHTML(
+                        error.message
+                    )}
+                </p>
+
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+
+    if (!card) {
+
+        detailsContainer.innerHTML = `
+
+            <div class="message">
+
+                <h3>
+                    Card not found
+                </h3>
+
+                <p>
+                    This card is no longer available.
+                </p>
+
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+
+    displayCard(card);
+
+}
+
+
+/* =========================================
+   DISPLAY CARD
+========================================= */
+
+function displayCard(card) {
+
+
+    const name =
+        card.name ||
+        "Unnamed Card";
+
+
+    const issuer =
+        card.issuer ||
+        "Unknown Issuer";
+
+
+    const type =
+        card.type ||
+        "Card";
+
+
+    const reward =
+        card.reward_rate ||
+        "Not specified";
+
+
+    const benefits =
+        card.benefits ||
+        "Benefits information not available.";
+
+
+    const eligibility =
+        card.eligibility ||
+        "Eligibility information not available.";
+
+
+    detailsContainer.innerHTML = `
+
+        <div class="detail-card">
+
+
+            <!-- =============================
+                 CARD VISUAL
+            ============================== -->
+
+            <div class="card-visual">
+
+
+                <div class="card-top">
+
+                    <div class="card-issuer">
+
+                        ${escapeHTML(
+                            issuer
+                        )}
+
+                    </div>
+
+
+                    <div class="card-chip"></div>
+
+                </div>
+
+
+                <div class="card-name">
+
+                    ${escapeHTML(
+                        name
+                    )}
+
+                </div>
+
+
+                <div class="card-bottom">
+
+                    <div class="card-type">
+
+                        ${escapeHTML(
+                            type
+                        )}
+
+                    </div>
+
+
+                    <div class="card-network">
+
+                        CARDHUB EXPLORE
+
+                    </div>
+
+                </div>
+
+
+            </div>
+
+
+            <!-- =============================
+                 TITLE
+            ============================== -->
+
+            <h2 class="detail-title">
+
+                ${escapeHTML(
+                    name
+                )}
+
+            </h2>
+
+
+            <p class="issuer">
+
+                ${escapeHTML(
+                    issuer
+                )}
+
+            </p>
+
+
+            <!-- =============================
+                 BASIC DETAILS
+            ============================== -->
+
+            <div class="detail-grid">
+
+
+                <div class="detail-box">
+
+                    <span>
+                        Annual Fee
+                    </span>
+
+                    <strong>
+                        ${formatFee(
+                            card.annual_fee
+                        )}
+                    </strong>
+
+                </div>
+
+
+                <div class="detail-box">
+
+                    <span>
+                        Joining Fee
+                    </span>
+
+                    <strong>
+                        ${formatFee(
+                            card.joining_fee
+                        )}
+                    </strong>
+
+                </div>
+
+
+                <div class="detail-box">
+
+                    <span>
+                        Reward / Cashback
+                    </span>
+
+                    <strong>
+                        ${escapeHTML(
+                            reward
+                        )}
+                    </strong>
+
+                </div>
+
+
+                <div class="detail-box">
+
+                    <span>
+                        Card Type
+                    </span>
+
+                    <strong>
+                        ${escapeHTML(
+                            type
+                        )}
+                    </strong>
+
+                </div>
+
+
+            </div>
+
+
+            <!-- =============================
+                 BENEFITS
+            ============================== -->
+
+            <div class="info-section">
+
+                <h3>
+                    🎁 Benefits
+                </h3>
+
+                <p>
+                    ${escapeHTML(
+                        benefits
+                    )}
+                </p>
+
+            </div>
+
+
+            <!-- =============================
+                 ELIGIBILITY
+            ============================== -->
+
+            <div class="info-section">
+
+                <h3>
+                    👤 Eligibility
+                </h3>
+
+                <p>
+                    ${escapeHTML(
+                        eligibility
+                    )}
+                </p>
+
+            </div>
+
+
+            <!-- =============================
+                 ACTIONS
+            ============================== -->
+
+            <div class="action-buttons">
+
+
+                <button
+                    class="action-button add-card-button"
+                    id="addCardButton"
+                    type="button"
+                >
+
+                    ➕ Add to My Cards
+
+                </button>
+
+
+                <button
+                    class="action-button apply-button"
+                    id="applyButton"
+                    type="button"
+                >
+
+                    🌐 Apply Now
+
+                </button>
+
+
+            </div>
+
+
+            <div class="source-note">
+
+                Card information is provided for
+                educational/project purposes.
+                Fees, rewards, eligibility and
+                benefits can change. Always verify
+                current terms with the issuer before
+                applying.
+
+            </div>
+
+
+        </div>
+
+    `;
+
+
+    /* =====================================
+       BUTTONS
+    ===================================== */
+
+    document
+        .getElementById(
+            "addCardButton"
+        )
+        .addEventListener(
+            "click",
+            function() {
+
+                addToMyCards(
+                    card.id
+                );
+
+            }
+        );
+
+
+    document
+        .getElementById(
+            "applyButton"
+        )
+        .addEventListener(
+            "click",
+            function() {
+
+                applyNow(
+                    card
+                );
+
+            }
+        );
+
+}
+
+
+/* =========================================
+   ADD TO MY CARDS
+========================================= */
+
+async function addToMyCards(
+    exploreCardId
+) {
+
+
+    const button =
+        document.getElementById(
+            "addCardButton"
+        );
+
+
+    button.disabled =
+        true;
+
+
+    button.textContent =
+        "Adding...";
+
+
+    /* =====================================
+       AUTH
+    ===================================== */
+
+    const {
+
+        data: {
+            user
+        },
+
+        error: authError
+
+    } =
+        await supabaseClient
+            .auth
+            .getUser();
+
+
+    if (
+        authError ||
+        !user
+    ) {
+
+        window.location.href =
+            "index.html";
+
+        return;
+
+    }
+
+
+    /* =====================================
+       GET EXPLORE CARD
+    ===================================== */
+
+    const {
+
+        data: exploreCard,
+
+        error: fetchError
+
+    } =
+        await supabaseClient
+            .from("explore_cards")
+            .select("*")
+            .eq(
+                "id",
+                exploreCardId
+            )
+            .maybeSingle();
+
+
+    if (
+        fetchError ||
+        !exploreCard
+    ) {
+
+        alert(
+            "Could not find this card."
+        );
+
+        resetAddButton();
+
+        return;
+
+    }
+
+
+    /* =====================================
+       CHECK DUPLICATE
+    ===================================== */
+
+    const {
+
+        data: existingCards,
+
+        error: existingError
+
+    } =
+        await supabaseClient
+            .from("cards")
+            .select("id")
+            .eq(
+                "user_id",
+                user.id
+            )
+            .eq(
+                "name",
+                exploreCard.name
+            );
+
+
+    if (existingError) {
+
+        console.error(
+            existingError
+        );
+
+        alert(
+            "Could not check your cards."
+        );
+
+        resetAddButton();
+
+        return;
+
+    }
+
+
+    if (
+        existingCards &&
+        existingCards.length > 0
+    ) {
+
+        alert(
+            "You already have this card."
+        );
+
+        resetAddButton();
+
+        return;
+
+    }
+
+
+    /* =====================================
+       BUILD NOTES
+    ===================================== */
+
+    const notes = [
+
+        "Added from Explore",
+
+        "Annual Fee: " +
+            formatFee(
+                exploreCard.annual_fee
+            ),
+
+        "Joining Fee: " +
+            formatFee(
+                exploreCard.joining_fee
+            ),
+
+        "Reward Rate: " +
+            (
+                exploreCard.reward_rate ||
+                "Not specified"
+            ),
+
+        "Benefits: " +
+            (
+                exploreCard.benefits ||
+                "Not specified"
+            ),
+
+        "Eligibility: " +
+            (
+                exploreCard.eligibility ||
+                "Not specified"
+            )
+
+    ].join("\n");
+
+
+    /* =====================================
+       INSERT
+    ===================================== */
+
+    const {
+
+        error: insertError
+
+    } =
+        await supabaseClient
+            .from("cards")
+            .insert({
+
+                name:
+                    exploreCard.name,
+
+                type:
+                    exploreCard.type,
+
+                issuer:
+                    exploreCard.issuer,
+
+                number_last4:
+                    "",
+
+                expiry:
+                    "",
+
+                status:
+                    "Active",
+
+                notes:
+                    notes,
+
+                user_id:
+                    user.id
+
+            });
+
+
+    if (insertError) {
+
+        console.error(
+            insertError
+        );
+
+        alert(
+            "Could not add card. Please try again."
+        );
+
+        resetAddButton();
+
+        return;
+
+    }
+
+
+    alert(
+        "Card added to My Cards successfully! ✅"
+    );
+
+
+    window.location.href =
+        "cards.html";
+
+}
+
+
+/* =========================================
+   RESET BUTTON
+========================================= */
+
+function resetAddButton() {
+
+    const button =
+        document.getElementById(
+            "addCardButton"
+        );
+
+
+    if (!button) {
+        return;
+    }
+
+
+    button.disabled =
+        false;
+
+
+    button.textContent =
+        "➕ Add to My Cards";
+
+}
+
+
+/* =========================================
+   APPLY NOW
+========================================= */
+
+function applyNow(card) {
+
+
+    /*
+       The current explore_cards table does
+       not contain an apply_url column.
+
+       Therefore we do not invent a bank URL.
+       The user is directed to the issuer's
+       official website search instead.
+    */
+
+
+    const issuer =
+        String(
+            card.issuer || ""
+        ).toLowerCase();
+
+
+    let officialUrl =
+        null;
+
+
+    if (
+        issuer.includes(
+            "hdfc"
+        )
+    ) {
+
+        officialUrl =
+            "https://www.hdfcbank.com/";
+
+
+    } else if (
+        issuer.includes(
+            "sbi"
+        )
+    ) {
+
+        officialUrl =
+            "https://www.sbicard.com/";
+
+
+    } else if (
+        issuer.includes(
+            "axis"
+        )
+    ) {
+
+        officialUrl =
+            "https://www.axisbank.com/";
+
+
+    } else if (
+        issuer.includes(
+            "icici"
+        )
+    ) {
+
+        officialUrl =
+            "https://www.icicibank.com/";
+
+
+    } else if (
+        issuer.includes(
+            "bank of india"
+        )
+    ) {
+
+        officialUrl =
+            "https://bankofindia.co.in/";
+
+
+    }
+
+
+    if (!officialUrl) {
+
+        alert(
+            "Please visit the official website of " +
+            (card.issuer || "the card issuer") +
+            " to apply."
+        );
+
+        return;
+
+    }
+
+
+    window.open(
+        officialUrl,
+        "_blank",
+        "noopener,noreferrer"
+    );
+
+}
+
+
+/* =========================================
+   START
+========================================= */
+
+loadCard();
+
+</script>
+
+
+</body>
+
+</html>

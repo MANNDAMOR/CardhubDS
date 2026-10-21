@@ -1,0 +1,2147 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Card Details - CardHub</title>
+
+    <link
+        rel="stylesheet"
+        href="css/style.css"
+    >
+
+
+<style id="cardhub-desktop-page">
+/* CardHub desktop website theme for card pages */
+html { min-width: 1024px; }
+body { min-width: 1024px; background: #f3f6fb; color: #17243b; }
+main.dashboard {
+  width: auto; max-width: none; min-height: 100vh;
+  margin: 0; padding: 34px 46px 54px 282px;
+  box-sizing: border-box;
+}
+.dashboard-header {
+  max-width: 1500px; margin: 0 auto 28px;
+  padding: 0 0 22px; border-bottom: 1px solid #e5eaf2;
+}
+.dashboard-header h1 { color: #17243b; font-size: 32px; letter-spacing: -.035em; }
+.dashboard-header .welcome-text { color: #7a8597; font-size: 14px; }
+.notification-button {
+  border: 1px solid #e5eaf2; border-radius: 14px; background: #fff;
+  box-shadow: 0 5px 18px rgba(23,36,59,.06);
+}
+.add-card-banner, .details-card, .details-section, .card-search,
+.filter-row, .my-cards-list {
+  max-width: 1500px; margin-left: auto; margin-right: auto;
+}
+.add-card-banner {
+  padding: 28px 32px; border-radius: 20px; margin-bottom: 24px;
+  box-shadow: 0 10px 28px rgba(23,36,59,.07);
+}
+.card-search { margin-top: 22px; margin-bottom: 18px; }
+.card-search input { min-height: 50px; border-radius: 12px; }
+.filter-row { gap: 10px; margin-bottom: 26px; }
+.filter-button { border-radius: 10px; padding: 11px 20px; }
+.my-cards-list {
+  display: grid; grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 22px; align-items: stretch;
+}
+.user-card-item {
+  min-width: 0; padding: 20px; border-radius: 18px;
+  background: #fff; border: 1px solid #e5eaf2;
+  box-shadow: 0 8px 26px rgba(23,36,59,.055);
+  transition: transform .18s ease, box-shadow .18s ease;
+}
+.user-card-item:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 15px 32px rgba(23,36,59,.11);
+}
+.mini-card { width: 100%; box-sizing: border-box; border-radius: 15px; }
+.user-card-info { padding-top: 18px; }
+.card-arrow { font-size: 24px; }
+.details-card {
+  width: 100%; max-width: 720px; box-sizing: border-box;
+  margin: 0 0 26px; padding: 30px 34px; border-radius: 22px;
+  box-shadow: 0 18px 40px rgba(20,30,50,.14);
+}
+.details-card-number { font-size: 26px; letter-spacing: .12em; margin: 34px 0; }
+.details-section {
+  width: 100%; box-sizing: border-box; margin-top: 24px; padding: 26px 28px;
+  border: 1px solid #e5eaf2; border-radius: 18px; background: #fff;
+  box-shadow: 0 8px 26px rgba(23,36,59,.045);
+}
+.details-section h2 { margin-top: 0; margin-bottom: 20px; font-size: 21px; color: #182742; }
+.details-actions { gap: 12px; }
+.info-box { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 28px; }
+.info-row { min-width: 0; padding: 16px 0; border-bottom: 1px solid #edf0f5; }
+.info-row strong { overflow-wrap: anywhere; text-align: right; }
+.benefits-box { border-radius: 14px; }
+.transaction-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.transaction-list .transaction { min-width: 0; border: 1px solid #edf0f5; border-radius: 12px; padding: 16px; }
+.security-warning { border-radius: 14px; padding: 20px; }
+.bottom-navigation {
+  position: fixed; inset: 0 auto 0 0; transform: none;
+  width: 230px; max-width: none; height: 100vh; box-sizing: border-box;
+  padding: 34px 18px; background: #fff; border: 0; border-right: 1px solid #e5eaf2;
+  border-radius: 0; box-shadow: 8px 0 30px rgba(23,36,59,.035);
+  display: flex; flex-direction: column; justify-content: flex-start;
+  align-items: stretch; gap: 10px; z-index: 100;
+}
+.bottom-navigation::before {
+  content: "CARDHUB"; display: block; padding: 8px 14px 30px;
+  color: #17243b; font-size: 22px; font-weight: 800; letter-spacing: .08em;
+}
+.nav-item {
+  display: flex; align-items: center; gap: 14px; min-width: 0;
+  padding: 14px 15px; border-radius: 12px; text-align: left; color: #69768b;
+}
+.nav-item:hover, .nav-item.active { color: #17243b; background: #eef3fa; }
+.nav-item span { width: 24px; margin: 0; text-align: center; font-size: 19px; }
+.nav-item p { font-size: 14px; font-weight: 600; }
+@media (min-width: 1400px) {
+  .details-layout { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); gap: 24px; align-items: start; }
+}
+</style>
+
+</head>
+
+
+<body>
+
+<main class="dashboard">
+
+
+    <!-- =========================
+         HEADER
+    ========================== -->
+
+    <header class="dashboard-header">
+
+        <div>
+
+            <p class="welcome-text">
+                CardHub
+            </p>
+
+            <h1>
+                Card Details
+            </h1>
+
+        </div>
+
+
+        <button
+            class="notification-button"
+            onclick="window.history.back()"
+        >
+            ←
+        </button>
+
+    </header>
+
+
+
+    <!-- =========================
+         CARD PREVIEW
+    ========================== -->
+
+    <section class="details-card">
+
+        <div class="details-card-top">
+
+            <span id="previewCardName">
+                CardHub
+            </span>
+
+            <span>
+                💳
+            </span>
+
+        </div>
+
+
+        <div
+            class="details-card-number"
+            id="displayCardNumber"
+        >
+            •••• •••• •••• 0000
+        </div>
+
+
+        <div class="details-card-bottom">
+
+            <div>
+
+                <small>
+                    CARD
+                </small>
+
+                <strong id="previewCardType">
+                    CARD
+                </strong>
+
+            </div>
+
+
+            <div>
+
+                <small>
+                    STATUS
+                </small>
+
+                <strong id="displayStatus">
+                    ACTIVE
+                </strong>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =========================
+         CARD INFORMATION
+    ========================== -->
+
+    <section class="details-section">
+
+        <h2>
+            Card Information
+        </h2>
+
+
+        <div class="details-actions">
+
+            <button
+                class="edit-card-button"
+                id="editButton"
+                onclick="editCard()"
+            >
+                ✏️ Edit Card
+            </button>
+
+
+            <button
+                class="delete-card-button"
+                id="deleteButton"
+                onclick="deleteCard()"
+            >
+                🗑️ Delete Card
+            </button>
+
+        </div>
+
+
+
+        <div class="info-box">
+
+
+            <div class="info-row">
+
+                <span>
+                    Card Name
+                </span>
+
+                <strong id="detailCardName">
+                    —
+                </strong>
+
+            </div>
+
+
+
+            <div class="info-row">
+
+                <span>
+                    Card Type
+                </span>
+
+                <strong id="detailType">
+                    —
+                </strong>
+
+            </div>
+
+
+
+            <div class="info-row">
+
+                <span>
+                    Issuer / Bank
+                </span>
+
+                <strong id="detailIssuer">
+                    —
+                </strong>
+
+            </div>
+
+
+
+            <div class="info-row">
+
+                <span>
+                    Card Network
+                </span>
+
+                <strong id="detailNetwork">
+                    —
+                </strong>
+
+            </div>
+
+
+
+            <div class="info-row">
+
+                <span>
+                    Card Number
+                </span>
+
+                <strong id="detailNumber">
+                    •••• 0000
+                </strong>
+
+            </div>
+
+
+
+            <div class="info-row">
+
+                <span>
+                    Expiry
+                </span>
+
+                <strong id="detailExpiry">
+                    —
+                </strong>
+
+            </div>
+
+
+
+            <div class="info-row">
+
+                <span>
+                    Status
+                </span>
+
+                <strong
+                    id="detailStatus"
+                    class="status-active"
+                >
+                    Active
+                </strong>
+
+            </div>
+
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =========================
+         FEES & CHARGES
+    ========================== -->
+
+    <section class="details-section">
+
+        <h2>
+            Fees & Charges
+        </h2>
+
+
+        <div class="info-box">
+
+
+            <div class="info-row">
+
+                <span>
+                    Joining Fee
+                </span>
+
+                <strong id="joiningFee">
+                    —
+                </strong>
+
+            </div>
+
+
+
+            <div class="info-row">
+
+                <span>
+                    Annual / Renewal Fee
+                </span>
+
+                <strong id="annualFee">
+                    —
+                </strong>
+
+            </div>
+
+
+
+            <div class="info-row">
+
+                <span>
+                    Foreign Transaction Fee
+                </span>
+
+                <strong id="foreignFee">
+                    —
+                </strong>
+
+            </div>
+
+
+
+            <div class="info-row">
+
+                <span>
+                    Cash Withdrawal Fee
+                </span>
+
+                <strong id="cashFee">
+                    —
+                </strong>
+
+            </div>
+
+
+
+            <div class="info-row">
+
+                <span>
+                    Late Payment Fee
+                </span>
+
+                <strong id="lateFee">
+                    —
+                </strong>
+
+            </div>
+
+
+
+            <div class="info-row">
+
+                <span>
+                    Over-limit Fee
+                </span>
+
+                <strong id="overLimitFee">
+                    —
+                </strong>
+
+            </div>
+
+
+
+            <div class="info-row">
+
+                <span>
+                    Replacement Fee
+                </span>
+
+                <strong id="replacementFee">
+                    —
+                </strong>
+
+            </div>
+
+
+
+            <div class="info-row">
+
+                <span>
+                    Other Charges
+                </span>
+
+                <strong id="otherCharges">
+                    —
+                </strong>
+
+            </div>
+
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =========================
+         CUSTOMER SUPPORT
+    ========================== -->
+
+    <section class="details-section">
+
+        <h2>
+            Customer Support
+        </h2>
+
+
+        <div class="info-box">
+
+
+            <div class="info-row">
+
+                <span>
+                    Customer Care
+                </span>
+
+                <strong id="customerCare">
+                    —
+                </strong>
+
+            </div>
+
+
+
+            <div class="info-row">
+
+                <span>
+                    Emergency / Block Card
+                </span>
+
+                <strong id="emergencyNumber">
+                    —
+                </strong>
+
+            </div>
+
+
+
+            <div class="info-row">
+
+                <span>
+                    Support Email
+                </span>
+
+                <strong id="supportEmail">
+                    —
+                </strong>
+
+            </div>
+
+
+
+            <div class="info-row">
+
+                <span>
+                    Official Website
+                </span>
+
+                <strong id="officialWebsite">
+                    —
+                </strong>
+
+            </div>
+
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =========================
+         LINKED CONTACT
+    ========================== -->
+
+    <section class="details-section">
+
+        <h2>
+            Linked Contact
+        </h2>
+
+
+        <div class="info-box">
+
+
+            <div class="info-row">
+
+                <span>
+                    Mobile Number
+                </span>
+
+                <strong id="linkedMobile">
+                    —
+                </strong>
+
+            </div>
+
+
+
+            <div class="info-row">
+
+                <span>
+                    Email ID
+                </span>
+
+                <strong id="linkedEmail">
+                    —
+                </strong>
+
+            </div>
+
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =========================
+         BENEFITS
+    ========================== -->
+
+    <section class="details-section">
+
+        <h2>
+            Card Benefits
+        </h2>
+
+
+        <div class="benefits-box">
+
+            <div
+                class="benefit"
+                id="benefitsContainer"
+            >
+
+                <span>
+                    ✓
+                </span>
+
+                <p id="benefitsText">
+                    No benefits added.
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =========================
+         PERSONAL INFORMATION
+    ========================== -->
+
+    <section class="details-section">
+
+        <h2>
+            Personal Information
+        </h2>
+
+
+        <div class="info-box">
+
+
+            <div class="info-row">
+
+                <span>
+                    Card Nickname
+                </span>
+
+                <strong id="nickname">
+                    —
+                </strong>
+
+            </div>
+
+
+
+            <div class="info-row">
+
+                <span>
+                    Personal Notes
+                </span>
+
+                <strong
+                    id="personalNotes"
+                    style="white-space: pre-line;"
+                >
+                    —
+                </strong>
+
+            </div>
+
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =========================
+         QUICK ACTIONS
+    ========================== -->
+
+    <section class="details-section">
+
+        <h2>
+            Quick Actions
+        </h2>
+
+
+        <div class="details-actions">
+
+
+            <button
+                class="details-action"
+                onclick="openTransactions()"
+            >
+
+                <span>
+                    📊
+                </span>
+
+                <strong>
+                    Transactions
+                </strong>
+
+                <small>
+                    View transactions
+                </small>
+
+            </button>
+
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =========================
+         RECENT TRANSACTIONS
+    ========================== -->
+
+    <section class="details-section">
+
+        <div class="section-header">
+
+            <h2>
+                Recent Transactions
+            </h2>
+
+
+            <a
+                href="transactions.html"
+                class="view-all"
+            >
+                View all
+            </a>
+
+        </div>
+
+
+        <div
+            class="transaction-list"
+            id="cardTransactions"
+        >
+
+            <p>
+                Loading transactions...
+            </p>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =========================
+         SECURITY
+    ========================== -->
+
+    <section class="details-section">
+
+        <div class="security-warning">
+
+            <strong>
+                🔐 Security Reminder
+            </strong>
+
+            <p>
+                CardHub never stores your full card number,
+                CVV, PIN, OTP or banking password.
+            </p>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =========================
+         BOTTOM NAVIGATION
+    ========================== -->
+
+    <nav class="bottom-navigation">
+
+
+        <a
+            href="dashboard.html"
+            class="nav-item"
+        >
+
+            <span>
+                ⌂
+            </span>
+
+            <p>
+                Home
+            </p>
+
+        </a>
+
+
+
+        <a
+            href="cards.html"
+            class="nav-item active"
+        >
+
+            <span>
+                💳
+            </span>
+
+            <p>
+                Cards
+            </p>
+
+        </a>
+
+
+
+        <a
+            href="explore.html"
+            class="nav-item"
+        >
+
+            <span>
+                🔎
+            </span>
+
+            <p>
+                Explore
+            </p>
+
+        </a>
+
+
+
+        <a
+            href="transactions.html"
+            class="nav-item"
+        >
+
+            <span>
+                ↕
+            </span>
+
+            <p>
+                Transactions
+            </p>
+
+        </a>
+
+
+
+        <a
+            href="profile.html"
+            class="nav-item"
+        >
+
+            <span>
+                👤
+            </span>
+
+            <p>
+                Profile
+            </p>
+
+        </a>
+
+
+    </nav>
+
+
+</main>
+
+
+
+<!-- =========================
+     SUPABASE
+========================== -->
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+
+<script>
+
+
+/* =========================================
+   SUPABASE CONNECTION
+========================================= */
+
+const SUPABASE_URL =
+    "https://wrsqhsuktqldnyjrbuma.supabase.co";
+
+
+const SUPABASE_PUBLISHABLE_KEY =
+    "sb_publishable_1-wC9ij9iOkR0txvg6j5bA_i1XLPSj7";
+
+
+const supabaseClient =
+    window.supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_PUBLISHABLE_KEY
+    );
+
+
+
+/* =========================================
+   CARD ID
+========================================= */
+
+const params =
+    new URLSearchParams(
+        window.location.search
+    );
+
+
+const cardId =
+    params.get("id");
+
+
+let card = null;
+
+
+
+/* =========================================
+   GET USER
+========================================= */
+
+async function getCurrentUser() {
+
+    const {
+        data,
+        error
+    } =
+        await supabaseClient.auth.getUser();
+
+
+    if (error) {
+
+        console.error(
+            "Authentication error:",
+            error
+        );
+
+        return null;
+
+    }
+
+
+    return data.user;
+
+}
+
+
+
+/* =========================================
+   LOAD CARD
+========================================= */
+
+async function loadCard() {
+
+
+    if (!cardId) {
+
+        alert(
+            "Card ID not found."
+        );
+
+        window.location.href =
+            "cards.html";
+
+        return;
+
+    }
+
+
+
+    const user =
+        await getCurrentUser();
+
+
+    if (!user) {
+
+        alert(
+            "Please log in first."
+        );
+
+        window.location.href =
+            "index.html";
+
+        return;
+
+    }
+
+
+
+    const {
+        data,
+        error
+    } =
+        await supabaseClient
+
+            .from("cards")
+
+            .select("*")
+
+            .eq(
+                "id",
+                cardId
+            )
+
+            .eq(
+                "user_id",
+                user.id
+            )
+
+            .maybeSingle();
+
+
+
+    if (error) {
+
+        console.error(
+            "Card loading error:",
+            error
+        );
+
+        alert(
+            "Could not load card.\n\n" +
+            error.message
+        );
+
+        return;
+
+    }
+
+
+
+    if (!data) {
+
+        alert(
+            "Card not found."
+        );
+
+        window.location.href =
+            "cards.html";
+
+        return;
+
+    }
+
+
+
+    card = data;
+
+
+
+    displayCard();
+
+
+    await loadTransactions();
+
+}
+
+
+
+/* =========================================
+   DISPLAY CARD
+========================================= */
+
+function displayCard() {
+
+
+    const last4 =
+        card.number_last4 ||
+        "0000";
+
+
+
+    /* CARD NAME */
+
+    setText(
+        "detailCardName",
+        card.name || "—"
+    );
+
+
+    setText(
+        "previewCardName",
+        card.name || "CardHub"
+    );
+
+
+
+    /* TYPE */
+
+    const type =
+        formatCardType(
+            card.type
+        );
+
+
+    setText(
+        "detailType",
+        type
+    );
+
+
+    setText(
+        "previewCardType",
+        type
+    );
+
+
+
+    /* ISSUER */
+
+    setText(
+        "detailIssuer",
+        card.issuer || "—"
+    );
+
+
+
+    /* NUMBER */
+
+    setText(
+        "detailNumber",
+        "•••• " + last4
+    );
+
+
+    setText(
+        "displayCardNumber",
+        "•••• •••• •••• " + last4
+    );
+
+
+
+    /* EXPIRY */
+
+    setText(
+        "detailExpiry",
+        formatExpiry(
+            card.expiry
+        )
+    );
+
+
+
+    /* STATUS */
+
+    const status =
+        card.status || "Active";
+
+
+    setText(
+        "detailStatus",
+        status
+    );
+
+
+    setText(
+        "displayStatus",
+        String(
+            status
+        ).toUpperCase()
+    );
+
+
+
+    /* NOTES */
+
+    const parsed =
+        parseStoredNotes(
+            card.notes
+        );
+
+
+
+    /* NETWORK */
+
+    setText(
+        "detailNetwork",
+        parsed.cardNetwork || "—"
+    );
+
+
+
+    /* FEES */
+
+    setText(
+        "joiningFee",
+        parsed.joiningFee || "—"
+    );
+
+
+    setText(
+        "annualFee",
+        parsed.annualFee || "—"
+    );
+
+
+    setText(
+        "foreignFee",
+        parsed.foreignFee || "—"
+    );
+
+
+    setText(
+        "cashFee",
+        parsed.cashFee || "—"
+    );
+
+
+    setText(
+        "lateFee",
+        parsed.lateFee || "—"
+    );
+
+
+    setText(
+        "overLimitFee",
+        parsed.overLimitFee || "—"
+    );
+
+
+    setText(
+        "replacementFee",
+        parsed.replacementFee || "—"
+    );
+
+
+    setText(
+        "otherCharges",
+        parsed.otherCharges || "—"
+    );
+
+
+
+    /* SUPPORT */
+
+    setText(
+        "customerCare",
+        parsed.customerCare || "—"
+    );
+
+
+    setText(
+        "emergencyNumber",
+        parsed.emergencyNumber || "—"
+    );
+
+
+    setText(
+        "supportEmail",
+        parsed.supportEmail || "—"
+    );
+
+
+    setText(
+        "officialWebsite",
+        parsed.officialWebsite || "—"
+    );
+
+
+
+    /* LINKED CONTACT */
+
+    setText(
+        "linkedMobile",
+        parsed.linkedMobile || "—"
+    );
+
+
+    setText(
+        "linkedEmail",
+        parsed.linkedEmail || "—"
+    );
+
+
+
+    /* BENEFITS */
+
+    setText(
+        "benefitsText",
+        parsed.benefits ||
+        "No benefits added."
+    );
+
+
+
+    /* PERSONAL */
+
+    setText(
+        "nickname",
+        parsed.nickname || "—"
+    );
+
+
+    setText(
+        "personalNotes",
+        parsed.notes || "—"
+    );
+
+}
+
+
+
+/* =========================================
+   FORMAT CARD TYPE
+========================================= */
+
+function formatCardType(type) {
+
+
+    const values = {
+
+        credit:
+            "Credit Card",
+
+        debit:
+            "Debit Card",
+
+        prepaid:
+            "Prepaid Card",
+
+        transport:
+            "Transport / NCMC Card",
+
+        ncmc:
+            "Transport / NCMC Card"
+
+    };
+
+
+    return (
+        values[
+            String(
+                type || ""
+            ).toLowerCase()
+        ]
+        ||
+        "Card"
+    );
+
+}
+
+
+
+/* =========================================
+   FORMAT EXPIRY
+========================================= */
+
+function formatExpiry(value) {
+
+
+    if (!value) {
+
+        return "—";
+
+    }
+
+
+    const parts =
+        String(value)
+            .split("-");
+
+
+    if (
+        parts.length === 2
+    ) {
+
+        return (
+            parts[1] +
+            "/" +
+            parts[0]
+        );
+
+    }
+
+
+    return value;
+
+}
+
+
+
+/* =========================================
+   PARSE STORED NOTES
+========================================= */
+
+function parseStoredNotes(rawNotes) {
+
+
+    const result = {
+
+        cardNetwork: "",
+        joiningFee: "",
+        annualFee: "",
+        foreignFee: "",
+        cashFee: "",
+        lateFee: "",
+        overLimitFee: "",
+        replacementFee: "",
+        otherCharges: "",
+        customerCare: "",
+        emergencyNumber: "",
+        supportEmail: "",
+        officialWebsite: "",
+        linkedMobile: "",
+        linkedEmail: "",
+        benefits: "",
+        nickname: "",
+        notes: ""
+
+    };
+
+
+
+    if (!rawNotes) {
+
+        return result;
+
+    }
+
+
+
+    const lines =
+        String(rawNotes)
+            .split("\n");
+
+
+
+    const personalNotes = [];
+
+
+
+    lines.forEach(
+        function(line) {
+
+
+            const separator =
+                line.indexOf(":");
+
+
+            if (
+                separator === -1
+            ) {
+
+                if (
+                    line.trim()
+                ) {
+
+                    personalNotes.push(
+                        line.trim()
+                    );
+
+                }
+
+                return;
+
+            }
+
+
+
+            const key =
+                line
+                    .slice(
+                        0,
+                        separator
+                    )
+                    .trim();
+
+
+            const value =
+                line
+                    .slice(
+                        separator + 1
+                    )
+                    .trim();
+
+
+
+            if (!value) {
+
+                return;
+
+            }
+
+
+
+            switch (key) {
+
+
+                case "Card Network":
+
+                    result.cardNetwork =
+                        value;
+
+                    break;
+
+
+                case "Joining Fee":
+
+                    result.joiningFee =
+                        value;
+
+                    break;
+
+
+                case "Annual/Renewal Fee":
+
+                    result.annualFee =
+                        value;
+
+                    break;
+
+
+                case "Foreign Transaction Fee":
+
+                    result.foreignFee =
+                        value;
+
+                    break;
+
+
+                case "Cash Withdrawal Fee":
+
+                    result.cashFee =
+                        value;
+
+                    break;
+
+
+                case "Late Payment Fee":
+
+                    result.lateFee =
+                        value;
+
+                    break;
+
+
+                case "Over-limit Fee":
+
+                    result.overLimitFee =
+                        value;
+
+                    break;
+
+
+                case "Replacement Fee":
+
+                    result.replacementFee =
+                        value;
+
+                    break;
+
+
+                case "Other Charges":
+
+                    result.otherCharges =
+                        value;
+
+                    break;
+
+
+                case "Customer Care":
+
+                    result.customerCare =
+                        value;
+
+                    break;
+
+
+                case "Emergency/Block Card":
+
+                    result.emergencyNumber =
+                        value;
+
+                    break;
+
+
+                case "Support Email":
+
+                    result.supportEmail =
+                        value;
+
+                    break;
+
+
+                case "Official Website":
+
+                    result.officialWebsite =
+                        value;
+
+                    break;
+
+
+                case "Linked Mobile":
+
+                    result.linkedMobile =
+                        value;
+
+                    break;
+
+
+                case "Linked Email":
+
+                    result.linkedEmail =
+                        value;
+
+                    break;
+
+
+                case "Benefits":
+
+                    result.benefits =
+                        value;
+
+                    break;
+
+
+                case "Card Nickname":
+
+                    result.nickname =
+                        value;
+
+                    break;
+
+
+                case "Personal Notes":
+
+                    personalNotes.push(
+                        value
+                    );
+
+                    break;
+
+
+                default:
+
+                    personalNotes.push(
+                        line.trim()
+                    );
+
+                    break;
+
+            }
+
+        }
+    );
+
+
+
+    result.notes =
+        personalNotes.join(
+            "\n"
+        );
+
+
+
+    return result;
+
+}
+
+
+
+/* =========================================
+   SET TEXT SAFELY
+========================================= */
+
+function setText(
+    elementId,
+    value
+) {
+
+
+    const element =
+        document.getElementById(
+            elementId
+        );
+
+
+    if (!element) {
+
+        return;
+
+    }
+
+
+    element.textContent =
+        value;
+
+}
+
+
+
+/* =========================================
+   TRANSACTIONS
+========================================= */
+
+async function loadTransactions() {
+
+
+    const list =
+        document.getElementById(
+            "cardTransactions"
+        );
+
+
+    if (!list || !card) {
+
+        return;
+
+    }
+
+
+
+    list.innerHTML =
+        "<p>Loading transactions...</p>";
+
+
+
+    const {
+        data,
+        error
+    } =
+        await supabaseClient
+
+            .from("transactions")
+
+            .select("*")
+
+            .eq(
+                "card_id",
+                card.id
+            )
+
+            .eq(
+                "type",
+                "expense"
+            )
+
+            .order(
+                "transaction_date",
+                {
+                    ascending: false
+                }
+            )
+
+            .limit(5);
+
+
+
+    if (error) {
+
+        console.error(
+            "Transaction error:",
+            error
+        );
+
+        list.innerHTML =
+            "<p>Could not load transactions.</p>";
+
+        return;
+
+    }
+
+
+
+    if (
+        !data ||
+        data.length === 0
+    ) {
+
+        list.innerHTML = `
+
+            <div class="empty-cards">
+
+                <h3>
+                    No transactions yet
+                </h3>
+
+                <p>
+                    No transactions have been recorded for this card.
+                </p>
+
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+
+
+    list.innerHTML = "";
+
+
+
+    data.forEach(
+        function(transaction) {
+
+
+            const item =
+                document.createElement(
+                    "div"
+                );
+
+
+            item.className =
+                "transaction";
+
+
+
+            const amount =
+                Number(
+                    transaction.amount || 0
+                )
+                .toLocaleString(
+                    "en-IN",
+                    {
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2
+                    }
+                );
+
+
+
+            const date =
+                transaction.transaction_date
+
+                    ? new Date(
+                        transaction.transaction_date +
+                        "T00:00:00"
+                    ).toLocaleDateString(
+                        "en-IN"
+                    )
+
+                    : "—";
+
+
+
+            item.innerHTML = `
+
+                <div class="transaction-icon">
+                    💳
+                </div>
+
+
+                <div class="transaction-info">
+
+                    <h3>
+                        ${escapeHtml(
+                            transaction.merchant ||
+                            "Transaction"
+                        )}
+                    </h3>
+
+                    <p>
+                        ${date}
+                    </p>
+
+                </div>
+
+
+                <div class="transaction-amount">
+
+                    <strong>
+                        ₹${amount}
+                    </strong>
+
+                    <span>
+                        Expense
+                    </span>
+
+                </div>
+
+            `;
+
+
+
+            list.appendChild(
+                item
+            );
+
+        }
+    );
+
+}
+
+
+
+/* =========================================
+   EDIT CARD
+========================================= */
+
+function editCard() {
+
+
+    if (!card) {
+
+        return;
+
+    }
+
+
+    window.location.href =
+        "edit-card.html?id=" +
+        encodeURIComponent(
+            card.id
+        );
+
+}
+
+
+
+/* =========================================
+   DELETE CARD
+========================================= */
+
+async function deleteCard() {
+
+
+    if (!card) {
+
+        return;
+
+    }
+
+
+
+    const confirmed =
+        confirm(
+            "Are you sure you want to delete this card?"
+        );
+
+
+    if (!confirmed) {
+
+        return;
+
+    }
+
+
+
+    const button =
+        document.getElementById(
+            "deleteButton"
+        );
+
+
+    if (button) {
+
+        button.disabled =
+            true;
+
+        button.textContent =
+            "Deleting...";
+
+    }
+
+
+
+    const {
+        data,
+        error
+    } =
+        await supabaseClient
+
+            .from("cards")
+
+            .delete()
+
+            .eq(
+                "id",
+                card.id
+            )
+
+            .select("id");
+
+
+
+    if (error) {
+
+        console.error(
+            "Delete error:",
+            error
+        );
+
+        alert(
+            "Could not delete card.\n\n" +
+            error.message
+        );
+
+
+        if (button) {
+
+            button.disabled =
+                false;
+
+            button.textContent =
+                "🗑️ Delete Card";
+
+        }
+
+        return;
+
+    }
+
+
+
+    if (
+        !data ||
+        data.length === 0
+    ) {
+
+        alert(
+            "Card could not be deleted. Please check your permissions."
+        );
+
+
+        if (button) {
+
+            button.disabled =
+                false;
+
+            button.textContent =
+                "🗑️ Delete Card";
+
+        }
+
+        return;
+
+    }
+
+
+
+    localStorage.removeItem(
+        "cardhubCards"
+    );
+
+
+
+    alert(
+        "Card deleted successfully!"
+    );
+
+
+    window.location.href =
+        "cards.html";
+
+}
+
+
+
+/* =========================================
+   OPEN TRANSACTIONS
+========================================= */
+
+function openTransactions() {
+
+
+    if (!card) {
+
+        return;
+
+    }
+
+
+    window.location.href =
+        "transactions.html?card_id=" +
+        encodeURIComponent(
+            card.id
+        );
+
+}
+
+
+
+/* =========================================
+   ESCAPE HTML
+========================================= */
+
+function escapeHtml(value) {
+
+
+    return String(
+        value || ""
+    )
+
+        .replace(
+            /&/g,
+            "&amp;"
+        )
+
+        .replace(
+            /</g,
+            "&lt;"
+        )
+
+        .replace(
+            />/g,
+            "&gt;"
+        )
+
+        .replace(
+            /"/g,
+            "&quot;"
+        )
+
+        .replace(
+            /'/g,
+            "&#039;"
+        );
+
+}
+
+
+
+/* =========================================
+   START
+========================================= */
+
+loadCard();
+
+</script>
+
+
+</body>
+
+</html>
