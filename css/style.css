@@ -250,3 +250,199 @@ a:hover {
         max-width: 100%;
     }
 }
+
+/* ==========================================
+   CARDHUB — GLOBAL COLORFUL PAGE ENHANCEMENT
+========================================== */
+
+/* Colorful page background */
+body {
+    background: linear-gradient(
+        135deg,
+        #e8f4ff 0%,
+        #f2edff 50%,
+        #e4faff 100%
+    ) !important;
+    background-attachment: fixed;
+    color: #171b4b;
+}
+
+/* Main content area */
+main,
+.main,
+.main-content,
+.page-content,
+.content,
+.container {
+    color: #171b4b;
+}
+
+/* Sidebar */
+.sidebar,
+aside {
+    background: linear-gradient(
+        180deg,
+        #111b50,
+        #211064,
+        #3920a6
+    );
+}
+
+/* Page headings */
+h1 {
+    color: #35217f;
+}
+
+h2 {
+    color: #4931b5;
+}
+
+h3 {
+    color: #5140a4;
+}
+
+/* General cards and content boxes */
+.card,
+.panel,
+.content-card,
+.section-card,
+.transaction-card,
+.profile-card,
+.explore-card,
+.dashboard-card,
+.stat-card,
+[class*="card-container"],
+[class*="content-box"] {
+    border: 1px solid rgba(255, 255, 255, 0.95);
+    border-radius: 18px;
+    box-shadow: 0 8px 24px rgba(75, 55, 150, 0.09);
+}
+
+/* Different card colors */
+.card:nth-child(4n+1),
+.explore-card:nth-child(4n+1) {
+    background: linear-gradient(135deg, #ffffff, #e0f2fe);
+}
+
+.card:nth-child(4n+2),
+.explore-card:nth-child(4n+2) {
+    background: linear-gradient(135deg, #ffffff, #ede9fe);
+}
+
+.card:nth-child(4n+3),
+.explore-card:nth-child(4n+3) {
+    background: linear-gradient(135deg, #ffffff, #d1fae5);
+}
+
+.card:nth-child(4n+4),
+.explore-card:nth-child(4n+4) {
+    background: linear-gradient(135deg, #ffffff, #ffedd5);
+}
+
+/* Navigation links */
+.nav-link {
+    border-radius: 12px;
+    transition: all 0.25s ease;
+}
+
+.nav-link:hover {
+    background: rgba(139, 92, 246, 0.15);
+}
+
+.nav-link.active {
+    background: linear-gradient(100deg, #6048ff, #4430e7);
+    color: white;
+}
+
+/* Buttons */
+button,
+.btn,
+.button,
+input[type="submit"] {
+    border-radius: 10px;
+    transition: all 0.25s ease;
+}
+
+button:hover,
+.btn:hover,
+.button:hover,
+input[type="submit"]:hover {
+    filter: brightness(1.05);
+}
+
+/* Primary buttons */
+.btn-primary,
+.primary-btn,
+button.primary,
+input[type="submit"] {
+    background: linear-gradient(110deg, #5035f5, #8b5cf6);
+    color: white;
+    border: none;
+}
+
+/* Inputs */
+input:not([type="checkbox"]):not([type="radio"]):not([type="submit"]),
+select,
+textarea {
+    border: 1px solid #d9d5f5;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.95);
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+    outline: none;
+    border-color: #8b5cf6;
+    box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.15);
+}
+
+/* Tables */
+table {
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+thead,
+th {
+    background: #ede9fe;
+    color: #35217f;
+}
+
+tbody tr:nth-child(even) {
+    background: #f8f7ff;
+}
+
+tbody tr:hover {
+    background: #e0f2fe;
+}
+
+/* Status labels */
+.badge,
+.status {
+    border-radius: 20px;
+    padding: 5px 11px;
+    background: #d1fae5;
+    color: #047857;
+}
+
+/* Links */
+a {
+    transition: color 0.2s ease;
+}
+
+/* Mobile layout */
+@media (max-width: 760px) {
+    .sidebar,
+    aside {
+        max-width: 100%;
+    }
+
+    main,
+    .main,
+    .main-content,
+    .page-content {
+        padding: 18px !important;
+    }
+}
