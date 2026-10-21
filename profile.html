@@ -700,6 +700,18 @@ button:focus-visible,a:focus-visible{outline:3px solid rgba(65,105,225,.35);outl
 @media(max-width:600px){.profile-page{padding:18px 14px 34px!important}.profile-topbar{margin-bottom:20px;padding-bottom:15px}.profile-topbar h1{font-size:25px!important}.profile-hero{padding:25px 18px!important}.info-card{padding:6px 15px!important}.info-row{align-items:flex-start!important}.info-icon{width:36px!important;height:36px!important}.bottom-navigation{z-index:1000}}
 </style>
 
+
+<style id="cardhub-profile-layout-fix">
+/* Use the wide desktop space efficiently: profile hero on the left, account details on the right. */
+#profileContent{display:none;grid-template-columns:minmax(280px,.82fr) minmax(0,1.18fr);gap:22px;align-items:start;width:100%;}
+#profileContent[style*="display: grid"]{display:grid!important;}
+#profileContent .profile-hero{grid-column:1!important;grid-row:1!important;min-height:245px!important;align-self:start!important;}
+#profileContent .profile-section:nth-of-type(2){grid-column:2!important;grid-row:1!important;}
+#profileContent .profile-section:nth-of-type(3){grid-column:1/-1!important;grid-row:2!important;}
+#profileContent .logout-card{grid-column:1/-1!important;}
+@media(max-width:850px){#profileContent{grid-template-columns:minmax(0,1fr)!important;gap:18px!important;}#profileContent .profile-hero,#profileContent .profile-section:nth-of-type(2),#profileContent .profile-section:nth-of-type(3),#profileContent .logout-card{grid-column:1!important;grid-row:auto!important;}#profileContent .profile-hero{min-height:0!important;}}
+</style>
+
 </head>
 
 
