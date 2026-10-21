@@ -666,6 +666,40 @@ button:focus-visible,a:focus-visible{outline:3px solid rgba(65,105,225,.35);outl
 }
 
 </style>
+
+<style id="cardhub-profile-simplified">
+/* Profile page refinement: styling only; account and Supabase logic retained. */
+.profile-page{padding:30px clamp(16px,3vw,42px) 48px!important;background:transparent}
+.profile-wrapper{max-width:1180px!important;width:100%;margin:0 auto}
+.profile-topbar{display:flex;align-items:center;gap:14px;margin-bottom:26px;padding:0 0 20px;border-bottom:1px solid #e3e9f4}
+.profile-topbar h1{margin:0 auto 0 0!important;font-size:clamp(25px,3vw,32px)!important;color:#17243b!important;font-weight:800}
+.top-button{width:44px;height:44px;border:1px solid #e2e8f3!important;border-radius:14px!important;background:#fff!important;box-shadow:0 5px 16px rgba(31,52,94,.06)!important;color:#4169e1!important}
+#profileContent{display:none;grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr);gap:22px;align-items:start}
+.profile-hero{grid-column:1!important;grid-row:1!important;display:flex!important;flex-direction:column;align-items:center;justify-content:center;min-height:270px;padding:30px 24px!important;text-align:center!important;border-radius:22px!important;background:linear-gradient(135deg,#4169e1,#7c4dff)!important;box-shadow:0 14px 30px rgba(65,105,225,.19)!important}
+.profile-avatar{width:88px!important;height:88px!important;margin:0 auto 15px!important;border:3px solid rgba(255,255,255,.55)!important;background:rgba(255,255,255,.18)!important;font-size:32px!important}
+.profile-name{font-size:25px!important;line-height:1.25;color:#fff!important;overflow-wrap:anywhere}
+.profile-email{font-size:13px!important;overflow-wrap:anywhere}
+.active-badge{align-self:center;background:rgba(255,255,255,.16)!important}
+.profile-section{margin:0!important;min-width:0}
+.profile-section:nth-of-type(2){grid-column:2!important;grid-row:1!important}
+.profile-section:nth-of-type(3){grid-column:1/-1!important;grid-row:2!important}
+.section-title{margin:0 0 12px 2px!important;color:#69778f!important;font-size:12px!important;font-weight:800!important;letter-spacing:.1em!important}
+.info-card,.security-card{background:#fff!important;border:1px solid #e3eaf5!important;border-radius:18px!important;padding:8px 20px!important;box-shadow:0 8px 24px rgba(31,52,94,.055)!important}
+.info-row{gap:13px!important;padding:13px 0!important;border-bottom:1px solid #edf1f7!important}
+.info-icon,.security-icon{width:40px!important;height:40px!important;border-radius:12px!important;background:#eef2ff!important;color:#4169e1}
+.info-label{font-size:11px!important;color:#7b879b!important}
+.info-value{font-size:13px!important;color:#202d43!important}
+.user-id-value{font-size:11px!important;color:#536078!important;overflow-wrap:anywhere}
+.security-card{padding:20px!important}
+.security-title{color:#17243b!important}
+.security-text{color:#6f7c91!important}
+.logout-card{grid-column:1/-1;margin-top:0!important;padding:8px!important;background:#fff!important;border:1px solid #e3eaf5!important;border-radius:18px!important;box-shadow:0 8px 24px rgba(31,52,94,.055)!important}
+.logout-button{background:linear-gradient(135deg,#ed526c,#c93555)!important;border-radius:13px!important;padding:14px!important;color:#fff!important}
+.loading{max-width:500px;margin:40px auto;padding:44px 20px!important;background:#fff;border:1px solid #e3eaf5;border-radius:20px;box-shadow:0 8px 24px rgba(31,52,94,.055)}
+@media(max-width:850px){#profileContent{grid-template-columns:minmax(0,1fr);gap:18px}.profile-hero,.profile-section:nth-of-type(2),.profile-section:nth-of-type(3),.logout-card{grid-column:1!important;grid-row:auto!important}.profile-hero{min-height:0!important}.profile-section:nth-of-type(3) .info-card{display:block!important}}
+@media(max-width:600px){.profile-page{padding:18px 14px 34px!important}.profile-topbar{margin-bottom:20px;padding-bottom:15px}.profile-topbar h1{font-size:25px!important}.profile-hero{padding:25px 18px!important}.info-card{padding:6px 15px!important}.info-row{align-items:flex-start!important}.info-icon{width:36px!important;height:36px!important}.bottom-navigation{z-index:1000}}
+</style>
+
 </head>
 
 
@@ -1575,7 +1609,7 @@ async function loadProfile() {
 
 
     profileContent.style.display =
-        "block";
+        "grid";
 
 }
 
