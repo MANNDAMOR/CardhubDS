@@ -105,9 +105,8 @@ if (googleLoginButton) {
                 provider: "google",
 
                 options: {
-                    redirectTo:
-                        window.location.origin + '/CORE/dashboard.html'
-                }
+    redirectTo: window.location.origin + '/dashboard.html'
+}
 
             });
 
