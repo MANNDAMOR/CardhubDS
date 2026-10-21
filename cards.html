@@ -1243,3 +1243,68 @@ loadCards();
     }
 }
 </style>
+<style id="cardhub-simplified-cards-page">
+
+/* CARDHUB CARDS PAGE — simplified colorful layout */
+body:has(#myCardsList) {
+  background: linear-gradient(135deg,#f5f7ff 0%,#f4f0ff 52%,#effaff 100%) !important;
+  color: #17243b;
+}
+main.dashboard {
+  padding: 34px 42px 54px 270px !important;
+  max-width: 1600px !important;
+  margin: 0 auto !important;
+}
+.dashboard-header {
+  display:flex; align-items:center; justify-content:space-between;
+  max-width: 1180px; margin: 0 auto 24px !important;
+  padding: 0 0 18px !important; border-bottom:1px solid #e5eaf3;
+}
+.dashboard-header .welcome-text { margin:0 0 5px; color:#7c65df; font-weight:700; font-size:12px; letter-spacing:.08em; text-transform:uppercase; }
+.dashboard-header h1 { margin:0; color:#20284a; font-size:30px; }
+.notification-button { width:42px; height:42px; display:grid; place-items:center; border:1px solid #e4e8f3; border-radius:13px; background:#fff; color:#4935b8; cursor:pointer; }
+.add-card-banner {
+  max-width:1180px; margin:0 auto 20px !important; padding:22px 26px !important;
+  display:flex; align-items:center; justify-content:space-between; gap:20px;
+  border:1px solid #e4e5ff; border-radius:18px;
+  background:linear-gradient(115deg,#fff 0%,#f0edff 60%,#eaf8ff 100%);
+  box-shadow:0 8px 24px rgba(65,70,140,.06);
+}
+.add-card-banner h2 { margin:0 0 6px; font-size:18px; color:#30256e; }
+.add-card-banner p { margin:0; color:#748096; font-size:13px; }
+.add-card-button { flex-shrink:0; border:0; border-radius:11px; padding:12px 17px; color:#fff; font-weight:700; background:linear-gradient(120deg,#5745e8,#9364f6); box-shadow:0 6px 15px #7056e52b; cursor:pointer; }
+.card-search {
+  max-width:1180px; margin:0 auto 12px !important; display:flex; align-items:center; gap:10px;
+  padding:0 14px; min-height:48px; background:#fff; border:1px solid #e2e7f2; border-radius:13px;
+  box-shadow:0 4px 14px rgba(31,52,94,.035);
+}
+.card-search span { font-size:16px; }
+.card-search input { flex:1; width:100%; min-width:0; padding:12px 0 !important; border:0 !important; outline:0; box-shadow:none !important; background:transparent !important; }
+.filter-row { max-width:1180px; margin:0 auto 20px !important; display:flex; flex-wrap:wrap; gap:8px !important; }
+.filter-button { padding:9px 15px !important; border:1px solid #e1e6f1; border-radius:10px !important; background:#fff; color:#66728a; font-size:13px; font-weight:650; cursor:pointer; }
+.filter-button.active { border-color:#5a49e8; background:#5a49e8; color:#fff; box-shadow:0 5px 12px #5a49e82b; }
+.my-cards-list { max-width:1180px; margin:0 auto !important; display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:17px !important; align-items:stretch; }
+#myCardsList .user-card-item { min-width:0; padding:15px !important; border:1px solid #e5e9f4 !important; border-radius:17px !important; background:#fff !important; box-shadow:0 7px 20px rgba(34,47,90,.055) !important; }
+#myCardsList .user-card-item:hover { transform:translateY(-2px); box-shadow:0 12px 26px rgba(34,47,90,.10) !important; }
+#myCardsList .mini-card { width:100%; max-width:none; }
+#myCardsList .user-card-info { padding:13px 2px 2px !important; }
+#myCardsList .user-card-info h3, #myCardsList .user-card-info h4 { margin:0 0 5px; color:#20284a; font-size:15px; }
+#myCardsList .user-card-info p { margin:4px 0; color:#748096; font-size:12px; }
+#myCardsList .card-arrow { display:none !important; }
+.bottom-navigation { background:rgba(255,255,255,.96) !important; border-right:1px solid #e5eaf3 !important; }
+@media(max-width:1100px) {
+  main.dashboard { padding:26px 24px 100px !important; }
+  .my-cards-list { grid-template-columns:repeat(2,minmax(0,1fr)); }
+}
+@media(max-width:600px) {
+  main.dashboard { padding:20px 14px 100px !important; }
+  .dashboard-header { margin-bottom:18px !important; }
+  .dashboard-header h1 { font-size:26px; }
+  .add-card-banner { padding:18px !important; align-items:flex-start; flex-direction:column; }
+  .add-card-button { width:100%; }
+  .my-cards-list { grid-template-columns:1fr !important; gap:13px !important; }
+  .filter-row { gap:7px !important; }
+  .filter-button { padding:8px 11px !important; }
+}
+
+</style>
