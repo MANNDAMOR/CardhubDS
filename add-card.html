@@ -17,6 +17,28 @@
         href="css/style.css"
     >
 
+
+<style id="cardhub-add-card-sidebar-fix">
+/* Match the shared CardHub left sidebar on Add Card */
+:root { --ch-sidebar-width: 244px; }
+body { margin:0 !important; }
+nav.bottom-navigation { position:fixed !important; inset:0 auto 0 0 !important; width:var(--ch-sidebar-width) !important; height:100vh !important; display:flex !important; flex-direction:column !important; justify-content:flex-start !important; align-items:stretch !important; gap:8px !important; padding:92px 14px 20px !important; overflow-y:auto !important; background:linear-gradient(180deg,#111b50 0%,#28136e 100%) !important; border:0 !important; border-radius:0 !important; box-shadow:none !important; z-index:10000 !important; box-sizing:border-box !important; transition:width .2s ease !important; }
+nav.bottom-navigation::before { content:'🟣  CardHub'; position:absolute; top:24px; left:24px; color:#fff; font-size:23px; font-weight:800; letter-spacing:-.5px; white-space:nowrap; }
+nav.bottom-navigation > a.nav-item { display:flex !important; flex:0 0 auto !important; flex-direction:row !important; align-items:center !important; justify-content:flex-start !important; gap:14px !important; width:100% !important; max-width:none !important; min-width:0 !important; margin:0 !important; padding:15px 14px !important; border-radius:13px !important; color:#f5f5ff !important; text-decoration:none !important; text-align:left !important; box-sizing:border-box !important; }
+nav.bottom-navigation > a.nav-item span { display:inline-flex !important; width:24px !important; justify-content:center !important; font-size:19px !important; line-height:1.2 !important; }
+nav.bottom-navigation > a.nav-item p { display:block !important; margin:0 !important; font-size:14px !important; line-height:1.3 !important; white-space:nowrap !important; }
+nav.bottom-navigation > a.nav-item.active { background:linear-gradient(135deg,#6942ff,#4930ed) !important; color:#fff !important; font-weight:700 !important; box-shadow:0 6px 16px #4930ed40 !important; }
+main.dashboard { margin-left:var(--ch-sidebar-width) !important; width:calc(100% - var(--ch-sidebar-width)) !important; max-width:none !important; box-sizing:border-box !important; transition:margin-left .2s ease,width .2s ease !important; }
+#cardhubSidebarToggle { position:fixed; z-index:10002; left:205px; top:18px; width:26px; height:26px; border:1px solid #ffffff55; border-radius:7px; color:#fff; background:#ffffff20; cursor:pointer; font-size:16px; }
+body.ch-compact { --ch-sidebar-width:78px; }
+body.ch-compact nav.bottom-navigation { padding:92px 10px 20px !important; }
+body.ch-compact nav.bottom-navigation::before { content:'C'; left:25px; top:24px; font-size:23px; }
+body.ch-compact nav.bottom-navigation > a.nav-item { justify-content:center !important; padding:15px 5px !important; }
+body.ch-compact nav.bottom-navigation > a.nav-item p { display:none !important; }
+body.ch-compact #cardhubSidebarToggle { left:47px; }
+@media(max-width:760px) { main.dashboard { padding:18px !important; } nav.bottom-navigation { width:200px !important; } body { --ch-sidebar-width:200px; } body.ch-compact { --ch-sidebar-width:70px; } nav.bottom-navigation::before { left:18px; font-size:20px; } #cardhubSidebarToggle { left:165px; } body.ch-compact #cardhubSidebarToggle { left:40px; } }
+</style>
+
 </head>
 
 
@@ -27,7 +49,7 @@
 
     <!-- =========================
          HEADER
-    ========================== -->
+         ========================= -->
 
     <header class="dashboard-header">
 
@@ -57,7 +79,7 @@
 
     <!-- =========================
          INTRO
-    ========================== -->
+         ========================= -->
 
     <section class="add-card-intro">
 
@@ -76,20 +98,11 @@
 
     <!-- =========================
          FORM
-    ========================== -->
+         ========================= -->
 
     <section class="add-card-form">
 
         <form id="addCardForm">
-
-
-            <!-- =========================
-                 BASIC INFORMATION
-            ========================== -->
-
-            <h2>
-                Basic Information
-            </h2>
 
 
             <!-- CARD TYPE -->
@@ -100,12 +113,51 @@
                     Card Type
                 </label>
 
-                <select id="cardType" required>
-                    <option value="">Select card type</option>
-                    <option value="credit">Credit Card</option>
-                    <option value="debit" disabled>Debit Card — Coming Later</option>
-                    <option value="prepaid" disabled>Prepaid Card — Coming Later</option>
-                    <option value="transport" disabled>Transport / NCMC Card — Coming Later</option>
+                <select
+                    id="cardType"
+                    required
+                >
+
+                    <option value="">
+                        Select card type
+                    </option>
+
+                    <option value="credit">
+                        Credit Card
+                    </option>
+
+                    <option value="debit">
+                        Debit Card
+                    </option>
+
+                    <option value="prepaid">
+                        Prepaid Card
+                    </option>
+
+                    <option value="transport">
+                        Metro / Transport Card
+                    </option>
+
+                    <option value="gift">
+                        Gift Card
+                    </option>
+
+                    <option value="crypto">
+                        Crypto Card
+                    </option>
+
+                    <option value="travel">
+                        Travel / Forex Card
+                    </option>
+
+                    <option value="bus">
+                        Private Bus Card
+                    </option>
+
+                    <option value="other">
+                        Other
+                    </option>
+
                 </select>
 
             </div>
@@ -120,10 +172,12 @@
                     Card Name
                 </label>
 
-                <select id="cardName" required disabled>
-                    <option value="">First select Credit Card above</option>
-                </select>
-                <small id="cardLoadMessage" aria-live="polite">Choose Credit Card to load products from Explore Cards.</small>
+                <input
+                    type="text"
+                    id="cardName"
+                    placeholder="Example: HDFC Millennia Credit Card"
+                    required
+                >
 
             </div>
 
@@ -134,7 +188,7 @@
             <div class="form-group">
 
                 <label for="issuer">
-                    Issuer / Bank
+                    Issuer / Provider
                 </label>
 
                 <input
@@ -148,66 +202,22 @@
 
 
 
-            <!-- CARD NETWORK -->
-
-            <div class="form-group">
-
-                <label for="cardNetwork">
-                    Card Network
-                </label>
-
-                <select id="cardNetwork">
-
-                    <option value="">
-                        Select network
-                    </option>
-
-                    <option value="Visa">
-                        Visa
-                    </option>
-
-                    <option value="Mastercard">
-                        Mastercard
-                    </option>
-
-                    <option value="RuPay">
-                        RuPay
-                    </option>
-
-                    <option value="American Express">
-                        American Express
-                    </option>
-
-                    <option value="Other">
-                        Other
-                    </option>
-
-                </select>
-
-            </div>
-
-
-
-            <!-- LAST 4 -->
+            <!-- CARD NUMBER -->
 
             <div class="form-group">
 
                 <label for="cardNumber">
-                    Last 4 Digits
+                    Card Number
                 </label>
 
                 <input
                     type="text"
                     id="cardNumber"
-                    placeholder="Example: 4521"
-                    maxlength="4"
+                    placeholder="Enter card number"
+                    maxlength="19"
                     inputmode="numeric"
                     required
                 >
-
-                <small>
-                    For security, CardHub stores only the last 4 digits.
-                </small>
 
             </div>
 
@@ -258,370 +268,27 @@
 
 
 
-            <!-- =========================
-                 FEES & CHARGES
-            ========================== -->
-
-            <h2>
-                Fees & Charges
-            </h2>
-
-
-            <div class="form-row">
-
-
-                <div class="form-group">
-
-                    <label for="joiningFee">
-                        Joining Fee
-                    </label>
-
-                    <input
-                        type="number"
-                        id="joiningFee"
-                        min="0"
-                        step="0.01"
-                        placeholder="₹0"
-                    >
-
-                </div>
-
-
-
-                <div class="form-group">
-
-                    <label for="annualFee">
-                        Annual / Renewal Fee
-                    </label>
-
-                    <input
-                        type="number"
-                        id="annualFee"
-                        min="0"
-                        step="0.01"
-                        placeholder="₹0"
-                    >
-
-                </div>
-
-
-            </div>
-
-
-
-            <div class="form-row">
-
-
-                <div class="form-group">
-
-                    <label for="foreignFee">
-                        Foreign Transaction Fee
-                    </label>
-
-                    <input
-                        type="text"
-                        id="foreignFee"
-                        placeholder="Example: 3.5%"
-                    >
-
-                </div>
-
-
-
-                <div class="form-group">
-
-                    <label for="cashFee">
-                        Cash Withdrawal Fee
-                    </label>
-
-                    <input
-                        type="text"
-                        id="cashFee"
-                        placeholder="Example: ₹500"
-                    >
-
-                </div>
-
-
-            </div>
-
-
-
-            <div class="form-row">
-
-
-                <div class="form-group">
-
-                    <label for="lateFee">
-                        Late Payment Fee
-                    </label>
-
-                    <input
-                        type="text"
-                        id="lateFee"
-                        placeholder="Example: ₹500"
-                    >
-
-                </div>
-
-
-
-                <div class="form-group">
-
-                    <label for="overLimitFee">
-                        Over-limit Fee
-                    </label>
-
-                    <input
-                        type="text"
-                        id="overLimitFee"
-                        placeholder="Example: ₹600"
-                    >
-
-                </div>
-
-
-            </div>
-
-
-
-            <div class="form-group">
-
-                <label for="replacementFee">
-                    Replacement Fee
-                </label>
-
-                <input
-                    type="text"
-                    id="replacementFee"
-                    placeholder="Example: ₹100"
-                >
-
-            </div>
-
-
-
-            <div class="form-group">
-
-                <label for="otherCharges">
-                    Other Charges
-                </label>
-
-                <textarea
-                    id="otherCharges"
-                    rows="3"
-                    placeholder="Add other charges or important fee information..."
-                ></textarea>
-
-            </div>
-
-
-
-            <!-- =========================
-                 CUSTOMER SUPPORT
-            ========================== -->
-
-            <h2>
-                Customer Support
-            </h2>
-
-
-            <div class="form-group">
-
-                <label for="customerCare">
-                    Customer Care Number
-                </label>
-
-                <input
-                    type="tel"
-                    id="customerCare"
-                    placeholder="Example: 1800 123 4567"
-                >
-
-            </div>
-
-
-
-            <div class="form-group">
-
-                <label for="emergencyNumber">
-                    Emergency / Block Card Number
-                </label>
-
-                <input
-                    type="tel"
-                    id="emergencyNumber"
-                    placeholder="Emergency card blocking number"
-                >
-
-            </div>
-
-
-
-            <div class="form-group">
-
-                <label for="supportEmail">
-                    Support Email
-                </label>
-
-                <input
-                    type="email"
-                    id="supportEmail"
-                    placeholder="support@bank.com"
-                >
-
-            </div>
-
-
-
-            <div class="form-group">
-
-                <label for="officialWebsite">
-                    Official Website
-                </label>
-
-                <input
-                    type="url"
-                    id="officialWebsite"
-                    placeholder="https://www.example.com"
-                >
-
-            </div>
-
-
-
-            <!-- =========================
-                 LINKED CONTACT
-            ========================== -->
-
-            <h2>
-                Linked Contact
-            </h2>
-
-
-            <div class="form-group">
-
-                <label for="linkedMobile">
-                    Linked Mobile Number
-                </label>
-
-                <input
-                    type="tel"
-                    id="linkedMobile"
-                    placeholder="Mobile number linked to this card"
-                >
-
-            </div>
-
-
-
-            <div class="form-group">
-
-                <label for="linkedEmail">
-                    Linked Email ID
-                </label>
-
-                <input
-                    type="email"
-                    id="linkedEmail"
-                    placeholder="Email linked to this card"
-                >
-
-            </div>
-
-
-
-            <!-- =========================
-                 BENEFITS
-            ========================== -->
-
-            <h2>
-                Benefits
-            </h2>
-
-
-            <div class="form-group">
-
-                <label for="benefits">
-                    Card Benefits
-                </label>
-
-                <textarea
-                    id="benefits"
-                    rows="5"
-                    placeholder="Example: 5% cashback, lounge access, fuel benefits..."
-                ></textarea>
-
-            </div>
-
-
-
-            <!-- =========================
-                 PERSONAL
-            ========================== -->
-
-            <h2>
-                Personal Information
-            </h2>
-
-
-            <div class="form-group">
-
-                <label for="nickname">
-                    Card Nickname
-                </label>
-
-                <input
-                    type="text"
-                    id="nickname"
-                    placeholder="Example: My Main Credit Card"
-                >
-
-            </div>
-
-
+            <!-- NOTES -->
 
             <div class="form-group">
 
                 <label for="notes">
-                    Personal Notes
+                    Notes
                 </label>
 
                 <textarea
                     id="notes"
                     rows="4"
-                    placeholder="Add personal notes about this card..."
+                    placeholder="Add notes about this card..."
                 ></textarea>
 
             </div>
 
 
 
-            <!-- =========================
-                 SECURITY WARNING
-            ========================== -->
-
-            <div class="security-warning">
-
-                <strong>
-                    🔐 Security Reminder
-                </strong>
-
-                <p>
-                    Never enter your CVV, PIN, OTP, full card number
-                    or banking password in CardHub.
-                </p>
-
-            </div>
-
-
-
-            <!-- =========================
-                 BUTTONS
-            ========================== -->
+            <!-- BUTTONS -->
 
             <div class="form-buttons">
-
 
                 <button
                     type="button"
@@ -639,7 +306,6 @@
                     Add Card
                 </button>
 
-
             </div>
 
 
@@ -651,9 +317,10 @@
 
     <!-- =========================
          BOTTOM NAVIGATION
-    ========================== -->
+         ========================= -->
 
     <nav class="bottom-navigation">
+        <button id="cardhubSidebarToggle" type="button" aria-label="Compact sidebar" title="Compact/expand sidebar">‹</button>
 
 
         <a
@@ -742,28 +409,19 @@
 </main>
 
 
-
-<!-- =========================
-     SUPABASE
-========================== -->
-
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
 
 <script>
 
-
-/* ==============================
+/* =========================================
    SUPABASE CONNECTION
-============================== */
+   ========================================= */
 
 const SUPABASE_URL =
     "https://wrsqhsuktqldnyjrbuma.supabase.co";
 
-
 const SUPABASE_PUBLISHABLE_KEY =
     "sb_publishable_1-wC9ij9iOkR0txvg6j5bA_i1XLPSj7";
-
 
 const supabaseClient =
     window.supabase.createClient(
@@ -772,172 +430,9 @@ const supabaseClient =
     );
 
 
-
-/* ==============================
-   GET CURRENT USER
-============================== */
-
-async function getCurrentUser() {
-
-
-    const {
-        data,
-        error
-    } =
-        await supabaseClient.auth.getUser();
-
-
-    if (error) {
-
-        console.error(
-            "Authentication error:",
-            error
-        );
-
-        return null;
-
-    }
-
-
-    return data.user;
-
-}
-
-
-
-/* ==============================
-   LOAD CREDIT CARD PRODUCTS
-============================== */
-
-let availableCardProducts = [];
-let selectedExploreCard = null;
-
-function normalizeCardType(value) {
-    return String(value || "")
-        .toLowerCase()
-        .replace(/[^a-z]/g, "");
-}
-
-function setFieldValue(id, value) {
-    const field = document.getElementById(id);
-    if (!field) return;
-    field.value = value === null || value === undefined ? "" : String(value);
-}
-
-function fillFromCardProduct(card) {
-    selectedExploreCard = card || null;
-    if (!card) {
-        setFieldValue("issuer", "");
-        setFieldValue("cardNetwork", "");
-        ["joiningFee", "annualFee", "foreignFee", "cashFee", "lateFee",
-         "overLimitFee", "replacementFee", "customerCare", "emergencyNumber",
-         "supportEmail", "officialWebsite", "benefits"].forEach(id => setFieldValue(id, ""));
-        return;
-    }
-
-    setFieldValue("issuer", card.issuer || "");
-    const network = String(card.card_network || "").trim();
-    const networkSelect = document.getElementById("cardNetwork");
-    if (networkSelect) {
-        const matchingOption = Array.from(networkSelect.options).find(
-            option => option.value.toLowerCase() === network.toLowerCase()
-        );
-        networkSelect.value = matchingOption ? matchingOption.value : (network ? "Other" : "");
-    }
-    setFieldValue("joiningFee", card.joining_fee);
-    setFieldValue("annualFee", card.annual_fee);
-    setFieldValue("foreignFee", card.foreign_transaction_fee);
-    setFieldValue("cashFee", card.cash_withdrawal_fee);
-    setFieldValue("lateFee", card.late_payment_fee);
-    setFieldValue("overLimitFee", card.over_limit_fee);
-    setFieldValue("replacementFee", card.replacement_fee);
-    setFieldValue("customerCare", card.customer_care);
-    setFieldValue("emergencyNumber", card.emergency_block_number);
-    setFieldValue("supportEmail", card.support_email);
-    setFieldValue("officialWebsite", card.official_website);
-    setFieldValue("benefits", card.benefits);
-}
-
-async function loadAvailableCardProducts() {
-    const type = document.getElementById("cardType").value;
-    const cardNameSelect = document.getElementById("cardName");
-    const message = document.getElementById("cardLoadMessage");
-
-    selectedExploreCard = null;
-    cardNameSelect.innerHTML = '<option value="">Loading credit cards...</option>';
-    cardNameSelect.disabled = true;
-    fillFromCardProduct(null);
-
-    if (type !== "credit") {
-        cardNameSelect.innerHTML = '<option value="">Select Credit Card first</option>';
-        message.textContent = "Only Credit Card is available right now. Other types are coming later.";
-        return;
-    }
-
-    message.textContent = "Loading products from Supabase...";
-    const { data, error } = await supabaseClient
-        .from("explore_cards")
-        .select("*")
-        .order("name", { ascending: true });
-
-    if (error) {
-        console.error("Could not load Explore Cards:", error);
-        cardNameSelect.innerHTML = '<option value="">Could not load cards</option>';
-        message.textContent = "Could not load cards from Supabase. Check the browser console and Explore Cards table permissions.";
-        return;
-    }
-
-    availableCardProducts = (data || []).filter(card => {
-        const typeValue = normalizeCardType(card.type);
-        return typeValue === "credit" || typeValue === "creditcard";
-    });
-
-    cardNameSelect.innerHTML = '<option value="">Select your credit card</option>';
-    availableCardProducts.forEach(card => {
-        const option = document.createElement("option");
-        option.value = card.id;
-        option.textContent = `${card.name || "Unnamed card"}${card.issuer ? " — " + card.issuer : ""}`;
-        cardNameSelect.appendChild(option);
-    });
-
-    cardNameSelect.disabled = availableCardProducts.length === 0;
-    message.textContent = availableCardProducts.length
-        ? `${availableCardProducts.length} credit card product(s) loaded. Select yours to fill available details.`
-        : "No credit cards found in Explore Cards. Add products there first.";
-}
-
-document.getElementById("cardType").addEventListener("change", loadAvailableCardProducts);
-document.getElementById("cardName").addEventListener("change", function () {
-    const chosenId = this.value;
-    const card = availableCardProducts.find(item => String(item.id) === String(chosenId));
-    fillFromCardProduct(card || null);
-});
-
-/* ==============================
-   CARD NUMBER
-============================== */
-
-document
-    .getElementById("cardNumber")
-    .addEventListener(
-        "input",
-        function() {
-
-
-            this.value =
-                this.value
-                    .replace(/\D/g, "")
-                    .slice(0, 4);
-
-
-        }
-    );
-
-
-
-/* ==============================
-   ADD CARD
-============================== */
+/* =========================================
+   ADD CARD FORM
+   ========================================= */
 
 document
     .getElementById("addCardForm")
@@ -945,37 +440,12 @@ document
         "submit",
         async function(event) {
 
-
             event.preventDefault();
 
 
-
             /* =========================
-               USER
-            ========================== */
-
-            const user =
-                await getCurrentUser();
-
-
-            if (!user) {
-
-                alert(
-                    "You must be logged in to add a card."
-                );
-
-                window.location.href =
-                    "index.html";
-
-                return;
-
-            }
-
-
-
-            /* =========================
-               VALUES
-            ========================== */
+               GET VALUES
+               ========================= */
 
             const type =
                 document
@@ -985,7 +455,10 @@ document
 
 
             const name =
-                selectedExploreCard?.name || "";
+                document
+                    .getElementById("cardName")
+                    .value
+                    .trim();
 
 
             const issuer =
@@ -995,17 +468,11 @@ document
                     .trim();
 
 
-            const cardNetwork =
-                document
-                    .getElementById("cardNetwork")
-                    .value
-                    .trim();
-
-
-            const last4 =
+            const number =
                 document
                     .getElementById("cardNumber")
                     .value
+                    .replace(/\s/g, "")
                     .trim();
 
 
@@ -1028,271 +495,98 @@ document
                     .trim();
 
 
-
             /* =========================
-               VALIDATION
-            ========================== */
+               BASIC VALIDATION
+               ========================= */
 
             if (!type) {
-
-                alert(
-                    "Please select a card type."
-                );
-
-                return;
-
-            }
-
-
-            if (
-                ![
-                    "credit",
-                    "debit",
-                    "prepaid",
-                    "transport"
-                ].includes(type)
-            ) {
-
-                alert(
-                    "Invalid card type."
-                );
-
-                return;
-
-            }
-
-
-            if (!selectedExploreCard || !name) {
-                alert("Please select a credit card product from the list.");
+                alert("Please select a card type.");
                 return;
             }
 
+            if (!name) {
+                alert("Please enter the card name.");
+                return;
+            }
 
             if (!issuer) {
-
-                alert(
-                    "Please enter the issuer."
-                );
-
+                alert("Please enter the issuer.");
                 return;
-
             }
 
-
-            if (
-                !/^\d{4}$/.test(last4)
-            ) {
-
-                alert(
-                    "Please enter exactly the last 4 digits of the card."
-                );
-
+            if (!number) {
+                alert("Please enter the card number.");
                 return;
-
             }
-
 
 
             /* =========================
-               CHECK DUPLICATE
-            ========================== */
+               LOAD LOCAL CARDS
+               Used to keep the existing
+               CardHub pages working.
+               ========================= */
 
-            const {
-                data: existingCards,
-                error: duplicateError
+            let cards =
+                JSON.parse(
+                    localStorage.getItem(
+                        "cardhubCards"
+                    )
+                ) || [];
 
-            } = await supabaseClient
 
-                .from("cards")
+            /* =========================
+               DUPLICATE CHECK
+               ========================= */
 
-                .select("id, name")
+            const duplicate =
+                cards.some(
+                    function(item) {
 
-                .eq(
-                    "user_id",
-                    user.id
+                        return (
+                            String(item.name)
+                                .toLowerCase() ===
+                            name.toLowerCase()
+                        );
+
+                    }
                 );
 
 
+            if (duplicate) {
 
-            if (duplicateError) {
-
-                console.error(
-                    "Duplicate check error:",
-                    duplicateError
+                alert(
+                    "A card with this name already exists."
                 );
 
-            }
-            else {
-
-
-                const duplicate =
-                    (
-                        existingCards || []
-                    ).some(
-                        function(card) {
-
-                            return (
-                                String(
-                                    card.name || ""
-                                )
-                                .toLowerCase()
-                                ===
-                                name.toLowerCase()
-                            );
-
-                        }
-                    );
-
-
-                if (duplicate) {
-
-                    alert(
-                        "A card with this name already exists."
-                    );
-
-                    return;
-
-                }
+                return;
 
             }
-
 
 
             /* =========================
                SAVE TO SUPABASE
-            ========================== */
+               Only last 4 digits are stored.
+               ========================= */
 
-            const {
-                data,
-                error
-
-            } = await supabaseClient
-
-                .from("cards")
-
-                .insert({
-
-                    user_id:
-                        user.id,
-
-                    name:
-                        name,
-
-                    type:
-                        type,
-
-                    issuer:
-                        issuer,
-
-                    number_last4:
-                        last4,
-
-                    expiry:
-                        expiry || null,
-
-                    status:
-                        status,
-
-                    notes:
-                        buildNotes({
-
-                            cardNetwork,
-                            joiningFee:
-                                document.getElementById(
-                                    "joiningFee"
-                                ).value,
-
-                            annualFee:
-                                document.getElementById(
-                                    "annualFee"
-                                ).value,
-
-                            foreignFee:
-                                document.getElementById(
-                                    "foreignFee"
-                                ).value,
-
-                            cashFee:
-                                document.getElementById(
-                                    "cashFee"
-                                ).value,
-
-                            lateFee:
-                                document.getElementById(
-                                    "lateFee"
-                                ).value,
-
-                            overLimitFee:
-                                document.getElementById(
-                                    "overLimitFee"
-                                ).value,
-
-                            replacementFee:
-                                document.getElementById(
-                                    "replacementFee"
-                                ).value,
-
-                            otherCharges:
-                                document.getElementById(
-                                    "otherCharges"
-                                ).value,
-
-                            customerCare:
-                                document.getElementById(
-                                    "customerCare"
-                                ).value,
-
-                            emergencyNumber:
-                                document.getElementById(
-                                    "emergencyNumber"
-                                ).value,
-
-                            supportEmail:
-                                document.getElementById(
-                                    "supportEmail"
-                                ).value,
-
-                            officialWebsite:
-                                document.getElementById(
-                                    "officialWebsite"
-                                ).value,
-
-                            linkedMobile:
-                                document.getElementById(
-                                    "linkedMobile"
-                                ).value,
-
-                            linkedEmail:
-                                document.getElementById(
-                                    "linkedEmail"
-                                ).value,
-
-                            benefits:
-                                document.getElementById(
-                                    "benefits"
-                                ).value,
-
-                            nickname:
-                                document.getElementById(
-                                    "nickname"
-                                ).value,
-
-                            notes:
-                                notes
-
-                        })
-
-                })
-
-                .select()
-
-                .single();
-
+            const { data, error } =
+                await supabaseClient
+                    .from("cards")
+                    .insert({
+                        name: name,
+                        type: type,
+                        issuer: issuer,
+                        number_last4: number.slice(-4),
+                        expiry: expiry || null,
+                        status: status,
+                        notes: notes || null
+                    })
+                    .select()
+                    .single();
 
 
             /* =========================
-               ERROR
-            ========================== */
+               SUPABASE ERROR
+               ========================= */
 
             if (error) {
 
@@ -1302,7 +596,7 @@ document
                 );
 
                 alert(
-                    "Could not save card.\n\n" +
+                    "Could not save card online.\n\n" +
                     error.message
                 );
 
@@ -1311,226 +605,117 @@ document
             }
 
 
+            /* =========================
+               CREATE LOCAL CARD
+               Keeps existing CardHub
+               pages compatible.
+               ========================= */
+
+            const newCard = {
+
+                id:
+                    String(data.id),
+
+                type:
+                    type,
+
+                name:
+                    name,
+
+                issuer:
+                    issuer,
+
+                number:
+                    "••••" + number.slice(-4),
+
+                expiry:
+                    expiry,
+
+                status:
+                    status,
+
+                notes:
+                    notes
+
+            };
+
+
+            cards.push(
+                newCard
+            );
+
+
+            localStorage.setItem(
+                "cardhubCards",
+                JSON.stringify(cards)
+            );
+
 
             /* =========================
                SUCCESS
-            ========================== */
+               ========================= */
 
             alert(
-                "Card added successfully! 🎉"
+                "Card added successfully!"
             );
 
+
+            /* =========================
+               OPEN CARD DETAILS
+               ========================= */
 
             window.location.href =
                 "card-details.html?id=" +
                 encodeURIComponent(
-                    data.id
+                    newCard.id
                 );
-
 
         }
     );
 
 
-
-/* ==============================
-   BUILD NOTES
-============================== */
-
-function buildNotes(data) {
-
-
-    const sections = [];
-
-
-
-    if (data.cardNetwork) {
-
-        sections.push(
-            "Card Network: " +
-            data.cardNetwork
-        );
-
-    }
-
-
-    if (data.joiningFee) {
-
-        sections.push(
-            "Joining Fee: ₹" +
-            data.joiningFee
-        );
-
-    }
-
-
-    if (data.annualFee) {
-
-        sections.push(
-            "Annual/Renewal Fee: ₹" +
-            data.annualFee
-        );
-
-    }
-
-
-    if (data.foreignFee) {
-
-        sections.push(
-            "Foreign Transaction Fee: " +
-            data.foreignFee
-        );
-
-    }
-
-
-    if (data.cashFee) {
-
-        sections.push(
-            "Cash Withdrawal Fee: " +
-            data.cashFee
-        );
-
-    }
-
-
-    if (data.lateFee) {
-
-        sections.push(
-            "Late Payment Fee: " +
-            data.lateFee
-        );
-
-    }
-
-
-    if (data.overLimitFee) {
-
-        sections.push(
-            "Over-limit Fee: " +
-            data.overLimitFee
-        );
-
-    }
-
-
-    if (data.replacementFee) {
-
-        sections.push(
-            "Replacement Fee: " +
-            data.replacementFee
-        );
-
-    }
-
-
-    if (data.otherCharges) {
-
-        sections.push(
-            "Other Charges: " +
-            data.otherCharges
-        );
-
-    }
-
-
-    if (data.customerCare) {
-
-        sections.push(
-            "Customer Care: " +
-            data.customerCare
-        );
-
-    }
-
-
-    if (data.emergencyNumber) {
-
-        sections.push(
-            "Emergency/Block Card: " +
-            data.emergencyNumber
-        );
-
-    }
-
-
-    if (data.supportEmail) {
-
-        sections.push(
-            "Support Email: " +
-            data.supportEmail
-        );
-
-    }
-
-
-    if (data.officialWebsite) {
-
-        sections.push(
-            "Official Website: " +
-            data.officialWebsite
-        );
-
-    }
-
-
-    if (data.linkedMobile) {
-
-        sections.push(
-            "Linked Mobile: " +
-            data.linkedMobile
-        );
-
-    }
-
-
-    if (data.linkedEmail) {
-
-        sections.push(
-            "Linked Email: " +
-            data.linkedEmail
-        );
-
-    }
-
-
-    if (data.benefits) {
-
-        sections.push(
-            "Benefits: " +
-            data.benefits
-        );
-
-    }
-
-
-    if (data.nickname) {
-
-        sections.push(
-            "Card Nickname: " +
-            data.nickname
-        );
-
-    }
-
-
-    if (data.notes) {
-
-        sections.push(
-            "Personal Notes: " +
-            data.notes
-        );
-
-    }
-
-
-    return sections.join("\n");
-
-}
-
+/* =========================================
+   CARD NUMBER FORMATTING
+   ========================================= */
+
+document
+    .getElementById("cardNumber")
+    .addEventListener(
+        "input",
+        function() {
+
+            let value =
+                this.value
+                    .replace(/\D/g, "")
+                    .slice(0, 16);
+
+
+            let formatted =
+                value.match(
+                    /.{1,4}/g
+                );
+
+
+            this.value =
+                formatted
+                    ? formatted.join(" ")
+                    : "";
+
+        }
+    );
 
 </script>
 
+
+
+<script id="cardhub-sidebar-toggle-script">
+(function(){
+ const key='cardhub-sidebar-compact';
+ if(localStorage.getItem(key)==='1') document.body.classList.add('ch-compact');
+ const btn=document.getElementById('cardhubSidebarToggle');
+ if(btn){ const sync=()=>{btn.textContent=document.body.classList.contains('ch-compact')?'›':'‹';}; sync(); btn.addEventListener('click',()=>{document.body.classList.toggle('ch-compact');localStorage.setItem(key,document.body.classList.contains('ch-compact')?'1':'0');sync();}); }
+})();
+</script>
 
 </body>
 
