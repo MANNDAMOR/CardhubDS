@@ -1,1495 +1,170 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
-    <meta charset="UTF-8">
-
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
-
-    <title>Transactions - CardHub</title>
-
-    <link
-        rel="stylesheet"
-        href="css/style.css"
-    >
-
-
-
-
-
-<style id="cardhub-transactions-simplified">
-/* CardHub Transactions — clean colorful styling; behavior and markup preserved */
-html, body { min-width: 0 !important; }
-body { margin: 0; background: linear-gradient(135deg,#f3f7ff 0%,#f7f3ff 55%,#eefbff 100%) !important; color:#20234a; }
-main.dashboard { width:auto; max-width:none; min-height:100vh; margin:0; padding:32px 38px 48px 270px; box-sizing:border-box; }
-.dashboard-header { max-width:1400px; margin:0 auto 24px; padding:0 0 20px; border-bottom:1px solid #e7e9f5; display:flex; justify-content:space-between; align-items:center; gap:16px; }
-.dashboard-header h1 { color:#30216f !important; font-size:clamp(27px,3vw,34px); margin:4px 0 0; letter-spacing:-.04em; }
-.dashboard-header .welcome-text { color:#7b72b6; font-size:13px; margin:0; }
-.notification-button { width:42px; height:42px; border:1px solid #e4defc; border-radius:13px; background:#fff; color:#5035f5; box-shadow:0 5px 16px #4630a40d; cursor:pointer; }
-.bottom-navigation { position:fixed; inset:0 auto 0 0; transform:none; width:220px; max-width:none; height:100vh; box-sizing:border-box; padding:28px 16px; background:linear-gradient(180deg,#211453,#3d2b91 65%,#5140b6); border:0; border-radius:0; box-shadow:8px 0 30px #21145312; display:flex; flex-direction:column; justify-content:flex-start; align-items:stretch; gap:8px; z-index:100; }
-.bottom-navigation::before { content:"CARDHUB"; display:block; padding:8px 14px 28px; color:white; font-size:21px; font-weight:800; letter-spacing:.08em; }
-.nav-item { display:flex; align-items:center; gap:12px; min-width:0; padding:13px 14px; border-radius:12px; color:#e3ddff; text-decoration:none; transition:background .2s ease; }
-.nav-item:hover,.nav-item.active { color:white; background:#ffffff20; }
-.nav-item span { width:24px; margin:0; text-align:center; font-size:18px; }
-.nav-item p { margin:0; font-size:14px; font-weight:600; }
-.transaction-summary { max-width:1400px; margin:0 auto 18px; display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:16px; }
-.summary-box { background:#fff; border:1px solid #ece8ff; border-radius:18px; padding:21px 24px; box-shadow:0 8px 25px #5140a40c; }
-.summary-box:first-child { background:linear-gradient(135deg,#fff,#eee9ff); }
-.summary-box:last-child { background:linear-gradient(135deg,#fff,#e7f6ff); }
-.summary-box span { color:#737b96; font-size:13px; margin-bottom:8px; }
-.summary-box strong { color:#35217f; font-size:29px; }
-.transaction-add-box { max-width:1400px; margin:0 auto 18px; padding:20px 24px; display:flex; align-items:center; justify-content:space-between; gap:20px; background:#fff; border:1px solid #ece8ff; border-radius:18px; box-shadow:0 8px 25px #5140a40c; }
-.transaction-add-box h2 { margin:0 0 6px; color:#30216f; font-size:19px; }
-.transaction-add-box p { margin:0; color:#747b94; font-size:13px; }
-.add-transaction-button { padding:12px 17px; border:0; border-radius:11px; background:linear-gradient(110deg,#5035f5,#8b5cf6); color:#fff; font-weight:700; cursor:pointer; box-shadow:0 6px 16px #5035f526; }
-.transaction-search { max-width:1400px; margin:0 auto 18px; display:flex; align-items:center; gap:12px; padding:0 16px; min-height:50px; background:#fff; border:1px solid #e6e3f8; border-radius:13px; box-shadow:0 5px 16px #5140a408; }
-.transaction-search input { flex:1; min-width:0; border:0; outline:0; background:transparent; padding:12px 0; box-shadow:none; }
-main.dashboard > .details-section { max-width:1400px; margin:0 auto 18px; padding:21px 24px; background:#fff; border:1px solid #ece8ff; border-radius:18px; box-shadow:0 8px 25px #5140a40c; }
-main.dashboard > .details-section h2 { margin:0 0 17px; color:#30216f; font-size:19px; }
-.form-row { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:15px; margin-bottom:14px; }
-.form-group label { color:#555d7b; font-size:13px; font-weight:650; }
-.form-group input,.form-group select { width:100%; box-sizing:border-box; min-height:44px; border:1px solid #e0def3; border-radius:10px; padding:10px 12px; background:#fff; color:#20234a; }
-.form-group input:focus,.form-group select:focus { outline:none; border-color:#8b5cf6; box-shadow:0 0 0 3px #8b5cf61b; }
-.cancel-button { padding:10px 15px; border:1px solid #ded8fb; border-radius:10px; background:#f7f5ff; color:#5035c8; cursor:pointer; }
-.transactions-section { max-width:1400px; margin:0 auto; padding:22px 24px; background:#fff; border:1px solid #ece8ff; border-radius:18px; box-shadow:0 8px 25px #5140a40c; }
-.transactions-section .section-title { display:flex; align-items:center; justify-content:space-between; gap:14px; margin-bottom:16px; }
-.transactions-section h2 { margin:0; color:#30216f; font-size:20px; }
-#resultCount { color:#7b8198; font-size:13px; }
-#transactionList { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px; }
-.transaction-item { min-width:0; display:flex; align-items:center; gap:13px; padding:16px; background:linear-gradient(135deg,#fff,#fbfaff); border:1px solid #efecfa; border-radius:14px; }
-.transaction-icon { flex:0 0 42px; width:42px; height:42px; display:grid; place-items:center; border-radius:12px; background:linear-gradient(135deg,#e9e4ff,#e4f5ff); color:#5035c8; }
-.transaction-info { flex:1; min-width:0; }
-.transaction-info h3 { margin:0 0 5px; color:#26234d; font-size:14px; overflow-wrap:anywhere; }
-.transaction-info p { margin:3px 0; color:#7a8198; font-size:12px; }
-.transaction-right { text-align:right; flex:0 0 auto; }
-.expense-amount { color:#c2415d; font-size:14px; font-weight:750; white-space:nowrap; }
-.transaction-actions { display:flex; justify-content:flex-end; flex-wrap:wrap; gap:6px; margin-top:8px; }
-.transaction-actions button { border:1px solid #e5e0f7; border-radius:8px; padding:6px 8px; background:#fff; color:#5140a4; cursor:pointer; }
-.empty-transactions { grid-column:1/-1; text-align:center; padding:42px 18px; color:#7a8198; }
-@media(max-width:900px) { main.dashboard { padding:26px 22px 35px 245px; } #transactionList { grid-template-columns:1fr; } }
-@media(max-width:650px) { main.dashboard { padding:22px 14px 90px; } .bottom-navigation { inset:auto 0 0 0; width:100%; height:auto; padding:8px 8px calc(8px + env(safe-area-inset-bottom)); flex-direction:row; justify-content:space-around; gap:3px; border-radius:16px 16px 0 0; } .bottom-navigation::before { display:none; } .nav-item { flex:1; flex-direction:column; justify-content:center; gap:4px; padding:9px 4px; text-align:center; } .nav-item span { width:auto; font-size:17px; } .nav-item p { font-size:10px; } .transaction-summary { gap:10px; } .summary-box { padding:17px 15px; } .summary-box strong { font-size:23px; } .transaction-add-box { padding:17px; align-items:flex-start; flex-direction:column; gap:13px; } .add-transaction-button { width:100%; } .form-row { grid-template-columns:1fr; gap:12px; } main.dashboard > .details-section,.transactions-section { padding:18px 15px; } .transaction-item { padding:13px 11px; gap:9px; } .transaction-right { max-width:42%; } }
-</style>
-
-<style id="cardhub-shared-sidebar">
-/* CardHub shared sidebar layout */
-:root{--ch-sidebar-width:244px;--ch-sidebar-compact:82px;--ch-sidebar-bg:#15194e;--ch-sidebar-bg2:#321783;--ch-accent:#5638f4}
-nav.bottom-navigation{position:fixed!important;inset:0 auto 0 0!important;width:var(--ch-sidebar-width)!important;height:100vh!important;display:flex!important;flex-direction:column!important;justify-content:flex-start!important;align-items:stretch!important;gap:8px!important;padding:112px 14px 24px!important;margin:0!important;overflow-x:hidden!important;overflow-y:auto!important;background:linear-gradient(180deg,#121b4b 0%,#29156d 100%)!important;border:0!important;border-radius:0!important;box-shadow:none!important;z-index:9999!important;box-sizing:border-box!important;transition:width .22s ease,padding .22s ease!important}
-nav.bottom-navigation:before{content:'C  CardHub';position:fixed;top:0;left:0;width:var(--ch-sidebar-width);height:88px;display:flex;align-items:center;padding-left:26px;box-sizing:border-box;color:#fff;font-size:24px;font-weight:800;letter-spacing:-.5px;background:linear-gradient(180deg,#121b4b 0%,#15194e 100%);transition:width .22s ease}
-nav.bottom-navigation .nav-item{width:100%!important;max-width:none!important;min-width:0!important;min-height:54px!important;display:flex!important;flex-direction:row!important;align-items:center!important;justify-content:flex-start!important;gap:14px!important;margin:0!important;padding:13px 16px!important;border:0!important;border-radius:13px!important;background:transparent!important;color:#eef0ff!important;text-decoration:none!important;text-align:left!important;box-sizing:border-box!important;transition:background .15s ease!important}
-nav.bottom-navigation .nav-item:hover{background:rgba(255,255,255,.11)!important}
-nav.bottom-navigation .nav-item.active{background:linear-gradient(100deg,#6247ff,#4930e8)!important;color:#fff!important;box-shadow:0 6px 18px rgba(43,24,157,.22)!important}
-nav.bottom-navigation .nav-item span{display:inline-flex!important;align-items:center!important;justify-content:center!important;flex:0 0 24px!important;width:24px!important;font-size:19px!important;line-height:1.2!important}
-nav.bottom-navigation .nav-item p{display:block!important;margin:0!important;padding:0!important;font-size:14px!important;font-weight:500!important;line-height:1.3!important;white-space:nowrap!important;color:inherit!important}
-#cardhub-sidebar-toggle{position:fixed;z-index:10001;left:198px;top:98px;width:32px;height:32px;border:1px solid rgba(255,255,255,.22);border-radius:9px;background:#3827a4;color:white;font-size:18px;cursor:pointer;box-shadow:0 3px 10px #0002;transition:left .22s ease}
-body{padding-left:var(--ch-sidebar-width)!important;padding-bottom:0!important;box-sizing:border-box!important;transition:padding-left .22s ease!important}
-body.cardhub-sidebar-compact{padding-left:var(--ch-sidebar-compact)!important}
-body.cardhub-sidebar-compact nav.bottom-navigation{width:var(--ch-sidebar-compact)!important;padding:112px 10px 24px!important}
-body.cardhub-sidebar-compact nav.bottom-navigation:before{width:var(--ch-sidebar-compact);content:'C';padding-left:27px;font-size:25px}
-body.cardhub-sidebar-compact nav.bottom-navigation .nav-item{justify-content:center!important;padding:13px 8px!important}
-body.cardhub-sidebar-compact nav.bottom-navigation .nav-item p{display:none!important}
-body.cardhub-sidebar-compact #cardhub-sidebar-toggle{left:56px}
-@media(max-width:700px){:root{--ch-sidebar-width:200px;--ch-sidebar-compact:68px}nav.bottom-navigation{padding-left:9px!important;padding-right:9px!important}nav.bottom-navigation:before{padding-left:18px;font-size:21px}nav.bottom-navigation .nav-item{gap:9px!important;padding-left:11px!important;padding-right:8px!important}#cardhub-sidebar-toggle{left:157px}body.cardhub-sidebar-compact #cardhub-sidebar-toggle{left:42px}body{overflow-x:hidden}}
-</style>
-
-<style id="cardhub-transactions-final-ui">
-:root{--ch-ink:#242044;--ch-muted:#77758f;--ch-purple:#6246ea;--ch-line:#e9e5fa;--ch-card:#fff}
-html,body{min-width:0!important;width:100%;max-width:100%;overflow-x:hidden}
-body{margin:0;background:linear-gradient(135deg,#f7f7ff 0%,#f3f6ff 52%,#f7f2ff 100%)!important;color:var(--ch-ink)}
-main.dashboard{width:100%;max-width:none;min-height:100vh;margin:0;padding:32px 34px 48px 278px;box-sizing:border-box}
-.dashboard-header{max-width:1400px;margin:0 auto 24px;padding:0 0 20px;border-bottom:1px solid var(--ch-line);display:flex;align-items:center;justify-content:space-between;gap:16px}
-.dashboard-header h1{font-size:clamp(27px,3vw,35px);font-weight:800;letter-spacing:-.04em;color:#30216f;margin:4px 0 0}
-.dashboard-header .welcome-text{margin:0;color:#8179ac;font-size:13px}
-.notification-button{width:43px;height:43px;border:1px solid var(--ch-line);border-radius:13px;background:#fff;color:var(--ch-purple);font-size:19px;cursor:pointer}
-.transaction-summary,.transaction-add-box,.transaction-search,main.dashboard>.details-section,.transactions-section{max-width:1400px}
-.transaction-summary{gap:16px;margin-bottom:18px}
-.summary-box,.transaction-add-box,main.dashboard>.details-section,.transactions-section{border:1px solid var(--ch-line);border-radius:18px;box-shadow:0 8px 26px rgba(49,35,116,.06)}
-.summary-box{padding:22px 24px}
-.summary-box:first-child{background:linear-gradient(135deg,#fff,#eee9ff)}
-.summary-box:last-child{background:linear-gradient(135deg,#fff,#e9f5ff)}
-.summary-box span{color:var(--ch-muted);font-size:13px}
-.summary-box strong{color:#35217f;font-size:clamp(24px,2.5vw,31px);font-weight:800}
-.transaction-add-box{padding:21px 24px;margin-bottom:18px}
-.transaction-add-box h2,main.dashboard>.details-section h2{color:#30216f}
-.add-transaction-button{background:linear-gradient(110deg,#5035f5,#8b5cf6);box-shadow:0 6px 16px #5035f526}
-.transaction-search{box-sizing:border-box;width:100%;padding:0 16px;box-shadow:0 5px 16px #5140a408}
-main.dashboard>.details-section,.transactions-section{padding:22px 24px;margin-bottom:18px}
-.form-group input,.form-group select{max-width:100%;min-width:0}
-.form-group input:focus,.form-group select:focus{outline:none;border-color:#8b5cf6;box-shadow:0 0 0 3px #8b5cf61b}
-.transactions-section .section-title{flex-wrap:wrap}
-#transactionList{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
-.transaction-item{box-sizing:border-box;min-width:0;border:1px solid #efecfa;border-radius:14px;background:linear-gradient(135deg,#fff,#fbfaff);box-shadow:0 3px 12px #5140a406}
-.transaction-info h3{color:#26234d;overflow-wrap:anywhere}
-.transaction-info p{overflow-wrap:anywhere}
-.transaction-icon{background:linear-gradient(135deg,#e9e4ff,#e4f5ff);color:#5035c8}
-.expense-amount{color:#c2415d;font-weight:750}
-.transaction-actions button{min-width:32px;min-height:30px}
-.empty-transactions{grid-column:1/-1}
-@media(max-width:1050px){main.dashboard{padding:26px 22px 38px 264px}#transactionList{grid-template-columns:1fr}}
-@media(max-width:700px){
-  main.dashboard{padding:22px 14px 28px 214px}
-  .transaction-summary{grid-template-columns:1fr;gap:10px}
-  .transaction-add-box{align-items:flex-start;flex-direction:column;gap:14px;padding:18px}
-  .add-transaction-button{width:100%}
-  .form-row{grid-template-columns:1fr;gap:12px}
-  main.dashboard>.details-section,.transactions-section{padding:18px 15px}
-  .transaction-item{padding:13px 11px;gap:9px;align-items:flex-start}
-  .transaction-right{max-width:44%;overflow-wrap:anywhere}
-}
-@media(max-width:520px){
-  :root{--ch-sidebar-width:164px;--ch-sidebar-compact:58px}
-  nav.bottom-navigation{width:var(--ch-sidebar-width)!important;padding:100px 8px 18px!important}
-  nav.bottom-navigation:before{width:var(--ch-sidebar-width);height:78px;padding-left:15px;font-size:18px}
-  nav.bottom-navigation .nav-item{gap:8px!important;padding:12px 9px!important;min-height:48px!important}
-  nav.bottom-navigation .nav-item p{font-size:12px!important;white-space:normal!important}
-  #cardhub-sidebar-toggle{left:126px;top:86px}
-  body.cardhub-sidebar-compact nav.bottom-navigation{width:var(--ch-sidebar-compact)!important;padding:100px 6px 18px!important}
-  body.cardhub-sidebar-compact nav.bottom-navigation:before{width:var(--ch-sidebar-compact);padding-left:20px}
-  body.cardhub-sidebar-compact #cardhub-sidebar-toggle{left:37px}
-  main.dashboard{padding:18px 10px 24px 174px}
-  .dashboard-header h1{font-size:25px}
-  .dashboard-header{align-items:flex-start}
-  .summary-box{padding:16px}
-  .transactions-section .section-title{align-items:flex-start}
-}
-</style>
-
-</head>
-
-
-<body>
-
-<main class="dashboard">
-
-
-    <!-- =========================
-         HEADER
-    ========================== -->
-
-    <header class="dashboard-header">
-
-        <div>
-
-            <p class="welcome-text">
-                CardHub
-            </p>
-
-            <h1>
-                Transactions
-            </h1>
-
-        </div>
-
-
-        <button
-            class="notification-button"
-            onclick="window.location.href='dashboard.html'"
-        >
-            ←
-        </button>
-
-    </header>
-
-
-
-    <!-- =========================
-         SUMMARY
-    ========================== -->
-
-    <section class="transaction-summary">
-
-        <div class="summary-box">
-
-            <span>
-                Total Expenses
-            </span>
-
-            <strong id="totalSpent">
-                ₹0
-            </strong>
-
-        </div>
-
-
-        <div class="summary-box">
-
-            <span>
-                Transactions
-            </span>
-
-            <strong id="transactionCount">
-                0
-            </strong>
-
-        </div>
-
-    </section>
-
-
-
-    <!-- =========================
-         ADD TRANSACTION
-    ========================== -->
-
-    <section class="transaction-add-box">
-
-        <div>
-
-            <h2>
-                Add Transaction
-            </h2>
-
-            <p>
-                Record your card expenses.
-            </p>
-
-        </div>
-
-
-        <button
-            class="add-transaction-button"
-            onclick="window.location.href='add-transaction.html'"
-        >
-            + Add Transaction
-        </button>
-
-    </section>
-
-
-
-    <!-- =========================
-         SEARCH
-    ========================== -->
-
-    <div class="transaction-search">
-
-        <span>
-            🔎
-        </span>
-
-        <input
-            type="text"
-            id="transactionSearch"
-            placeholder="Search merchant..."
-        >
-
-    </div>
-
-
-
-    <!-- =========================
-         FILTERS
-    ========================== -->
-
-    <section class="details-section">
-
-        <h2>
-            Filters
-        </h2>
-
-
-        <div class="form-row">
-
-
-            <!-- CATEGORY -->
-
-            <div class="form-group">
-
-                <label for="categoryFilter">
-                    Category
-                </label>
-
-                <select id="categoryFilter">
-
-                    <option value="">
-                        All Categories
-                    </option>
-
-                    <option value="Food">
-                        Food
-                    </option>
-
-                    <option value="Shopping">
-                        Shopping
-                    </option>
-
-                    <option value="Travel">
-                        Travel
-                    </option>
-
-                    <option value="Bills">
-                        Bills
-                    </option>
-
-                    <option value="Entertainment">
-                        Entertainment
-                    </option>
-
-                    <option value="Education">
-                        Education
-                    </option>
-
-                    <option value="Fuel">
-                        Fuel
-                    </option>
-
-                    <option value="Healthcare">
-                        Healthcare
-                    </option>
-
-                    <option value="Other">
-                        Other
-                    </option>
-
-                </select>
-
-            </div>
-
-
-
-            <!-- CARD -->
-
-            <div class="form-group">
-
-                <label for="cardFilter">
-                    Card Used
-                </label>
-
-                <select id="cardFilter">
-
-                    <option value="">
-                        All Cards
-                    </option>
-
-                </select>
-
-            </div>
-
-
-        </div>
-
-
-
-        <!-- DATE -->
-
-        <div class="form-row">
-
-
-            <div class="form-group">
-
-                <label for="fromDate">
-                    From Date
-                </label>
-
-                <input
-                    type="date"
-                    id="fromDate"
-                >
-
-            </div>
-
-
-
-            <div class="form-group">
-
-                <label for="toDate">
-                    To Date
-                </label>
-
-                <input
-                    type="date"
-                    id="toDate"
-                >
-
-            </div>
-
-
-        </div>
-
-
-
-        <button
-            type="button"
-            class="cancel-button"
-            id="clearFilters"
-        >
-            Clear Filters
-        </button>
-
-    </section>
-
-
-
-    <!-- =========================
-         TRANSACTION HISTORY
-    ========================== -->
-
-    <section class="transactions-section">
-
-        <div class="section-title">
-
-            <h2>
-                Transaction History
-            </h2>
-
-            <span id="resultCount">
-                0 results
-            </span>
-
-        </div>
-
-
-        <div id="transactionList">
-
-            <p>
-                Loading transactions...
-            </p>
-
-        </div>
-
-    </section>
-
-
-
-    <!-- =========================
-         BOTTOM NAVIGATION
-    ========================== -->
-
-    <nav class="bottom-navigation">
-
-
-        <a
-            href="dashboard.html"
-            class="nav-item"
-        >
-
-            <span>
-                ⌂
-            </span>
-
-            <p>
-                Home
-            </p>
-
-        </a>
-
-
-
-        <a
-            href="cards.html"
-            class="nav-item"
-        >
-
-            <span>
-                💳
-            </span>
-
-            <p>
-                Cards
-            </p>
-
-        </a>
-
-
-
-        <a
-            href="explore.html"
-            class="nav-item"
-        >
-
-            <span>
-                🔎
-            </span>
-
-            <p>
-                Explore
-            </p>
-
-        </a>
-
-
-
-        <a
-            href="transactions.html"
-            class="nav-item active"
-        >
-
-            <span>
-                ↕
-            </span>
-
-            <p>
-                Transactions
-            </p>
-
-        </a>
-
-
-
-        <a
-            href="profile.html"
-            class="nav-item"
-        >
-
-            <span>
-                👤
-            </span>
-
-            <p>
-                Profile
-            </p>
-
-        </a>
-
-
-    </nav>
-
-
-</main>
-
-
-
-<!-- =========================
-     SUPABASE
-========================== -->
-
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Transactions | CardHub</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--sidebar:244px;--ink:#17172b;--muted:#727487;--purple:#5b3db8;--purple-dark:#17133f;--line:#e1e1ed;--bg:#f0f1ff;--white:#fff;--green:#16845b;--red:#d44d63}
+*{box-sizing:border-box}body{margin:0;background:linear-gradient(120deg,#f4f4ff,#eceeff);font-family:Inter,Arial,sans-serif;color:var(--ink)}button,input,select{font:inherit}button{cursor:pointer}
+.sidebar{position:fixed;inset:0 auto 0 0;width:var(--sidebar);background:linear-gradient(165deg,#10102f,#171344 58%,#100f2d);color:#f7f6ff;padding:22px 12px 14px;display:flex;flex-direction:column;z-index:10;overflow-y:auto}.brand{display:flex;align-items:center;gap:10px;padding:0 13px 25px;font-size:22px;font-weight:800;white-space:nowrap}.brand-icon{font-size:28px}.nav{display:flex;flex-direction:column;gap:4px}.nav a,.side-bottom a{height:40px;border-radius:9px;display:flex;align-items:center;gap:12px;padding:0 15px;color:#e5e3f5;text-decoration:none;white-space:nowrap;transition:.15s}.nav a:hover,.side-bottom a:hover{background:#ffffff13}.nav a.active{background:linear-gradient(100deg,#352768,#2b2059)}.icon{width:19px;flex:0 0 19px;text-align:center;font-size:18px;color:#c9c4e5}.nav-sep{height:1px;background:#ffffff26;margin:9px 15px}.side-bottom{margin-top:auto;border-top:1px solid #ffffff13;padding-top:13px;display:flex;flex-direction:column;gap:5px}.user-pill{display:flex;align-items:center;gap:9px;background:#2b2357;border-radius:10px;padding:7px 10px;white-space:nowrap;overflow:hidden}.avatar-small{width:27px;height:27px;border-radius:50%;background:#6b4bc4;display:grid;place-items:center;color:#fff;font-weight:700;flex-shrink:0}
+.main{margin-left:var(--sidebar);padding:29px 32px 40px;max-width:1800px}.page-head{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:24px}.page-title{font-size:28px;font-weight:800;letter-spacing:-.8px;margin:0 0 7px}.subtitle{color:#696b7e;margin:0;font-size:14px}.head-actions{display:flex;gap:10px;align-items:center}.btn{border:0;border-radius:10px;padding:11px 16px;background:linear-gradient(135deg,#704bd0,#5336ae);color:#fff;font-weight:600;box-shadow:0 3px 7px #2b1a6422}.btn:hover{filter:brightness(1.06)}.btn:disabled{opacity:.6;cursor:wait}.btn-light{background:#fff;color:#453b75;border:1px solid var(--line);box-shadow:none}.menu-btn{display:none;border:1px solid var(--line);background:#fff;border-radius:9px;padding:9px 11px}
+.summary{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:15px;margin-bottom:19px}.stat{background:#fff;border:1px solid var(--line);border-radius:14px;padding:18px 20px;box-shadow:0 3px 12px #21194d06}.stat-top{display:flex;align-items:center;justify-content:space-between;color:var(--muted);font-size:13px;font-weight:500}.stat-icon{height:36px;width:36px;border-radius:11px;background:#eee9ff;color:#6042bd;display:grid;place-items:center;font-size:18px}.stat-value{font-size:25px;font-weight:800;margin-top:13px;letter-spacing:-.5px}.stat-foot{color:var(--muted);font-size:12px;margin-top:5px}
+.panel{background:rgba(255,255,255,.96);border:1px solid var(--line);border-radius:14px;box-shadow:0 3px 14px #21194d07;overflow:hidden}.panel-header{padding:20px 21px 15px;display:flex;align-items:center;justify-content:space-between;gap:14px}.panel-header h2{font-size:18px;margin:0;font-weight:750}.result-count{font-size:12px;color:var(--muted)}
+.filters{display:grid;grid-template-columns:minmax(190px,1.6fr) repeat(4,minmax(130px,1fr)) auto;gap:10px;padding:0 21px 18px}.control{width:100%;height:41px;border:1px solid #dedeea;border-radius:9px;background:#fff;padding:0 12px;color:#39394d;outline:none;min-width:0}.control:focus{border-color:#8168d0;box-shadow:0 0 0 3px #8168d018}.search-wrap{position:relative}.search-wrap span{position:absolute;left:12px;top:11px;color:#88899a}.search-wrap input{padding-left:35px}.clear-btn{border:1px solid #dedeea;border-radius:9px;background:#f7f6ff;color:#55448d;padding:0 13px;height:41px;font-weight:600;white-space:nowrap}
+.list{padding:0 21px 12px}.transaction{display:grid;grid-template-columns:44px minmax(0,1fr) auto;gap:13px;align-items:center;padding:15px 0;border-top:1px solid #eeeef5}.transaction-icon{height:42px;width:42px;border-radius:12px;background:#f0ebff;color:#6142bd;display:grid;place-items:center;font-size:21px;font-weight:700}.transaction-icon.income{background:#e6f7ef;color:var(--green)}.transaction-info{min-width:0}.transaction-info h3{margin:0 0 5px;font-size:14px;font-weight:700;overflow-wrap:anywhere}.transaction-info p{margin:3px 0;color:var(--muted);font-size:12px;line-height:1.4}.transaction-right{display:flex;align-items:center;gap:16px}.amount{font-weight:800;font-size:14px;white-space:nowrap}.amount.expense{color:var(--red)}.amount.income{color:var(--green)}.transaction-actions{display:flex;gap:6px}.icon-btn{width:32px;height:32px;border:1px solid #e5e3ef;background:#fff;border-radius:8px;color:#5c5578}.icon-btn:hover{background:#f2efff;color:var(--purple)}.empty{padding:48px 20px;text-align:center;color:var(--muted)}.empty-icon{font-size:32px;margin-bottom:9px}.empty h3{color:var(--ink);margin:0 0 7px}.empty p{margin:0;font-size:13px}.message{padding:12px 20px;color:#8c4250;font-size:13px;display:none}.message.show{display:block}.loading{padding:38px;text-align:center;color:var(--muted)}.toast{position:fixed;right:20px;bottom:20px;background:#21184f;color:white;padding:12px 17px;border-radius:10px;box-shadow:0 8px 30px #0002;z-index:30;display:none}.toast.show{display:block}.mobile-overlay{display:none}
+@media(max-width:1250px){.filters{grid-template-columns:repeat(3,minmax(0,1fr))}.search-wrap{grid-column:span 2}.summary{gap:10px}.main{padding:25px 22px}.stat{padding:16px}}
+@media(max-width:760px){.sidebar{transform:translateX(-100%);transition:transform .2s;width:244px}.sidebar.open{transform:translateX(0)}.mobile-overlay.show{display:block;position:fixed;inset:0;background:#0a092b77;z-index:9}.main{margin-left:0;padding:18px 14px 30px}.menu-btn{display:block}.page-head{align-items:flex-start}.page-title{font-size:23px}.subtitle{font-size:13px;line-height:1.4}.head-actions .btn{padding:10px 11px;font-size:12px}.summary{grid-template-columns:1fr;gap:10px}.stat{padding:14px 16px}.stat-value{font-size:22px;margin-top:8px}.filters{grid-template-columns:1fr 1fr;padding:0 14px 15px}.search-wrap{grid-column:1/-1}.panel-header{padding:17px 14px 13px}.list{padding:0 14px 10px}.transaction{grid-template-columns:38px minmax(0,1fr);gap:10px}.transaction-icon{width:38px;height:38px}.transaction-right{grid-column:2;justify-content:space-between;width:100%;padding-top:2px}.transaction-info h3{font-size:13px}.amount{font-size:13px}.panel-header h2{font-size:16px}}
+@media(max-width:390px){.filters{grid-template-columns:1fr}.search-wrap{grid-column:auto}.head-actions .btn{font-size:11px;padding:9px}.transaction-actions{gap:4px}}
+</style>
+</head>
+<body>
+<aside class="sidebar" id="sidebar">
+  <div class="brand"><span class="brand-icon">💳</span><span>CardHub</span></div>
+  <nav class="nav" aria-label="Main navigation">
+    <a href="dashboard.html"><span class="icon">▦</span><span>Dashboard</span></a>
+    <a href="cards.html"><span class="icon">▱</span><span>Cards</span></a>
+    <a class="active" href="transactions.html"><span class="icon">⇄</span><span>Transactions</span></a>
+    <a href="analytics.html"><span class="icon">▥</span><span>Analytics</span></a>
+    <a href="budgets.html"><span class="icon">♧</span><span>Budgets</span></a>
+    <a href="goals.html"><span class="icon">◎</span><span>Goals</span></a>
+    <a href="explore.html"><span class="icon">⊙</span><span>Explore</span></a>
+    <a href="reports.html"><span class="icon">▤</span><span>Reports</span></a>
+    <div class="nav-sep"></div>
+    <a href="other-options.html"><span class="icon">☷</span><span>Other options</span></a>
+    <a href="cardhudge.html"><span class="icon">⚙</span><span>CardHudge</span></a>
+    <a href="profile.html"><span class="icon">♙</span><span>Profile</span></a>
+  </nav>
+  <div class="side-bottom">
+    <a href="about.html"><span class="icon">ⓘ</span><span>About CardHub</span></a>
+    <div class="user-pill"><div class="avatar-small" id="sideAvatar">U</div><span id="sideName">Your Account</span></div>
+  </div>
+</aside>
+<div class="mobile-overlay" id="mobileOverlay"></div>
+<main class="main">
+  <header class="page-head">
+    <div style="display:flex;gap:12px;align-items:flex-start"><button class="menu-btn" id="menuBtn" aria-label="Open navigation">☰</button><div><h1 class="page-title">Transactions</h1><p class="subtitle">Track, search, and manage your card activity.</p></div></div>
+    <div class="head-actions"><button class="btn btn-light" id="refreshBtn" type="button">↻ Refresh</button><button class="btn" id="addBtn" type="button">＋ Add Transaction</button></div>
+  </header>
+  <section class="summary">
+    <article class="stat"><div class="stat-top"><span>Total Expenses</span><span class="stat-icon">↘</span></div><div class="stat-value" id="totalSpent">₹0.00</div><div class="stat-foot">Expenses in the loaded transactions</div></article>
+    <article class="stat"><div class="stat-top"><span>Total Income</span><span class="stat-icon">↗</span></div><div class="stat-value" id="totalIncome">₹0.00</div><div class="stat-foot">Income in the loaded transactions</div></article>
+    <article class="stat"><div class="stat-top"><span>Transactions</span><span class="stat-icon">⇄</span></div><div class="stat-value" id="totalCount">0</div><div class="stat-foot">Matching your current filters</div></article>
+  </section>
+  <section class="panel">
+    <div class="panel-header"><h2>All Transactions</h2><span class="result-count" id="resultCount">Loading…</span></div>
+    <div class="filters">
+      <div class="search-wrap"><span>⌕</span><input class="control" id="searchInput" placeholder="Search merchant or description…" type="search"></div>
+      <select class="control" id="typeFilter" aria-label="Filter by transaction type"><option value="">All types</option><option value="expense">Expenses</option><option value="income">Income</option></select>
+      <select class="control" id="categoryFilter" aria-label="Filter by category"><option value="">All categories</option></select>
+      <select class="control" id="cardFilter" aria-label="Filter by card"><option value="">All cards</option></select>
+      <input class="control" id="fromDate" type="date" aria-label="From date">
+      <input class="control" id="toDate" type="date" aria-label="To date">
+      <button class="clear-btn" id="clearFilters" type="button">Clear filters</button>
+    </div>
+    <div class="message" id="pageMessage" role="alert"></div>
+    <div class="list" id="transactionList"><div class="loading">Loading your transactions…</div></div>
+  </section>
+</main>
+<div class="toast" id="toast" role="status"></div>
 <script>
-
-
-/* =========================================
-   SUPABASE
-========================================= */
-
-const SUPABASE_URL =
-    "https://wrsqhsuktqldnyjrbuma.supabase.co";
-
-
-const SUPABASE_PUBLISHABLE_KEY =
-    "sb_publishable_1-wC9ij9iOkR0txvg6j5bA_i1XLPSj7";
-
-
-const supabaseClient =
-    window.supabase.createClient(
-        SUPABASE_URL,
-        SUPABASE_PUBLISHABLE_KEY
-    );
-
-
-
-/* =========================================
-   ELEMENTS
-========================================= */
-
-const transactionList =
-    document.getElementById(
-        "transactionList"
-    );
-
-
-const totalSpent =
-    document.getElementById(
-        "totalSpent"
-    );
-
-
-const transactionCount =
-    document.getElementById(
-        "transactionCount"
-    );
-
-
-const resultCount =
-    document.getElementById(
-        "resultCount"
-    );
-
-
-const searchInput =
-    document.getElementById(
-        "transactionSearch"
-    );
-
-
-const categoryFilter =
-    document.getElementById(
-        "categoryFilter"
-    );
-
-
-const cardFilter =
-    document.getElementById(
-        "cardFilter"
-    );
-
-
-const fromDate =
-    document.getElementById(
-        "fromDate"
-    );
-
-
-const toDate =
-    document.getElementById(
-        "toDate"
-    );
-
-
-const clearFilters =
-    document.getElementById(
-        "clearFilters"
-    );
-
-
-
-let transactions = [];
-
-let cardsMap = {};
-
-
-
-/* =========================================
-   LOAD DATA
-========================================= */
-
-async function loadTransactions() {
-
-
-    const {
-        data,
-        error
-    } =
-        await supabaseClient.auth.getUser();
-
-
-    if (
-        error ||
-        !data ||
-        !data.user
-    ) {
-
-        window.location.href =
-            "index.html";
-
-        return;
-
-    }
-
-
-
-    transactionList.innerHTML =
-        "<p>Loading transactions...</p>";
-
-
-
-    /* =========================
-       LOAD CARDS
-    ========================== */
-
-    const {
-        data: cards,
-        error: cardsError
-    } =
-        await supabaseClient
-
-            .from("cards")
-
-            .select(
-                "id, name, issuer"
-            )
-
-            .eq(
-                "user_id",
-                data.user.id
-            );
-
-
-
-    if (cardsError) {
-
-        console.error(
-            cardsError
-        );
-
-        cardsMap = {};
-
-    }
-    else {
-
-        cardsMap = {};
-
-
-        (cards || [])
-            .forEach(
-                function(card) {
-
-                    cardsMap[
-                        String(card.id)
-                    ] = card;
-
-                }
-            );
-
-
-        populateCardFilter(
-            cards || []
-        );
-
-    }
-
-
-
-    /* =========================
-       LOAD TRANSACTIONS
-       Only load transactions linked to this user's cards.
-    ========================== */
-
-    const ownedCardIds = (cards || []).map(card => card.id);
-
-    if (cardsError || ownedCardIds.length === 0) {
-        transactions = [];
-        applyFilters();
-        return;
-    }
-
-    const {
-        data: transactionData,
-        error: transactionError
-    } =
-        await supabaseClient
-            .from("transactions")
-            .select("*")
-            .in("card_id", ownedCardIds)
-            .eq("type", "expense")
-            .order("transaction_date", { ascending: false });
-
-
-
-    if (transactionError) {
-
-        console.error(
-            transactionError
-        );
-
-
-        transactionList.innerHTML = `
-
-            <div class="empty-transactions">
-
-                <h3>
-                    Could not load transactions
-                </h3>
-
-                <p>
-                    ${escapeHtml(
-                        transactionError.message
-                    )}
-                </p>
-
-            </div>
-
-        `;
-
-        return;
-
-    }
-
-
-
-    transactions =
-        transactionData || [];
-
-
-    applyFilters();
-
+const SUPABASE_URL='https://wrsqhsuktqldnyjrbuma.supabase.co';
+const SUPABASE_ANON_KEY='sb_publishable_1-wC9ij9iOkR0txvg6j5bA_i1XLPSj7';
+const supabaseClient=window.supabase?.createClient(SUPABASE_URL,SUPABASE_ANON_KEY);
+const $=id=>document.getElementById(id);
+let currentUser=null, transactions=[], cardsMap={};
+function escapeHtml(v){return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]))}
+function money(v){return '₹'+Number(v||0).toLocaleString('en-IN',{minimumFractionDigits:2,maximumFractionDigits:2})}
+function showToast(s){$('toast').textContent=s;$('toast').classList.add('show');clearTimeout(showToast.timer);showToast.timer=setTimeout(()=>$('toast').classList.remove('show'),3000)}
+function showMessage(s){$('pageMessage').textContent=s;$('pageMessage').classList.add('show')}
+function hideMessage(){$('pageMessage').textContent='';$('pageMessage').classList.remove('show')}
+function dateValue(t){return t.transaction_date||t.date||t.created_at?.slice(0,10)||''}
+function displayDate(t){const d=dateValue(t);if(!d)return 'Date not set';const parsed=new Date(d+'T00:00:00');return isNaN(parsed)?escapeHtml(d):parsed.toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'})}
+function txnName(t){return t.description||t.merchant||t.title||t.name||'Transaction'}
+function txnCategory(t){return t.category||'Other'}
+function txnCardName(t){return cardsMap[String(t.card_id)]?.name||t.card_name||t.cardName||'Card not linked'}
+function txnType(t){return String(t.type||'expense').toLowerCase()==='income'?'income':'expense'}
+function fillSelects(){
+ const cats=[...new Set(transactions.map(txnCategory).filter(Boolean))].sort();
+ const oldCat=$('categoryFilter').value,oldCard=$('cardFilter').value;
+ $('categoryFilter').innerHTML='<option value="">All categories</option>'+cats.map(c=>`<option value="${escapeHtml(c)}">${escapeHtml(c)}</option>`).join('');
+ const cardIds=[...new Set(transactions.map(t=>String(t.card_id??'' )).filter(Boolean))];
+ $('cardFilter').innerHTML='<option value="">All cards</option>'+cardIds.map(id=>`<option value="${escapeHtml(id)}">${escapeHtml(cardsMap[id]?.name||'Card')}</option>`).join('');
+ if(cats.includes(oldCat))$('categoryFilter').value=oldCat;if(cardIds.includes(oldCard))$('cardFilter').value=oldCard;
 }
-
-
-
-/* =========================================
-   CARD FILTER
-========================================= */
-
-function populateCardFilter(
-    cards
-) {
-
-
-    cardFilter.innerHTML = `
-
-        <option value="">
-            All Cards
-        </option>
-
-    `;
-
-
-    cards.forEach(
-        function(card) {
-
-
-            const option =
-                document.createElement(
-                    "option"
-                );
-
-
-            option.value =
-                card.id;
-
-
-            option.textContent =
-                card.name;
-
-
-            cardFilter.appendChild(
-                option
-            );
-
-        }
-    );
-
-
-
-    /* SUPPORT card_id FROM URL */
-
-    const params =
-        new URLSearchParams(
-            window.location.search
-        );
-
-
-    const urlCardId =
-        params.get(
-            "card_id"
-        );
-
-
-    if (urlCardId) {
-
-        cardFilter.value =
-            urlCardId;
-
-    }
-
+function applyFilters(){
+ const q=$('searchInput').value.trim().toLowerCase(),type=$('typeFilter').value,cat=$('categoryFilter').value,card=$('cardFilter').value,from=$('fromDate').value,to=$('toDate').value;
+ const list=transactions.filter(t=>{
+  const text=[txnName(t),txnCategory(t),txnCardName(t)].join(' ').toLowerCase(),d=dateValue(t);
+  return (!q||text.includes(q))&&(!type||txnType(t)===type)&&(!cat||txnCategory(t)===cat)&&(!card||String(t.card_id??'')===card)&&(!from||!d||d>=from)&&(!to||!d||d<=to);
+ });
+ renderTransactions(list);
 }
-
-
-
-/* =========================================
-   APPLY FILTERS
-========================================= */
-
-function applyFilters() {
-
-
-    const search =
-        searchInput.value
-            .toLowerCase()
-            .trim();
-
-
-    const category =
-        categoryFilter.value
-            .toLowerCase();
-
-
-    const selectedCard =
-        cardFilter.value;
-
-
-    const start =
-        fromDate.value;
-
-
-    const end =
-        toDate.value;
-
-
-
-    const filtered =
-        transactions.filter(
-            function(transaction) {
-
-
-                /* SEARCH */
-
-                const merchant =
-                    String(
-                        transaction.merchant ||
-                        ""
-                    )
-                    .toLowerCase();
-
-
-                if (
-                    search &&
-                    !merchant.includes(
-                        search
-                    )
-                ) {
-
-                    return false;
-
-                }
-
-
-
-                /* CATEGORY */
-
-                const transactionCategory =
-                    String(
-                        transaction.category ||
-                        ""
-                    )
-                    .toLowerCase();
-
-
-                if (
-                    category &&
-                    transactionCategory !==
-                    category
-                ) {
-
-                    return false;
-
-                }
-
-
-
-                /* CARD */
-
-                if (
-                    selectedCard &&
-                    String(
-                        transaction.card_id
-                    ) !==
-                    String(
-                        selectedCard
-                    )
-                ) {
-
-                    return false;
-
-                }
-
-
-
-                /* FROM DATE */
-
-                if (
-                    start &&
-                    transaction.transaction_date <
-                    start
-                ) {
-
-                    return false;
-
-                }
-
-
-
-                /* TO DATE */
-
-                if (
-                    end &&
-                    transaction.transaction_date >
-                    end
-                ) {
-
-                    return false;
-
-                }
-
-
-
-                return true;
-
-            }
-        );
-
-
-
-    displayTransactions(
-        filtered
-    );
-
+function renderTransactions(list){
+ const expenses=list.filter(t=>txnType(t)==='expense').reduce((s,t)=>s+Number(t.amount||0),0);
+ const income=list.filter(t=>txnType(t)==='income').reduce((s,t)=>s+Number(t.amount||0),0);
+ $('totalSpent').textContent=money(expenses);$('totalIncome').textContent=money(income);$('totalCount').textContent=list.length;$('resultCount').textContent=`${list.length} ${list.length===1?'result':'results'}`;
+ const container=$('transactionList');
+ if(!list.length){container.innerHTML=`<div class="empty"><div class="empty-icon">🧾</div><h3>No transactions found</h3><p>Try changing your search or filters, or add a transaction.</p></div>`;return}
+ container.innerHTML='';
+ [...list].sort((a,b)=>String(dateValue(b)).localeCompare(String(dateValue(a)))).forEach(t=>{
+  const type=txnType(t),amount=Number(t.amount||0),row=document.createElement('article');row.className='transaction';
+  row.innerHTML=`<div class="transaction-icon ${type==='income'?'income':''}">${type==='income'?'↗':'↘'}</div>
+  <div class="transaction-info"><h3>${escapeHtml(txnName(t))}</h3><p>${escapeHtml(displayDate(t))} · ${escapeHtml(txnCategory(t))}</p><p>${escapeHtml(txnCardName(t))}</p></div>
+  <div class="transaction-right"><strong class="amount ${type}">${type==='income'?'+':'−'}${money(amount)}</strong><div class="transaction-actions"><button class="icon-btn" type="button" title="Edit transaction" aria-label="Edit transaction">✎</button><button class="icon-btn" type="button" title="Delete transaction" aria-label="Delete transaction">×</button></div></div>`;
+  const [editBtn,deleteBtn]=row.querySelectorAll('button');editBtn.addEventListener('click',()=>editTransaction(t.id));deleteBtn.addEventListener('click',()=>deleteTransaction(t.id));container.appendChild(row);
+ });
 }
-
-
-
-/* =========================================
-   DISPLAY TRANSACTIONS
-========================================= */
-
-function displayTransactions(
-    list
-) {
-
-
-    transactionList.innerHTML =
-        "";
-
-
-
-    let spent = 0;
-
-
-
-    list.forEach(
-        function(transaction) {
-
-
-            const amount =
-                Number(
-                    transaction.amount ||
-                    0
-                );
-
-
-            spent += amount;
-
-
-
-            const item =
-                document.createElement(
-                    "div"
-                );
-
-
-            item.className =
-                "transaction-item";
-
-
-
-            const date =
-                transaction.transaction_date
-
-                    ? new Date(
-                        transaction.transaction_date +
-                        "T00:00:00"
-                    ).toLocaleDateString(
-                        "en-IN"
-                    )
-
-                    : "—";
-
-
-
-            const card =
-                cardsMap[
-                    String(
-                        transaction.card_id
-                    )
-                ];
-
-
-
-            const cardName =
-                card
-                    ? card.name
-                    : "Card not linked";
-
-
-
-            const category =
-                transaction.category ||
-                "Other";
-
-
-
-            item.innerHTML = `
-
-                <div class="transaction-icon">
-                    ↘
-                </div>
-
-
-                <div class="transaction-info">
-
-                    <h3>
-                        ${escapeHtml(
-                            transaction.merchant ||
-                            "Transaction"
-                        )}
-                    </h3>
-
-
-                    <p>
-                        ${date}
-                    </p>
-
-
-                    <p>
-                        ${escapeHtml(
-                            cardName
-                        )}
-                    </p>
-
-
-                    <p>
-                        ${escapeHtml(
-                            category
-                        )}
-                    </p>
-
-                </div>
-
-
-                <div class="transaction-right">
-
-                    <strong class="expense-amount">
-
-                        -₹${amount.toLocaleString(
-                            "en-IN",
-                            {
-                                minimumFractionDigits: 2,
-                                maximumFractionDigits: 2
-                            }
-                        )}
-
-                    </strong>
-
-
-                    <div class="transaction-actions">
-
-                        <button
-                            type="button"
-                            onclick="editTransaction('${String(transaction.id)}')"
-                            title="Edit transaction"
-                        >
-                            ✏️
-                        </button>
-
-
-                        <button
-                            type="button"
-                            onclick="deleteTransaction('${String(transaction.id)}')"
-                            title="Delete transaction"
-                        >
-                            🗑️
-                        </button>
-
-                    </div>
-
-                </div>
-
-            `;
-
-
-
-            transactionList.appendChild(
-                item
-            );
-
-        }
-    );
-
-
-
-    /* SUMMARY */
-
-    totalSpent.textContent =
-        "₹" +
-        spent.toLocaleString(
-            "en-IN",
-            {
-                minimumFractionDigits: 2,
-                maximumFractionDigits: 2
-            }
-        );
-
-
-    transactionCount.textContent =
-        transactions.length;
-
-
-    resultCount.textContent =
-        list.length +
-        (
-            list.length === 1
-                ? " result"
-                : " results"
-        );
-
-
-
-    /* EMPTY */
-
-    if (
-        list.length === 0
-    ) {
-
-        transactionList.innerHTML = `
-
-            <div class="empty-transactions">
-
-                <h3>
-                    No transactions found
-                </h3>
-
-                <p>
-                    Try changing your search or filters.
-                </p>
-
-            </div>
-
-        `;
-
-    }
-
+async function loadTransactions(){
+ hideMessage();$('transactionList').innerHTML='<div class="loading">Loading your transactions…</div>';$('refreshBtn').disabled=true;
+ try{
+  if(!supabaseClient)throw new Error('Supabase did not load. Check your internet connection.');
+  const {data:{user},error:authError}=await supabaseClient.auth.getUser();
+  if(authError)throw authError;
+  if(!user){$('transactionList').innerHTML='<div class="empty"><div class="empty-icon">🔐</div><h3>Please sign in</h3><p>Sign in to view your CardHub transactions.</p></div>';$('resultCount').textContent='Not signed in';$('totalSpent').textContent=money(0);$('totalIncome').textContent=money(0);$('totalCount').textContent='0';return}
+  currentUser=user;$('sideName').textContent=user.user_metadata?.full_name||user.email||'Your Account';$('sideAvatar').textContent=($('sideName').textContent[0]||'U').toUpperCase();
+  // Get this user's cards first so the transaction view only includes transactions linked to their cards.
+  const {data:cards,error:cardError}=await supabaseClient.from('cards').select('id,name').eq('user_id',user.id);
+  if(cardError)console.warn('Cards lookup:',cardError.message);
+  cardsMap={};(cards||[]).forEach(c=>cardsMap[String(c.id)]=c);
+  let query=supabaseClient.from('transactions').select('*').order('transaction_date',{ascending:false});
+  const {data:rows,error}=await query;
+  if(error)throw error;
+  const all=rows||[];
+  // When cards are linked, scope by card IDs. If the project stores owner IDs directly on transactions,
+  // scope by that owner field as well. RLS should also be enabled in Supabase.
+  transactions=all.filter(t=>{
+   if(t.user_id&&t.user_id!==user.id)return false;
+   if(t.card_id!=null&&Object.keys(cardsMap).length)return Boolean(cardsMap[String(t.card_id)]);
+   return true;
+  });
+  fillSelects();applyFilters();
+ }catch(err){console.error(err);showMessage('Unable to load transactions: '+(err.message||'Unknown error'));$('transactionList').innerHTML='<div class="empty"><div class="empty-icon">⚠️</div><h3>Transactions could not be loaded</h3><p>Check your Supabase table, column names, and Row Level Security policies.</p></div>';$('resultCount').textContent='Load failed'}
+ finally{$('refreshBtn').disabled=false}
 }
-
-
-
-/* =========================================
-   SEARCH
-========================================= */
-
-searchInput.addEventListener(
-    "input",
-    applyFilters
-);
-
-
-
-/* =========================================
-   CATEGORY FILTER
-========================================= */
-
-categoryFilter.addEventListener(
-    "change",
-    applyFilters
-);
-
-
-
-/* =========================================
-   CARD FILTER
-========================================= */
-
-cardFilter.addEventListener(
-    "change",
-    applyFilters
-);
-
-
-
-/* =========================================
-   DATE FILTERS
-========================================= */
-
-fromDate.addEventListener(
-    "change",
-    applyFilters
-);
-
-
-toDate.addEventListener(
-    "change",
-    applyFilters
-);
-
-
-
-/* =========================================
-   CLEAR FILTERS
-========================================= */
-
-clearFilters.addEventListener(
-    "click",
-    function() {
-
-
-        searchInput.value =
-            "";
-
-
-        categoryFilter.value =
-            "";
-
-
-        cardFilter.value =
-            "";
-
-
-        fromDate.value =
-            "";
-
-
-        toDate.value =
-            "";
-
-
-        applyFilters();
-
-    }
-);
-
-
-
-/* =========================================
-   EDIT
-========================================= */
-
-function editTransaction(
-    id
-) {
-
-
-    window.location.href =
-        "edit-transaction.html?id=" +
-        encodeURIComponent(
-            id
-        );
-
+function editTransaction(id){window.location.href='edit-transaction.html?id='+encodeURIComponent(id)}
+async function deleteTransaction(id){
+ if(!currentUser){showToast('Please sign in first.');return}
+ if(!confirm('Delete this transaction? This action cannot be undone.'))return;
+ try{
+  const t=transactions.find(x=>String(x.id)===String(id));if(!t)return;
+  // Restrict deletion to a transaction associated with the signed-in user, or rely on RLS for direct user-owned rows.
+  if(t.user_id&&t.user_id!==currentUser.id){showToast('You cannot delete this transaction.');return}
+  let q=supabaseClient.from('transactions').delete().eq('id',id);
+  if(t.user_id)q=q.eq('user_id',currentUser.id);
+  const {error}=await q;
+  if(error)throw error;
+  transactions=transactions.filter(x=>String(x.id)!==String(id));fillSelects();applyFilters();showToast('Transaction deleted.');
+ }catch(err){console.error(err);showToast('Delete failed: '+(err.message||'Unknown error'))}
 }
-
-
-
-/* =========================================
-   DELETE
-========================================= */
-
-async function deleteTransaction(
-    id
-) {
-
-
-    const confirmed =
-        confirm(
-            "Are you sure you want to delete this transaction?"
-        );
-
-
-    if (!confirmed) {
-
-        return;
-
-    }
-
-
-
-    const { data: authData, error: authError } = await supabaseClient.auth.getUser();
-    if (authError || !authData?.user) {
-        window.location.href = "index.html";
-        return;
-    }
-
-    const { data: ownedCards, error: ownedCardsError } = await supabaseClient
-        .from("cards")
-        .select("id")
-        .eq("user_id", authData.user.id);
-
-    if (ownedCardsError || !ownedCards?.length) {
-        alert("Could not verify which card this transaction belongs to.");
-        return;
-    }
-
-    const ownedCardIds = ownedCards.map(card => card.id);
-    const { error } = await supabaseClient
-        .from("transactions")
-        .delete()
-        .eq("id", id)
-        .in("card_id", ownedCardIds);
-
-
-
-    if (error) {
-
-        console.error(
-            error
-        );
-
-
-        alert(
-            "Could not delete transaction.\n\n" +
-            error.message
-        );
-
-
-        return;
-
-    }
-
-
-
-    alert(
-        "Transaction deleted successfully!"
-    );
-
-
-    await loadTransactions();
-
-}
-
-
-
-/* =========================================
-   ESCAPE HTML
-========================================= */
-
-function escapeHtml(
-    value
-) {
-
-
-    return String(
-        value || ""
-    )
-
-        .replace(
-            /&/g,
-            "&amp;"
-        )
-
-        .replace(
-            /</g,
-            "&lt;"
-        )
-
-        .replace(
-            />/g,
-            "&gt;"
-        )
-
-        .replace(
-            /"/g,
-            "&quot;"
-        )
-
-        .replace(
-            /'/g,
-            "&#039;"
-        );
-
-}
-
-
-
-/* =========================================
-   START
-========================================= */
-
+['searchInput','typeFilter','categoryFilter','cardFilter','fromDate','toDate'].forEach(id=>$(id).addEventListener(id==='searchInput'?'input':'change',applyFilters));
+$('clearFilters').addEventListener('click',()=>{['searchInput','typeFilter','categoryFilter','cardFilter','fromDate','toDate'].forEach(id=>$(id).value='');applyFilters()});
+$('refreshBtn').addEventListener('click',loadTransactions);$('addBtn').addEventListener('click',()=>window.location.href='add-transaction.html');
+$('menuBtn').addEventListener('click',()=>{$('sidebar').classList.add('open');$('mobileOverlay').classList.add('show')});$('mobileOverlay').addEventListener('click',()=>{$('sidebar').classList.remove('open');$('mobileOverlay').classList.remove('show')});
 loadTransactions();
-
-</script>
-
-
-<script id="cardhub-sidebar-behavior">
-(function(){
- const nav=document.querySelector('nav.bottom-navigation'); if(!nav||document.getElementById('cardhub-sidebar-toggle'))return;
- const btn=document.createElement('button'); btn.id='cardhub-sidebar-toggle'; btn.type='button'; btn.setAttribute('aria-label','Compact or expand sidebar'); btn.title='Compact / expand sidebar'; btn.textContent='‹'; document.body.appendChild(btn);
- const saved=localStorage.getItem('cardhubSidebarCompact')==='true'; if(saved)document.body.classList.add('cardhub-sidebar-compact');
- function sync(){const compact=document.body.classList.contains('cardhub-sidebar-compact');btn.textContent=compact?'›':'‹';btn.setAttribute('aria-expanded',String(!compact));}
- btn.addEventListener('click',function(){document.body.classList.toggle('cardhub-sidebar-compact');localStorage.setItem('cardhubSidebarCompact',String(document.body.classList.contains('cardhub-sidebar-compact')));sync();}); sync();
-})();
 </script>
 </body>
-
 </html>
