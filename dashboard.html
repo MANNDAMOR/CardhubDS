@@ -62,6 +62,20 @@ main.dashboard h2{letter-spacing:-.02em}
 button,input,select{font:inherit}
 @media(max-width:1100px){main.dashboard{padding:24px 20px 36px 270px!important}.summary-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.my-cards-list{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:760px){main.dashboard{padding:20px 14px 32px!important}.summary-grid{grid-template-columns:1fr}.my-cards-list{grid-template-columns:1fr}.dashboard-header{align-items:flex-start}.add-card-banner{padding:22px!important}}
+/* Targeted fix: restore the dashboard card preview and quick-action tiles. */
+.dashboard-section{margin-top:24px!important}
+.section-header{display:flex!important;align-items:center!important;justify-content:space-between!important;gap:16px!important;margin:0 0 14px!important}
+.section-header h2{font-size:28px!important;font-weight:800!important;color:#5233b2!important;margin:0!important}
+.section-header .view-all{color:#5b38c4!important;text-decoration:none!important;font-size:14px!important;font-weight:700!important}
+.cards-scroll{display:grid!important;grid-template-columns:repeat(auto-fit,minmax(240px,1fr))!important;gap:16px!important;align-items:stretch!important}
+.cards-scroll:empty{display:block!important}
+.cards-scroll .user-card-item{width:100%!important;max-width:100%!important}
+.quick-actions{display:grid!important;grid-template-columns:repeat(auto-fit,minmax(150px,190px))!important;gap:14px!important;margin:0 0 24px!important}
+.action-card{display:flex!important;flex-direction:column!important;align-items:flex-start!important;justify-content:center!important;gap:12px!important;min-height:110px!important;width:100%!important;padding:20px!important;border:1px solid #e2e0f0!important;border-radius:15px!important;background:#fff!important;color:#292044!important;box-shadow:0 5px 18px #20174708!important;cursor:pointer!important;text-align:left!important;transition:transform .15s,box-shadow .15s!important}
+.action-card:hover{transform:translateY(-2px)!important;box-shadow:0 9px 24px #20174712!important}
+.action-card>span{display:grid!important;place-items:center!important;width:40px!important;height:40px!important;border-radius:12px!important;background:#eee9ff!important;color:#5b38c4!important;font-size:23px!important}
+.action-card p{margin:0!important;font-size:15px!important;font-weight:700!important;color:#282044!important}
+@media(max-width:760px){.cards-scroll{grid-template-columns:1fr!important}.quick-actions{grid-template-columns:repeat(2,minmax(0,1fr))!important}.section-header h2{font-size:24px!important}}
 /* Keep the custom left navigation as the only desktop sidebar. */
 .cardhub-sidebar{box-sizing:border-box}
 body .bottom-navigation{display:none!important}
