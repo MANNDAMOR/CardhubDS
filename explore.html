@@ -1,1249 +1,2075 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Explore Cards | CardHub</title>
 
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
 
-    <title>Explore Cards - CardHub</title>
-
-    <link
-        rel="stylesheet"
-        href="css/style.css"
-    >
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
     <style>
-
-        .explore-page {
-            padding: 20px;
-            padding-bottom: 100px;
+        :root {
+            --purple: #5B35D5;
+            --dark-purple: #191347;
+            --light-purple: #F4F5FF;
+            --secondary-purple: #7C5CFA;
+            --text: #17163D;
+            --muted: #747694;
+            --border: #E5E6F5;
         }
 
-
-        /* SEARCH */
-
-        .search-box {
-            width: 100%;
-            padding: 14px 16px;
-
-            border: 1px solid #ddd;
-            border-radius: 12px;
-
-            font-size: 15px;
-            outline: none;
-
-            margin-bottom: 15px;
+        * {
             box-sizing: border-box;
         }
 
-
-        .search-box:focus {
-            border-color: #111827;
+        body {
+            margin: 0;
+            font-family: 'Inter', system-ui, sans-serif;
+            background: var(--light-purple);
+            color: var(--text);
         }
 
-
-        /* FILTERS */
-
-        .filter-row {
-            display: flex;
-            gap: 10px;
-
-            margin-bottom: 20px;
-
-            overflow-x: auto;
-            padding-bottom: 4px;
+        button, input, select {
+            font: inherit;
         }
 
-
-        .filter-button {
-            border: 1px solid #ddd;
-
-            background: white;
-
-            padding: 10px 18px;
-
-            border-radius: 20px;
-
+        button {
             cursor: pointer;
-
-            white-space: nowrap;
-
-            font-size: 14px;
         }
 
-
-        .filter-button.active {
-            background: #111827;
+        .sidebar {
+            position: fixed;
+            inset: 0 auto 0 0;
+            width: 250px;
+            padding: 28px 18px;
+            background: var(--dark-purple);
             color: white;
-
-            border-color: #111827;
+            display: flex;
+            flex-direction: column;
+            z-index: 30;
+            overflow-y: auto;
+            transition: transform .25s ease;
         }
 
-
-        /* COUNT */
-
-        .card-count {
-            color: #666;
-
-            font-size: 14px;
-
-            margin-bottom: 15px;
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 0 12px 32px;
+            font-size: 23px;
+            font-weight: 800;
+            letter-spacing: -.8px;
         }
 
-
-        /* GRID */
-
-        .explore-grid {
+        .brand-icon {
             display: grid;
+            place-items: center;
+            width: 42px;
+            height: 42px;
+            border-radius: 13px;
+            background: linear-gradient(135deg, #9578FF, #5B35D5);
+            box-shadow: 0 6px 18px #00000024;
+        }
 
-            grid-template-columns: 1fr;
+        .nav-label {
+            margin: 8px 12px 12px;
+            color: #aaa5d1;
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 1.8px;
+            text-transform: uppercase;
+        }
 
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 13px;
+            padding: 13px 14px;
+            margin: 3px 0;
+            border-radius: 12px;
+            color: #d2cfe9;
+            font-size: 13px;
+            font-weight: 500;
+            text-decoration: none;
+            transition: .2s ease;
+        }
+
+        .nav-link:hover {
+            color: white;
+            background: #ffffff12;
+        }
+
+        .nav-link.active {
+            background: var(--purple);
+            color: white;
+            box-shadow: 0 6px 18px #5b35d544;
+        }
+
+        .nav-link svg {
+            width: 19px;
+            height: 19px;
+            flex-shrink: 0;
+        }
+
+        .sidebar-bottom {
+            margin-top: auto;
+            padding-top: 24px;
+        }
+
+        .profile-mini {
+            display: flex;
+            align-items: center;
+            gap: 11px;
+            margin-top: 20px;
+            padding: 14px 10px;
+            border-top: 1px solid #ffffff1c;
+        }
+
+        .avatar {
+            display: grid;
+            place-items: center;
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            background: #ded6ff;
+            color: #4426ad;
+            font-weight: 800;
+            font-size: 13px;
+        }
+
+        .profile-name {
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .profile-caption {
+            margin-top: 4px;
+            color: #aaa5d1;
+            font-size: 10px;
+        }
+
+        .main {
+            min-height: 100vh;
+            margin-left: 250px;
+            padding: 30px 38px 50px;
+        }
+
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 18px;
+            margin-bottom: 32px;
+        }
+
+        .breadcrumb {
+            margin-bottom: 8px;
+            color: var(--muted);
+            font-size: 12px;
+        }
+
+        .page-title {
+            margin: 0;
+            font-size: clamp(27px, 3vw, 35px);
+            font-weight: 800;
+            letter-spacing: -1.4px;
+        }
+
+        .page-subtitle {
+            margin-top: 8px;
+            color: var(--muted);
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        .top-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .icon-button {
+            display: grid;
+            place-items: center;
+            width: 43px;
+            height: 43px;
+            border: 1px solid var(--border);
+            border-radius: 13px;
+            background: white;
+            color: var(--text);
+        }
+
+        .icon-button:hover {
+            border-color: var(--secondary-purple);
+            color: var(--purple);
+        }
+
+        .primary-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            min-height: 43px;
+            padding: 11px 17px;
+            border: 0;
+            border-radius: 12px;
+            background: var(--purple);
+            color: white;
+            font-size: 12px;
+            font-weight: 700;
+            text-decoration: none;
+            transition: .2s ease;
+        }
+
+        .primary-button:hover {
+            background: #4724bb;
+            transform: translateY(-1px);
+        }
+
+        .primary-button svg {
+            width: 17px;
+            height: 17px;
+        }
+
+        .hero {
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 24px;
+            min-height: 210px;
+            padding: 32px 36px;
+            margin-bottom: 28px;
+            border-radius: 24px;
+            background: linear-gradient(115deg, #24145f 0%, #4f2bc6 58%, #8468f5 100%);
+            color: white;
+            box-shadow: 0 14px 35px #3921a522;
+        }
+
+        .hero::before {
+            content: "";
+            position: absolute;
+            width: 280px;
+            height: 280px;
+            right: 90px;
+            top: -180px;
+            border-radius: 50%;
+            background: #ffffff12;
+        }
+
+        .hero::after {
+            content: "";
+            position: absolute;
+            width: 210px;
+            height: 210px;
+            right: -70px;
+            bottom: -130px;
+            border-radius: 50%;
+            border: 30px solid #ffffff13;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            max-width: 610px;
+        }
+
+        .hero-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            margin-bottom: 15px;
+            padding: 7px 11px;
+            border: 1px solid #ffffff30;
+            border-radius: 30px;
+            background: #ffffff12;
+            font-size: 10px;
+            font-weight: 700;
+        }
+
+        .hero h2 {
+            margin: 0;
+            font-size: clamp(24px, 3vw, 33px);
+            font-weight: 800;
+            letter-spacing: -1px;
+        }
+
+        .hero p {
+            max-width: 500px;
+            margin: 12px 0 20px;
+            color: #e4dfff;
+            font-size: 13px;
+            line-height: 1.8;
+        }
+
+        .hero-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 11px 16px;
+            border: 0;
+            border-radius: 10px;
+            background: white;
+            color: #39219d;
+            font-size: 12px;
+            font-weight: 800;
+            text-decoration: none;
+        }
+
+        .hero-visual {
+            position: relative;
+            z-index: 1;
+            width: 190px;
+            height: 120px;
+            flex-shrink: 0;
+            transform: rotate(-8deg);
+        }
+
+        .hero-card {
+            position: absolute;
+            inset: 0;
+            padding: 18px;
+            border: 1px solid #ffffff65;
+            border-radius: 18px;
+            background: linear-gradient(135deg, #ffffff40, #ffffff12);
+            box-shadow: 0 18px 30px #150a482f;
+            backdrop-filter: blur(12px);
+        }
+
+        .hero-card-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 10px;
+            font-weight: 700;
+        }
+
+        .hero-chip {
+            width: 25px;
+            height: 19px;
+            margin-top: 17px;
+            border-radius: 5px;
+            background: linear-gradient(135deg, #f6dfa0, #b9a36a);
+        }
+
+        .hero-card-number {
+            margin-top: 10px;
+            font-size: 10px;
+            letter-spacing: 2px;
+        }
+
+        .search-panel {
+            padding: 23px;
+            margin-bottom: 26px;
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            background: white;
+            box-shadow: 0 5px 18px #24145f05;
+        }
+
+        .search-box {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            width: 100%;
+            min-height: 52px;
+            padding: 0 16px;
+            border: 1px solid #e0e1f2;
+            border-radius: 13px;
+            background: #fafaff;
+        }
+
+        .search-box:focus-within {
+            border-color: var(--secondary-purple);
+            box-shadow: 0 0 0 4px #7c5cfa15;
+        }
+
+        .search-box svg {
+            width: 19px;
+            color: var(--muted);
+            flex-shrink: 0;
+        }
+
+        .search-box input {
+            width: 100%;
+            border: 0;
+            outline: 0;
+            background: transparent;
+            color: var(--text);
+            font-size: 13px;
+        }
+
+        .filter-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            margin: 22px 0 12px;
+        }
+
+        .filter-label {
+            font-size: 12px;
+            font-weight: 800;
+        }
+
+        .clear-button {
+            border: 0;
+            background: none;
+            color: var(--purple);
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        .filter-pills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 9px;
+        }
+
+        .filter-pill {
+            padding: 10px 15px;
+            border: 1px solid var(--border);
+            border-radius: 30px;
+            background: white;
+            color: #666987;
+            font-size: 11px;
+            font-weight: 700;
+            transition: .2s ease;
+        }
+
+        .filter-pill:hover {
+            border-color: var(--purple);
+            color: var(--purple);
+        }
+
+        .filter-pill.active {
+            border-color: var(--purple);
+            background: var(--purple);
+            color: white;
+        }
+
+        .results-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            margin: 30px 0 18px;
+        }
+
+        .section-title {
+            margin: 0;
+            font-size: 20px;
+            font-weight: 800;
+            letter-spacing: -.5px;
+        }
+
+        .section-description {
+            margin-top: 6px;
+            color: var(--muted);
+            font-size: 12px;
+        }
+
+        .results-count {
+            color: var(--muted);
+            font-size: 11px;
+        }
+
+        .results-count strong {
+            color: var(--purple);
+        }
+
+        .sort-select {
+            padding: 10px 12px;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            outline: none;
+            background: white;
+            color: var(--text);
+            font-size: 11px;
+        }
+
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 22px;
+        }
+
+        .offer-card {
+            min-width: 0;
+            overflow: hidden;
+            border: 1px solid var(--border);
+            border-radius: 19px;
+            background: white;
+            box-shadow: 0 5px 20px #24145f06;
+            transition: transform .2s ease, box-shadow .2s ease;
+        }
+
+        .offer-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 13px 28px #24145f12;
+        }
+
+        .card-banner {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            min-height: 178px;
+            overflow: hidden;
+            padding: 21px;
+            color: white;
+        }
+
+        .card-banner::after {
+            content: "";
+            position: absolute;
+            width: 150px;
+            height: 150px;
+            right: -40px;
+            bottom: -80px;
+            border: 24px solid #ffffff1b;
+            border-radius: 50%;
+        }
+
+        .gradient-purple {
+            background: linear-gradient(135deg, #24145f, #6842d8);
+        }
+
+        .gradient-blue {
+            background: linear-gradient(135deg, #075985, #0ea5e9);
+        }
+
+        .gradient-green {
+            background: linear-gradient(135deg, #065f46, #10b981);
+        }
+
+        .gradient-orange {
+            background: linear-gradient(135deg, #9a3412, #f97316);
+        }
+
+        .gradient-indigo {
+            background: linear-gradient(135deg, #312e81, #818cf8);
+        }
+
+        .gradient-teal {
+            background: linear-gradient(135deg, #115e59, #2dd4bf);
+        }
+
+        .gradient-black {
+            background: linear-gradient(135deg, #18181b, #52525b);
+        }
+
+        .gradient-rose {
+            background: linear-gradient(135deg, #9f1239, #fb7185);
+        }
+
+        .gradient-amber {
+            background: linear-gradient(135deg, #78350f, #fbbf24);
+        }
+
+        .banner-top,
+        .banner-bottom {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+        }
+
+        .bank-name {
+            font-size: 11px;
+            font-weight: 700;
+            opacity: .95;
+        }
+
+        .card-type-badge {
+            padding: 6px 9px;
+            border: 1px solid #ffffff45;
+            border-radius: 20px;
+            background: #ffffff17;
+            font-size: 9px;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .offer-name {
+            position: relative;
+            z-index: 1;
+            max-width: 260px;
+            margin: 22px 0 0;
+            font-size: 19px;
+            font-weight: 800;
+            line-height: 1.35;
+            letter-spacing: -.5px;
+        }
+
+        .banner-bottom {
+            margin-top: 17px;
+            font-size: 10px;
+            opacity: .9;
+        }
+
+        .offer-body {
+            padding: 20px;
+        }
+
+        .fee-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .fee-box {
+            padding: 13px;
+            border: 1px solid #eeeeF9;
+            border-radius: 12px;
+            background: #fafaff;
+        }
+
+        .fee-label {
+            color: var(--muted);
+            font-size: 10px;
+        }
+
+        .fee-value {
+            margin-top: 7px;
+            font-size: 17px;
+            font-weight: 800;
+            letter-spacing: -.4px;
+        }
+
+        .benefit {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            min-height: 56px;
+            margin: 17px 0;
+            color: #494b6c;
+            font-size: 11px;
+            line-height: 1.7;
+        }
+
+        .benefit-icon {
+            display: grid;
+            place-items: center;
+            width: 30px;
+            height: 30px;
+            flex-shrink: 0;
+            border-radius: 9px;
+            background: #f0ebff;
+            color: var(--purple);
+        }
+
+        .benefit-icon svg {
+            width: 16px;
+            height: 16px;
+        }
+
+        .view-button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            width: 100%;
+            min-height: 44px;
+            padding: 12px;
+            border: 1px solid var(--purple);
+            border-radius: 11px;
+            background: var(--purple);
+            color: white;
+            font-size: 11px;
+            font-weight: 800;
+            transition: .2s ease;
+        }
+
+        .view-button:hover {
+            background: #4724bb;
+        }
+
+        .view-button svg {
+            width: 15px;
+            height: 15px;
+        }
+
+        .disclaimer {
+            margin-top: 28px;
+            padding: 16px 18px;
+            border: 1px solid var(--border);
+            border-radius: 13px;
+            background: #ffffffb8;
+            color: var(--muted);
+            font-size: 10px;
+            line-height: 1.8;
+        }
+
+        .empty-state {
+            display: none;
+            grid-column: 1 / -1;
+            padding: 55px 20px;
+            border: 1px dashed #d7d2ef;
+            border-radius: 18px;
+            background: white;
+            text-align: center;
+        }
+
+        .empty-state svg {
+            width: 40px;
+            height: 40px;
+            margin: 0 auto 12px;
+            color: var(--secondary-purple);
+        }
+
+        .empty-state h3 {
+            margin: 0 0 8px;
+            font-size: 16px;
+        }
+
+        .empty-state p {
+            margin: 0;
+            color: var(--muted);
+            font-size: 12px;
+        }
+
+        .modal-backdrop {
+            position: fixed;
+            inset: 0;
+            z-index: 100;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            background: #100b32a8;
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-backdrop.open {
+            display: flex;
+        }
+
+        .modal {
+            width: 100%;
+            max-width: 490px;
+            max-height: 90vh;
+            overflow-y: auto;
+            padding: 26px;
+            border-radius: 22px;
+            background: white;
+            box-shadow: 0 25px 80px #00000030;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
             gap: 15px;
         }
 
-
-        /* CARD */
-
-        .explore-card {
-            background: white;
-
-            border-radius: 18px;
-
-            padding: 18px;
-
-            box-shadow:
-                0 5px 20px
-                rgba(0, 0, 0, 0.08);
+        .modal-header h2 {
+            margin: 0;
+            font-size: 22px;
+            line-height: 1.4;
         }
 
-
-        /* CARD VISUAL */
-
-        .card-visual {
-            background:
-                linear-gradient(
-                    135deg,
-                    #111827,
-                    #374151
-                );
-
-            color: white;
-
-            border-radius: 15px;
-
-            padding: 20px;
-
-            min-height: 140px;
-
-            display: flex;
-
-            flex-direction: column;
-
-            justify-content: space-between;
-
-            margin-bottom: 15px;
-        }
-
-
-        .card-issuer {
-            font-size: 14px;
-            opacity: 0.85;
-        }
-
-
-        .card-name {
-            font-size: 20px;
-
-            font-weight: 700;
-
-            margin: 10px 0;
-        }
-
-
-        .card-type {
-            font-size: 13px;
-
-            opacity: 0.85;
-        }
-
-
-        /* FEES */
-
-        .card-info {
-            display: grid;
-
-            grid-template-columns: 1fr 1fr;
-
-            gap: 10px;
-
-            margin: 15px 0;
-        }
-
-
-        .info-box {
-            background: #f5f5f5;
-
-            border-radius: 10px;
-
-            padding: 10px;
-        }
-
-
-        .info-box span {
-            display: block;
-
-            color: #777;
-
+        .modal-bank {
+            margin-bottom: 7px;
+            color: var(--purple);
             font-size: 11px;
-
-            margin-bottom: 4px;
+            font-weight: 800;
         }
 
-
-        .info-box strong {
-            font-size: 14px;
+        .modal-close {
+            display: grid;
+            place-items: center;
+            width: 35px;
+            height: 35px;
+            flex-shrink: 0;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            background: white;
         }
 
-
-        /* REWARD */
-
-        .reward {
-            font-size: 14px;
-
-            font-weight: 600;
-
-            margin-bottom: 15px;
+        .modal-fees {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin: 22px 0;
         }
 
+        .modal-info {
+            padding: 15px;
+            border-radius: 12px;
+            background: var(--light-purple);
+        }
 
-        /* VIEW BUTTON */
+        .modal-info span {
+            color: var(--muted);
+            font-size: 11px;
+        }
 
-        .view-button {
-            width: 100%;
+        .modal-info strong {
+            display: block;
+            margin-top: 7px;
+            font-size: 18px;
+        }
 
-            padding: 13px;
+        .modal-description {
+            color: #5f617d;
+            font-size: 12px;
+            line-height: 1.9;
+        }
 
-            border: none;
+        .modal-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 22px;
+        }
 
+        .modal-actions button {
+            flex: 1;
+        }
+
+        .secondary-button {
+            min-height: 43px;
+            padding: 10px 14px;
+            border: 1px solid var(--border);
             border-radius: 11px;
-
-            background: #111827;
-
-            color: white;
-
-            font-size: 15px;
-
-            font-weight: 600;
-
-            cursor: pointer;
+            background: white;
+            color: var(--text);
+            font-size: 12px;
+            font-weight: 700;
         }
 
-
-        .view-button:hover {
-            opacity: 0.9;
+        .mobile-menu-button {
+            display: none;
         }
 
-
-        /* MESSAGE */
-
-        .message {
-            text-align: center;
-
-            padding: 40px 20px;
-
-            color: #666;
+        .mobile-overlay {
+            display: none;
         }
 
-    
-/* CardHub consistent desktop-only website theme */
-html { min-width: 1024px; }
-body { min-width: 1024px; background: #f3f6fb; color: #17243b; }
-main.dashboard {
-  width: auto; max-width: none; min-height: 100vh;
-  margin: 0; padding: 34px 46px 54px 282px; box-sizing: border-box;
-}
-.dashboard-header {
-  max-width: 1500px; margin: 0 auto 28px;
-  padding: 0 0 22px; border-bottom: 1px solid #e5eaf2;
-}
-.dashboard-header h1 { color: #17243b; font-size: 32px; letter-spacing: -.035em; }
-.dashboard-header .welcome-text { color: #7a8597; font-size: 14px; }
-.notification-button {
-  border: 1px solid #e5eaf2; border-radius: 14px; background: #fff;
-  box-shadow: 0 5px 18px rgba(23,36,59,.06);
-}
-.bottom-navigation {
-  position: fixed; inset: 0 auto 0 0; transform: none;
-  width: 230px; max-width: none; height: 100vh; box-sizing: border-box;
-  padding: 34px 18px; background: #fff; border: 0; border-right: 1px solid #e5eaf2;
-  border-radius: 0; box-shadow: 8px 0 30px rgba(23,36,59,.035);
-  display: flex; flex-direction: column; justify-content: flex-start;
-  align-items: stretch; gap: 10px; z-index: 100;
-}
-.bottom-navigation::before {
-  content: "CARDHUB"; display: block; padding: 8px 14px 30px;
-  color: #17243b; font-size: 22px; font-weight: 800; letter-spacing: .08em;
-}
-.nav-item {
-  display: flex; align-items: center; gap: 14px; min-width: 0;
-  padding: 14px 15px; border-radius: 12px; text-align: left; color: #69768b;
-}
-.nav-item:hover, .nav-item.active { color: #17243b; background: #eef3fa; }
-.nav-item span { width: 24px; margin: 0; text-align: center; font-size: 19px; }
-.nav-item p { font-size: 14px; font-weight: 600; margin: 0; }
-input, select, button { font: inherit; }
+        @media (max-width: 1250px) {
+            .main {
+                padding: 28px 25px 40px;
+            }
 
-/* Explore page */
-.explore-page { padding: 0 0 30px; max-width: 1500px; margin: 0 auto; }
-.search-box {
-  width: 100%; min-height: 52px; padding: 14px 18px; box-sizing: border-box;
-  border: 1px solid #e1e7f0; border-radius: 13px; background: #fff;
-  color: #17243b; font-size: 15px; outline: none; margin-bottom: 18px;
-}
-.search-box:focus { border-color: #64748b; box-shadow: 0 0 0 3px rgba(100,116,139,.12); }
-.filter-row { display: flex; gap: 10px; margin: 0 0 20px; overflow: visible; padding-bottom: 0; }
-.filter-button {
-  border: 1px solid #e1e7f0; background: #fff; color: #526078;
-  padding: 11px 20px; border-radius: 10px; cursor: pointer; white-space: nowrap; font-size: 14px;
-}
-.filter-button.active { background: #17243b; color: #fff; border-color: #17243b; }
-.card-count { color: #7a8597; font-size: 14px; margin: 0 0 16px; }
-.explore-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 22px; }
-.explore-card {
-  min-width: 0; background: #fff; border: 1px solid #e5eaf2; border-radius: 18px;
-  padding: 20px; box-shadow: 0 8px 26px rgba(23,36,59,.055);
-  transition: transform .18s ease, box-shadow .18s ease;
-}
-.explore-card:hover { transform: translateY(-3px); box-shadow: 0 15px 32px rgba(23,36,59,.11); }
-.card-visual { min-height: 175px; padding: 22px; border-radius: 15px; margin-bottom: 18px; }
-.card-name { font-size: 19px; line-height: 1.35; }
-.card-info { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin: 16px 0; }
-.explore-card .info-box { min-width: 0; background: #f3f6fb; border: 1px solid #edf0f5; border-radius: 11px; padding: 13px; }
-.explore-card .info-box span { color: #7a8597; font-size: 11px; display: block; margin-bottom: 5px; }
-.explore-card .info-box strong { font-size: 14px; overflow-wrap: anywhere; }
-.reward { font-size: 14px; font-weight: 600; line-height: 1.5; min-height: 42px; margin-bottom: 16px; }
-.view-button { width: 100%; padding: 13px; border: none; border-radius: 11px; background: #17243b; color: #fff; font-size: 14px; font-weight: 650; cursor: pointer; }
-.view-button:hover { background: #2b3c59; }
-.message { grid-column: 1 / -1; text-align: center; padding: 50px 20px; color: #7a8597; background: #fff; border: 1px solid #e5eaf2; border-radius: 16px; }
+            .cards-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+        }
 
+        @media (max-width: 800px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
 
+            .sidebar.open {
+                transform: translateX(0);
+            }
 
-/* ===== CardHub Explore: simplified colorful layout ===== */
-html { min-width: 0 !important; }
-body { min-width: 0 !important; margin: 0; background: linear-gradient(135deg,#eef6ff 0%,#f5f0ff 52%,#ecfbff 100%) !important; color:#17243b; }
-main.dashboard { width:auto; max-width:none; min-height:100vh; margin:0; padding:32px 38px 44px 270px; box-sizing:border-box; }
-.dashboard-header { max-width:1400px; margin:0 auto 26px; padding:0 0 20px; border-bottom:1px solid #e4e8f4; display:flex; justify-content:space-between; align-items:center; }
-.dashboard-header h1 { margin:4px 0 0; color:#30216f; font-size:clamp(26px,3vw,34px); letter-spacing:-.04em; }
-.dashboard-header .welcome-text { margin:0; color:#7359d9; font-weight:700; font-size:13px; letter-spacing:.08em; text-transform:uppercase; }
-.notification-button { width:44px; height:44px; border:1px solid #e5e7f4; border-radius:14px; background:#fff; color:#5035f5; box-shadow:0 5px 16px #30216f0d; cursor:pointer; }
-.explore-page { max-width:1400px; margin:0 auto; padding:0 0 28px; }
-.search-box { width:100%; min-height:50px; padding:14px 17px; border:1px solid #e1e5f2; border-radius:14px; background:#fff; color:#17243b; font-size:15px; margin:0 0 15px; box-shadow:0 4px 15px #4338ca08; }
-.search-box:focus { outline:none; border-color:#8b5cf6; box-shadow:0 0 0 4px #8b5cf61c; }
-.filter-row { display:flex; flex-wrap:wrap; gap:8px; margin:0 0 16px; padding:0 0 2px; overflow-x:auto; }
-.filter-button { border:1px solid #e2e5f2; background:#fff; color:#566179; padding:10px 16px; border-radius:999px; font-size:13px; font-weight:600; cursor:pointer; white-space:nowrap; }
-.filter-button:hover { border-color:#c4b5fd; color:#5035f5; }
-.filter-button.active { color:#fff; border-color:#6546f5; background:linear-gradient(110deg,#5035f5,#8b5cf6); box-shadow:0 5px 14px #5035f526; }
-.card-count { margin:0 0 14px; color:#758098; font-size:13px; }
-.explore-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:18px; align-items:stretch; }
-.explore-card { min-width:0; padding:15px; background:#ffffffed; border:1px solid #fff; border-radius:20px; box-shadow:0 8px 25px #3730a10d; transition:transform .2s ease,box-shadow .2s ease; }
-.explore-card:hover { transform:translateY(-3px); box-shadow:0 14px 30px #3730a11a; }
-.card-visual { min-height:155px; padding:19px; margin:0 0 14px; border-radius:15px; display:flex; flex-direction:column; justify-content:space-between; background:linear-gradient(135deg,#5035f5,#8b5cf6 58%,#c084fc); color:#fff; box-shadow:inset 0 1px 0 #ffffff30; }
-.explore-card:nth-child(4n+2) .card-visual { background:linear-gradient(135deg,#0369a1,#0ea5e9,#67e8f9); }
-.explore-card:nth-child(4n+3) .card-visual { background:linear-gradient(135deg,#047857,#10b981,#6ee7b7); }
-.explore-card:nth-child(4n+4) .card-visual { background:linear-gradient(135deg,#c2410c,#f97316,#fdba74); }
-.card-issuer { font-size:12px; font-weight:600; opacity:.9; }
-.card-name { margin:14px 0; font-size:18px; line-height:1.3; font-weight:750; overflow-wrap:anywhere; }
-.card-type { font-size:12px; opacity:.9; }
-.card-info { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:9px; margin:13px 0; }
-.explore-card .info-box { min-width:0; padding:11px; background:#f7f8ff; border:1px solid #eef0fb; border-radius:12px; }
-.explore-card .info-box span { display:block; margin-bottom:5px; color:#7b849b; font-size:11px; }
-.explore-card .info-box strong { font-size:14px; color:#30216f; overflow-wrap:anywhere; }
-.reward { min-height:0; margin:0 0 14px; color:#526078; font-size:13px; line-height:1.5; font-weight:600; }
-.view-button { width:100%; padding:12px 14px; border:0; border-radius:11px; background:linear-gradient(110deg,#5035f5,#8b5cf6); color:#fff; font-size:14px; font-weight:700; cursor:pointer; }
-.view-button:hover { filter:brightness(1.06); box-shadow:0 6px 16px #5035f52b; }
-.message { grid-column:1/-1; padding:35px 20px; text-align:center; color:#718096; background:#fff; border:1px solid #fff; border-radius:16px; }
-.bottom-navigation { position:fixed; inset:0 auto 0 0; transform:none; width:230px; max-width:none; height:100vh; box-sizing:border-box; padding:30px 16px; background:#fff; border:0; border-right:1px solid #e8eaf4; border-radius:0; box-shadow:8px 0 25px #312e8108; display:flex; flex-direction:column; justify-content:flex-start; align-items:stretch; gap:8px; z-index:100; }
-.bottom-navigation::before { content:"CARDHUB"; display:block; padding:8px 14px 28px; color:#30216f; font-size:21px; font-weight:800; letter-spacing:.08em; }
-.nav-item { display:flex; align-items:center; gap:13px; min-width:0; padding:13px 14px; border-radius:12px; text-align:left; color:#6c758b; text-decoration:none; }
-.nav-item:hover,.nav-item.active { color:#5035f5; background:#f0edff; }
-.nav-item span { width:24px; margin:0; text-align:center; font-size:18px; }
-.nav-item p { margin:0; font-size:14px; font-weight:600; }
-@media(max-width:1100px) { .explore-grid { grid-template-columns:repeat(2,minmax(0,1fr)); } main.dashboard { padding-right:24px; padding-left:255px; } }
-@media(max-width:760px) { main.dashboard { padding:22px 16px 95px; } .dashboard-header { margin-bottom:20px; } .explore-grid { grid-template-columns:1fr; gap:14px; } .filter-row { flex-wrap:nowrap; } .bottom-navigation { inset:auto 0 0 0; width:100%; height:auto; padding:8px 5px calc(8px + env(safe-area-inset-bottom)); border-right:0; border-top:1px solid #e8eaf4; box-shadow:0 -5px 22px #312e810a; flex-direction:row; justify-content:space-around; gap:2px; } .bottom-navigation::before { display:none; } .nav-item { flex:1; padding:8px 2px; flex-direction:column; gap:4px; justify-content:center; text-align:center; } .nav-item span { font-size:18px; } .nav-item p { font-size:10px; } .card-visual { min-height:145px; } }
-@media(min-width:761px) and (max-width:900px) { .bottom-navigation { width:200px; padding:24px 12px; } main.dashboard { padding-left:220px; } }
+            .mobile-overlay.open {
+                position: fixed;
+                inset: 0;
+                z-index: 20;
+                display: block;
+                background: #100b3275;
+            }
 
-</style>
+            .main {
+                margin-left: 0;
+                padding: 20px 16px 35px;
+            }
 
-<style id="cardhub-shared-sidebar">
-/* CardHub shared sidebar layout */
-:root{--ch-sidebar-width:244px;--ch-sidebar-compact:82px;--ch-sidebar-bg:#15194e;--ch-sidebar-bg2:#321783;--ch-accent:#5638f4}
-nav.bottom-navigation{position:fixed!important;inset:0 auto 0 0!important;width:var(--ch-sidebar-width)!important;height:100vh!important;display:flex!important;flex-direction:column!important;justify-content:flex-start!important;align-items:stretch!important;gap:8px!important;padding:112px 14px 24px!important;margin:0!important;overflow-x:hidden!important;overflow-y:auto!important;background:linear-gradient(180deg,#121b4b 0%,#29156d 100%)!important;border:0!important;border-radius:0!important;box-shadow:none!important;z-index:9999!important;box-sizing:border-box!important;transition:width .22s ease,padding .22s ease!important}
-nav.bottom-navigation:before{content:'C  CardHub';position:fixed;top:0;left:0;width:var(--ch-sidebar-width);height:88px;display:flex;align-items:center;padding-left:26px;box-sizing:border-box;color:#fff;font-size:24px;font-weight:800;letter-spacing:-.5px;background:linear-gradient(180deg,#121b4b 0%,#15194e 100%);transition:width .22s ease}
-nav.bottom-navigation .nav-item{width:100%!important;max-width:none!important;min-width:0!important;min-height:54px!important;display:flex!important;flex-direction:row!important;align-items:center!important;justify-content:flex-start!important;gap:14px!important;margin:0!important;padding:13px 16px!important;border:0!important;border-radius:13px!important;background:transparent!important;color:#eef0ff!important;text-decoration:none!important;text-align:left!important;box-sizing:border-box!important;transition:background .15s ease!important}
-nav.bottom-navigation .nav-item:hover{background:rgba(255,255,255,.11)!important}
-nav.bottom-navigation .nav-item.active{background:linear-gradient(100deg,#6247ff,#4930e8)!important;color:#fff!important;box-shadow:0 6px 18px rgba(43,24,157,.22)!important}
-nav.bottom-navigation .nav-item span{display:inline-flex!important;align-items:center!important;justify-content:center!important;flex:0 0 24px!important;width:24px!important;font-size:19px!important;line-height:1.2!important}
-nav.bottom-navigation .nav-item p{display:block!important;margin:0!important;padding:0!important;font-size:14px!important;font-weight:500!important;line-height:1.3!important;white-space:nowrap!important;color:inherit!important}
-#cardhub-sidebar-toggle{position:fixed;z-index:10001;left:198px;top:98px;width:32px;height:32px;border:1px solid rgba(255,255,255,.22);border-radius:9px;background:#3827a4;color:white;font-size:18px;cursor:pointer;box-shadow:0 3px 10px #0002;transition:left .22s ease}
-body{padding-left:var(--ch-sidebar-width)!important;padding-bottom:0!important;box-sizing:border-box!important;transition:padding-left .22s ease!important}
-body.cardhub-sidebar-compact{padding-left:var(--ch-sidebar-compact)!important}
-body.cardhub-sidebar-compact nav.bottom-navigation{width:var(--ch-sidebar-compact)!important;padding:112px 10px 24px!important}
-body.cardhub-sidebar-compact nav.bottom-navigation:before{width:var(--ch-sidebar-compact);content:'C';padding-left:27px;font-size:25px}
-body.cardhub-sidebar-compact nav.bottom-navigation .nav-item{justify-content:center!important;padding:13px 8px!important}
-body.cardhub-sidebar-compact nav.bottom-navigation .nav-item p{display:none!important}
-body.cardhub-sidebar-compact #cardhub-sidebar-toggle{left:56px}
-@media(max-width:700px){:root{--ch-sidebar-width:200px;--ch-sidebar-compact:68px}nav.bottom-navigation{padding-left:9px!important;padding-right:9px!important}nav.bottom-navigation:before{padding-left:18px;font-size:21px}nav.bottom-navigation .nav-item{gap:9px!important;padding-left:11px!important;padding-right:8px!important}#cardhub-sidebar-toggle{left:157px}body.cardhub-sidebar-compact #cardhub-sidebar-toggle{left:42px}body{overflow-x:hidden}}
-</style>
+            .mobile-menu-button {
+                display: grid;
+            }
+
+            .topbar {
+                align-items: flex-start;
+            }
+
+            .hero {
+                min-height: 190px;
+                padding: 26px;
+            }
+
+            .hero-visual {
+                width: 145px;
+                height: 100px;
+            }
+
+            .hero-card {
+                padding: 12px;
+            }
+
+            .hero-chip {
+                margin-top: 10px;
+            }
+
+            .hero-card-number {
+                margin-top: 7px;
+                font-size: 8px;
+            }
+        }
+
+        @media (max-width: 560px) {
+            .cards-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .topbar {
+                gap: 10px;
+            }
+
+            .page-title {
+                font-size: 27px;
+            }
+
+            .page-subtitle {
+                max-width: 280px;
+            }
+
+            .top-actions {
+                gap: 6px;
+            }
+
+            .top-actions .primary-button {
+                padding: 10px;
+                font-size: 0;
+            }
+
+            .top-actions .primary-button svg {
+                width: 18px;
+                height: 18px;
+            }
+
+            .hero {
+                padding: 23px;
+            }
+
+            .hero-visual {
+                display: none;
+            }
+
+            .search-panel {
+                padding: 17px;
+            }
+
+            .results-header {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .results-controls {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                width: 100%;
+                gap: 10px;
+            }
+
+            .card-banner {
+                min-height: 170px;
+            }
+
+            .offer-name {
+                max-width: 280px;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                transition-duration: .01ms !important;
+                animation-duration: .01ms !important;
+            }
+        }
+    </style>
 </head>
-
 
 <body>
 
-<main class="dashboard">
+    <!-- Mobile overlay -->
+    <div class="mobile-overlay" id="mobileOverlay"></div>
 
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
 
-    <!-- =========================
-         HEADER
-         ========================= -->
-
-    <header class="dashboard-header">
-
-        <div>
-
-            <p class="welcome-text">
-                CardHub
-            </p>
-
-            <h1>
-                Explore Cards
-            </h1>
-
-        </div>
-
-
-        <button
-            class="notification-button"
-            onclick="window.location.href='dashboard.html'"
-        >
-            ←
-        </button>
-
-    </header>
-
-
-    <!-- =========================
-         MAIN CONTENT
-         ========================= -->
-
-    <section class="explore-page">
-
-
-        <!-- SEARCH -->
-
-        <input
-            type="text"
-            id="searchInput"
-            class="search-box"
-            placeholder="Search cards..."
-        >
-
-
-        <!-- =========================
-             FILTERS
-             ========================= -->
-
-        <div class="filter-row">
-
-
-            <button
-                class="filter-button active"
-                data-filter="all"
-                onclick="setFilter('all')"
-            >
-                All
-            </button>
-
-
-            <button
-                class="filter-button"
-                data-filter="credit"
-                onclick="setFilter('credit')"
-            >
-                Credit
-            </button>
-
-
-            <button
-                class="filter-button"
-                data-filter="debit"
-                onclick="setFilter('debit')"
-            >
-                Debit
-            </button>
-
-
-            <button
-                class="filter-button"
-                data-filter="prepaid"
-                onclick="setFilter('prepaid')"
-            >
-                Prepaid
-            </button>
-
-
-            <button
-                class="filter-button"
-                data-filter="transport"
-                onclick="setFilter('transport')"
-            >
-                Transport / NCMC
-            </button>
-
-
-        </div>
-
-
-        <!-- =========================
-             CARD COUNT
-             ========================= -->
-
-        <div
-            id="cardCount"
-            class="card-count"
-        >
-            Loading cards...
-        </div>
-
-
-        <!-- =========================
-             CARDS
-             ========================= -->
-
-        <div
-            id="cardsContainer"
-            class="explore-grid"
-        >
-
-            <div class="message">
-                Loading cards...
-            </div>
-
-        </div>
-
-
-    </section>
-
-
-    <!-- =========================
-         BOTTOM NAVIGATION
-         ========================= -->
-
-    <nav class="bottom-navigation">
-
-
-        <a
-            href="dashboard.html"
-            class="nav-item"
-        >
-
-            <span>
-                ⌂
+        <a href="dashboard.html" class="brand" style="color:white;text-decoration:none;">
+            <span class="brand-icon">
+                <i data-lucide="wallet-cards"></i>
             </span>
-
-            <p>
-                Home
-            </p>
-
+            <span>CardHub</span>
         </a>
 
+        <div class="nav-label">Workspace</div>
 
-        <a
-            href="cards.html"
-            class="nav-item"
-        >
+        <nav aria-label="Main navigation">
+            <a href="dashboard.html" class="nav-link">
+                <i data-lucide="layout-dashboard"></i>
+                Dashboard
+            </a>
 
-            <span>
-                💳
-            </span>
-
-            <p>
+            <a href="cards.html" class="nav-link">
+                <i data-lucide="credit-card"></i>
                 Cards
-            </p>
+            </a>
 
-        </a>
-
-
-        <a
-            href="explore.html"
-            class="nav-item active"
-        >
-
-            <span>
-                🔎
-            </span>
-
-            <p>
-                Explore
-            </p>
-
-        </a>
-
-
-        <a
-            href="transactions.html"
-            class="nav-item"
-        >
-
-            <span>
-                ↕
-            </span>
-
-            <p>
+            <a href="transactions.html" class="nav-link">
+                <i data-lucide="arrow-left-right"></i>
                 Transactions
-            </p>
-
-        </a>
-
-
-        <a
-            href="profile.html"
-            class="nav-item"
-        >
-
-            <span>
-                👤
-            </span>
-
-            <p>
-                Profile
-            </p>
-
-        </a>
-
-
-    </nav>
-
-
-</main>
-
-
-<!-- =========================
-     SUPABASE
-     ========================= -->
-
-<script
-    src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"
-></script>
-
-
-<script>
-
-
-/* ==========================================
-   SUPABASE CONFIG
-   ========================================== */
-
-const SUPABASE_URL =
-    "https://wrsqhsuktqldnyjrbuma.supabase.co";
-
-
-const SUPABASE_PUBLISHABLE_KEY =
-    "sb_publishable_1-wC9ij9iOkR0txvg6j5bA_i1XLPSj7";
-
-
-const supabaseClient =
-    window.supabase.createClient(
-        SUPABASE_URL,
-        SUPABASE_PUBLISHABLE_KEY
-    );
-
-
-/* ==========================================
-   VARIABLES
-   ========================================== */
-
-let allCards = [];
-
-let currentFilter = "all";
-
-
-/* ==========================================
-   SAFE HTML
-   ========================================== */
-
-function escapeHtml(value) {
-
-    return String(value ?? "")
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
-
-}
-
-
-/* ==========================================
-   GET CARD CATEGORY
-   ========================================== */
-
-function getCategory(card) {
-
-    const type =
-        String(card.type || "")
-            .toLowerCase()
-            .trim();
-
-
-    if (type.includes("credit")) {
-
-        return "credit";
-
-    }
-
-
-    if (type.includes("debit")) {
-
-        return "debit";
-
-    }
-
-
-    if (type.includes("prepaid")) {
-
-        return "prepaid";
-
-    }
-
-
-    if (
-        type.includes("transport") ||
-        type.includes("ncmc")
-    ) {
-
-        return "transport";
-
-    }
-
-
-    return null;
-
-}
-
-
-/* ==========================================
-   LOAD EXPLORE CARDS
-   ========================================== */
-
-async function loadCards() {
-
-
-    /* CHECK LOGIN */
-
-    const {
-
-        data: { user },
-
-        error: authError
-
-    } =
-        await supabaseClient
-            .auth
-            .getUser();
-
-
-    if (
-        authError ||
-        !user
-    ) {
-
-        window.location.href =
-            "index.html";
-
-        return;
-
-    }
-
-
-    /* GET EXPLORE CARDS */
-
-    const {
-
-        data,
-
-        error
-
-    } =
-        await supabaseClient
-
-            .from("explore_cards")
-
-            .select("*")
-
-            .order(
-                "created_at",
-                {
-                    ascending: false
-                }
-            );
-
-
-    if (error) {
-
-        console.error(
-            "Supabase error:",
-            error
-        );
-
-
-        document.getElementById(
-            "cardsContainer"
-        ).innerHTML = `
-
-            <div class="message">
-
-                <h3>
-                    Could not load cards
-                </h3>
-
-                <p>
-                    ${escapeHtml(error.message)}
-                </p>
-
+            </a>
+
+            <a href="analytics.html" class="nav-link">
+                <i data-lucide="chart-no-axes-combined"></i>
+                Analytics
+            </a>
+
+            <a href="budgets.html" class="nav-link">
+                <i data-lucide="wallet"></i>
+                Budgets
+            </a>
+
+            <a href="goals.html" class="nav-link">
+                <i data-lucide="target"></i>
+                Goals
+            </a>
+
+            <a href="explore.html" class="nav-link active" aria-current="page">
+                <i data-lucide="compass"></i>
+                Explore
+            </a>
+
+            <a href="reports.html" class="nav-link">
+                <i data-lucide="file-chart-column"></i>
+                Reports
+            </a>
+        </nav>
+
+        <div class="sidebar-bottom">
+            <div class="nav-label">Account</div>
+
+            <a href="profile.html" class="nav-link">
+                <i data-lucide="settings"></i>
+                Settings & Profile
+            </a>
+
+            <a href="add-card.html" class="nav-link">
+                <i data-lucide="plus-circle"></i>
+                Add Card
+            </a>
+
+            <a href="add-transaction.html" class="nav-link">
+                <i data-lucide="circle-plus"></i>
+                Add Transaction
+            </a>
+
+            <div class="profile-mini">
+                <div class="avatar">CH</div>
+                <div>
+                    <div class="profile-name" id="profileName">My CardHub</div>
+                    <div class="profile-caption">Personal account</div>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main content -->
+    <main class="main">
+
+        <!-- Header -->
+        <header class="topbar">
+            <div style="display:flex;align-items:flex-start;gap:12px;">
+                <button
+                    class="icon-button mobile-menu-button"
+                    id="mobileMenuButton"
+                    aria-label="Open navigation"
+                    aria-expanded="false"
+                    type="button">
+                    <i data-lucide="menu"></i>
+                </button>
+
+                <div>
+                    <div class="breadcrumb">CardHub / Explore</div>
+                    <h1 class="page-title">Explore Cards</h1>
+                    <p class="page-subtitle">
+                        Discover cards, compare fees, and explore potential benefits.
+                    </p>
+                </div>
             </div>
 
-        `;
+            <div class="top-actions">
+                <button class="icon-button" id="backButton" aria-label="Go back" type="button">
+                    <i data-lucide="arrow-left"></i>
+                </button>
 
+                <a href="add-card.html" class="primary-button">
+                    <i data-lucide="plus"></i>
+                    Add Card
+                </a>
+            </div>
+        </header>
 
-        document.getElementById(
-            "cardCount"
-        ).textContent =
-            "Could not load cards";
+        <!-- Hero -->
+        <section class="hero">
+            <div class="hero-content">
+                <div class="hero-tag">
+                    <i data-lucide="sparkles" style="width:14px;height:14px;"></i>
+                    CARD DISCOVERY
+                </div>
 
-
-        return;
-
-    }
-
-
-    /*
-       Only allow the four
-       Semester 3 card types.
-    */
-
-    allCards =
-        (data || []).filter(
-            function(card) {
-
-                return (
-                    getCategory(card) !== null
-                );
-
-            }
-        );
-
-
-    renderCards();
-
-}
-
-
-/* ==========================================
-   RENDER CARDS
-   ========================================== */
-
-function renderCards() {
-
-
-    const container =
-        document.getElementById(
-            "cardsContainer"
-        );
-
-
-    const searchValue =
-        document
-            .getElementById(
-                "searchInput"
-            )
-            .value
-            .toLowerCase()
-            .trim();
-
-
-    const filteredCards =
-        allCards.filter(
-            function(card) {
-
-
-                const category =
-                    getCategory(card);
-
-
-                /* SEARCH */
-
-                const searchableText = [
-
-                    card.name,
-
-                    card.issuer,
-
-                    card.type,
-
-                    card.reward_rate,
-
-                    card.benefits
-
-                ]
-                    .filter(Boolean)
-                    .join(" ")
-                    .toLowerCase();
-
-
-                const matchesSearch =
-                    !searchValue ||
-                    searchableText.includes(
-                        searchValue
-                    );
-
-
-                /* FILTER */
-
-                const matchesFilter =
-                    currentFilter === "all" ||
-                    category === currentFilter;
-
-
-                return (
-                    matchesSearch &&
-                    matchesFilter
-                );
-
-            }
-        );
-
-
-    /* COUNT */
-
-    document.getElementById(
-        "cardCount"
-    ).textContent =
-
-        `${filteredCards.length} card${
-            filteredCards.length !== 1
-                ? "s"
-                : ""
-        } found`;
-
-
-    /* EMPTY */
-
-    if (
-        filteredCards.length === 0
-    ) {
-
-        container.innerHTML = `
-
-            <div class="message">
-
-                <h3>
-                    No cards found
-                </h3>
+                <h2>Find a card that fits your lifestyle.</h2>
 
                 <p>
-                    Try another search or filter.
+                    Explore credit, debit, prepaid, and transport cards.
+                    Compare the displayed fees and benefits before making a decision.
                 </p>
 
+                <a href="#recommendedCards" class="hero-button">
+                    Explore cards
+                    <i data-lucide="arrow-down-right" style="width:16px;height:16px;"></i>
+                </a>
             </div>
 
-        `;
+            <div class="hero-visual" aria-hidden="true">
+                <div class="hero-card">
+                    <div class="hero-card-top">
+                        <span>CardHub</span>
+                        <i data-lucide="wifi" style="width:19px;height:19px;"></i>
+                    </div>
+                    <div class="hero-chip"></div>
+                    <div class="hero-card-number">•••• &nbsp; •••• &nbsp; ••••</div>
+                </div>
+            </div>
+        </section>
 
-        return;
+        <!-- Search and filters -->
+        <section class="search-panel" aria-label="Search and filter cards">
 
-    }
+            <label class="search-box">
+                <i data-lucide="search"></i>
+                <input
+                    id="searchInput"
+                    type="search"
+                    placeholder="Search cards, banks, or benefits..."
+                    autocomplete="off"
+                    aria-label="Search cards">
+            </label>
 
+            <div class="filter-header">
+                <span class="filter-label">Browse by card type</span>
 
-    /* DISPLAY */
+                <button class="clear-button" id="clearFilters" type="button">
+                    Clear filters
+                </button>
+            </div>
 
-    container.innerHTML =
+            <div class="filter-pills" id="filterPills">
+                <button class="filter-pill active" data-filter="all" type="button">All Cards</button>
+                <button class="filter-pill" data-filter="credit" type="button">Credit</button>
+                <button class="filter-pill" data-filter="debit" type="button">Debit</button>
+                <button class="filter-pill" data-filter="prepaid" type="button">Prepaid</button>
+                <button class="filter-pill" data-filter="transport" type="button">Transport / NCMC</button>
+            </div>
+        </section>
 
-        filteredCards
-            .map(
-                function(card) {
+        <!-- Card grid -->
+        <section id="recommendedCards">
 
+            <div class="results-header">
+                <div>
+                    <h2 class="section-title">Discover cards</h2>
+                    <p class="section-description">
+                        Explore different card options and their displayed features.
+                    </p>
+                </div>
 
-                    const category =
-                        getCategory(card);
+                <div class="results-controls">
+                    <span class="results-count" id="resultsCount">
+                        <strong>12</strong> cards found
+                    </span>
 
+                    <select class="sort-select" id="sortSelect" aria-label="Sort cards">
+                        <option value="default">Recommended</option>
+                        <option value="fee-low">Annual fee: Low to high</option>
+                        <option value="fee-high">Annual fee: High to low</option>
+                        <option value="name">Name: A to Z</option>
+                    </select>
+                </div>
+            </div>
 
-                    let displayType =
-                        "Card";
+            <div class="cards-grid" id="cardsGrid">
 
+                <!-- Card 1 -->
+                <article class="offer-card"
+                    data-name="axis ace credit card"
+                    data-bank="axis bank"
+                    data-type="credit"
+                    data-fee="499"
+                    data-benefit="Illustrative cashback-focused card example. Verify current terms with the issuer."
+                    data-joining="499">
 
-                    if (
-                        category ===
-                        "credit"
-                    ) {
+                    <div class="card-banner gradient-purple">
+                        <div class="banner-top">
+                            <span class="bank-name">AXIS BANK</span>
+                            <span class="card-type-badge">CREDIT</span>
+                        </div>
+                        <h3 class="offer-name">Axis ACE Credit Card</h3>
+                        <div class="banner-bottom">
+                            <span>Card recommendation</span>
+                            <i data-lucide="credit-card" style="width:25px;height:25px;"></i>
+                        </div>
+                    </div>
 
-                        displayType =
-                            "Credit";
-
-                    }
-
-
-                    else if (
-                        category ===
-                        "debit"
-                    ) {
-
-                        displayType =
-                            "Debit";
-
-                    }
-
-
-                    else if (
-                        category ===
-                        "prepaid"
-                    ) {
-
-                        displayType =
-                            "Prepaid";
-
-                    }
-
-
-                    else if (
-                        category ===
-                        "transport"
-                    ) {
-
-                        displayType =
-                            "Transport / NCMC";
-
-                    }
-
-
-                    return `
-
-                        <div class="explore-card">
-
-
-                            <!-- CARD VISUAL -->
-
-                            <div class="card-visual">
-
-
-                                <div class="card-issuer">
-
-                                    ${escapeHtml(
-                                        card.issuer ||
-                                        "Unknown Issuer"
-                                    )}
-
-                                </div>
-
-
-                                <div class="card-name">
-
-                                    ${escapeHtml(
-                                        card.name ||
-                                        "Unnamed Card"
-                                    )}
-
-                                </div>
-
-
-                                <div class="card-type">
-
-                                    ${displayType}
-
-                                </div>
-
-
+                    <div class="offer-body">
+                        <div class="fee-grid">
+                            <div class="fee-box">
+                                <div class="fee-label">Annual Fee*</div>
+                                <div class="fee-value">₹499</div>
                             </div>
-
-
-                            <!-- FEES -->
-
-                            <div class="card-info">
-
-
-                                <div class="info-box">
-
-                                    <span>
-                                        Annual Fee
-                                    </span>
-
-                                    <strong>
-
-                                        ₹${Number(
-                                            card.annual_fee ?? 0
-                                        ).toLocaleString(
-                                            "en-IN"
-                                        )}
-
-                                    </strong>
-
-                                </div>
-
-
-                                <div class="info-box">
-
-                                    <span>
-                                        Joining Fee
-                                    </span>
-
-                                    <strong>
-
-                                        ₹${Number(
-                                            card.joining_fee ?? 0
-                                        ).toLocaleString(
-                                            "en-IN"
-                                        )}
-
-                                    </strong>
-
-                                </div>
-
-
+                            <div class="fee-box">
+                                <div class="fee-label">Joining Fee*</div>
+                                <div class="fee-value">₹499</div>
                             </div>
-
-
-                            <!-- REWARD -->
-
-                            <div class="reward">
-
-                                🎁
-
-                                ${escapeHtml(
-                                    card.reward_rate ||
-                                    "Rewards information unavailable"
-                                )}
-
-                            </div>
-
-
-                            <!-- DETAILS -->
-
-                            <button
-                                class="view-button"
-                                onclick="viewCard('${encodeURIComponent(card.id)}')"
-                            >
-
-                                View Details
-
-                            </button>
-
-
                         </div>
 
-                    `;
+                        <div class="benefit">
+                            <span class="benefit-icon"><i data-lucide="gift"></i></span>
+                            <span>Example of a cashback-oriented credit card.</span>
+                        </div>
 
-                }
-            )
-            .join("");
+                        <button class="view-button" type="button" data-details>
+                            View Details <i data-lucide="arrow-up-right"></i>
+                        </button>
+                    </div>
+                </article>
 
-}
+                <!-- Card 2 -->
+                <article class="offer-card"
+                    data-name="sbi cashback credit card"
+                    data-bank="sbi card"
+                    data-type="credit"
+                    data-fee="999"
+                    data-benefit="Illustrative online-shopping cashback card example. Check exclusions and current terms."
+                    data-joining="999">
 
+                    <div class="card-banner gradient-blue">
+                        <div class="banner-top">
+                            <span class="bank-name">SBI CARD</span>
+                            <span class="card-type-badge">CREDIT</span>
+                        </div>
+                        <h3 class="offer-name">SBI Cashback Card</h3>
+                        <div class="banner-bottom">
+                            <span>Shopping & rewards</span>
+                            <i data-lucide="shopping-bag" style="width:25px;height:25px;"></i>
+                        </div>
+                    </div>
 
-/* ==========================================
-   FILTER
-   ========================================== */
+                    <div class="offer-body">
+                        <div class="fee-grid">
+                            <div class="fee-box">
+                                <div class="fee-label">Annual Fee*</div>
+                                <div class="fee-value">₹999</div>
+                            </div>
+                            <div class="fee-box">
+                                <div class="fee-label">Joining Fee*</div>
+                                <div class="fee-value">₹999</div>
+                            </div>
+                        </div>
 
-function setFilter(filter) {
+                        <div class="benefit">
+                            <span class="benefit-icon"><i data-lucide="gift"></i></span>
+                            <span>Designed as an example of a shopping-rewards card.</span>
+                        </div>
 
+                        <button class="view-button" type="button" data-details>
+                            View Details <i data-lucide="arrow-up-right"></i>
+                        </button>
+                    </div>
+                </article>
 
-    currentFilter =
-        filter;
+                <!-- Card 3 -->
+                <article class="offer-card"
+                    data-name="sbi card prime"
+                    data-bank="sbi card"
+                    data-type="credit"
+                    data-fee="2999"
+                    data-benefit="Illustrative premium rewards card example. Verify current benefits and conditions."
+                    data-joining="2999">
 
+                    <div class="card-banner gradient-black">
+                        <div class="banner-top">
+                            <span class="bank-name">SBI CARD</span>
+                            <span class="card-type-badge">CREDIT</span>
+                        </div>
+                        <h3 class="offer-name">SBI Card PRIME</h3>
+                        <div class="banner-bottom">
+                            <span>Premium rewards</span>
+                            <i data-lucide="gem" style="width:25px;height:25px;"></i>
+                        </div>
+                    </div>
 
-    document
-        .querySelectorAll(
-            ".filter-button"
-        )
-        .forEach(
-            function(button) {
+                    <div class="offer-body">
+                        <div class="fee-grid">
+                            <div class="fee-box">
+                                <div class="fee-label">Annual Fee*</div>
+                                <div class="fee-value">₹2,999</div>
+                            </div>
+                            <div class="fee-box">
+                                <div class="fee-label">Joining Fee*</div>
+                                <div class="fee-value">₹2,999</div>
+                            </div>
+                        </div>
 
-                button.classList.remove(
-                    "active"
-                );
+                        <div class="benefit">
+                            <span class="benefit-icon"><i data-lucide="award"></i></span>
+                            <span>Example of a card focused on premium rewards.</span>
+                        </div>
 
+                        <button class="view-button" type="button" data-details>
+                            View Details <i data-lucide="arrow-up-right"></i>
+                        </button>
+                    </div>
+                </article>
+
+                <!-- Card 4 -->
+                <article class="offer-card"
+                    data-name="simplyclick sbi card"
+                    data-bank="sbi card"
+                    data-type="credit"
+                    data-fee="499"
+                    data-benefit="Illustrative online-shopping rewards card example. Terms may vary."
+                    data-joining="499">
+
+                    <div class="card-banner gradient-orange">
+                        <div class="banner-top">
+                            <span class="bank-name">SBI CARD</span>
+                            <span class="card-type-badge">CREDIT</span>
+                        </div>
+                        <h3 class="offer-name">SimplyCLICK SBI Card</h3>
+                        <div class="banner-bottom">
+                            <span>Online shopping</span>
+                            <i data-lucide="mouse-pointer-click" style="width:25px;height:25px;"></i>
+                        </div>
+                    </div>
+
+                    <div class="offer-body">
+                        <div class="fee-grid">
+                            <div class="fee-box">
+                                <div class="fee-label">Annual Fee*</div>
+                                <div class="fee-value">₹499</div>
+                            </div>
+                            <div class="fee-box">
+                                <div class="fee-label">Joining Fee*</div>
+                                <div class="fee-value">₹499</div>
+                            </div>
+                        </div>
+
+                        <div class="benefit">
+                            <span class="benefit-icon"><i data-lucide="shopping-cart"></i></span>
+                            <span>Example of a card for online-shopping rewards.</span>
+                        </div>
+
+                        <button class="view-button" type="button" data-details>
+                            View Details <i data-lucide="arrow-up-right"></i>
+                        </button>
+                    </div>
+                </article>
+
+                <!-- Card 5 -->
+                <article class="offer-card"
+                    data-name="airtel axis bank credit card"
+                    data-bank="axis bank"
+                    data-type="credit"
+                    data-fee="500"
+                    data-benefit="Illustrative utility and telecom rewards card example. Check eligible categories."
+                    data-joining="500">
+
+                    <div class="card-banner gradient-rose">
+                        <div class="banner-top">
+                            <span class="bank-name">AXIS BANK</span>
+                            <span class="card-type-badge">CREDIT</span>
+                        </div>
+                        <h3 class="offer-name">Airtel Axis Bank Credit Card</h3>
+                        <div class="banner-bottom">
+                            <span>Utilities & telecom</span>
+                            <i data-lucide="smartphone" style="width:25px;height:25px;"></i>
+                        </div>
+                    </div>
+
+                    <div class="offer-body">
+                        <div class="fee-grid">
+                            <div class="fee-box">
+                                <div class="fee-label">Annual Fee*</div>
+                                <div class="fee-value">₹500</div>
+                            </div>
+                            <div class="fee-box">
+                                <div class="fee-label">Joining Fee*</div>
+                                <div class="fee-value">₹500</div>
+                            </div>
+                        </div>
+
+                        <div class="benefit">
+                            <span class="benefit-icon"><i data-lucide="zap"></i></span>
+                            <span>Example of a card for eligible utility payments.</span>
+                        </div>
+
+                        <button class="view-button" type="button" data-details>
+                            View Details <i data-lucide="arrow-up-right"></i>
+                        </button>
+                    </div>
+                </article>
+
+                <!-- Card 6 -->
+                <article class="offer-card"
+                    data-name="axis bank privilege credit card"
+                    data-bank="axis bank"
+                    data-type="credit"
+                    data-fee="1500"
+                    data-benefit="Illustrative lifestyle and rewards card example. Verify the exact product and terms."
+                    data-joining="1500">
+
+                    <div class="card-banner gradient-indigo">
+                        <div class="banner-top">
+                            <span class="bank-name">AXIS BANK</span>
+                            <span class="card-type-badge">CREDIT</span>
+                        </div>
+                        <h3 class="offer-name">Axis Privilege Card</h3>
+                        <div class="banner-bottom">
+                            <span>Lifestyle benefits</span>
+                            <i data-lucide="star" style="width:25px;height:25px;"></i>
+                        </div>
+                    </div>
+
+                    <div class="offer-body">
+                        <div class="fee-grid">
+                            <div class="fee-box">
+                                <div class="fee-label">Annual Fee*</div>
+                                <div class="fee-value">₹1,500</div>
+                            </div>
+                            <div class="fee-box">
+                                <div class="fee-label">Joining Fee*</div>
+                                <div class="fee-value">₹1,500</div>
+                            </div>
+                        </div>
+
+                        <div class="benefit">
+                            <span class="benefit-icon"><i data-lucide="sparkles"></i></span>
+                            <span>Example of a lifestyle-oriented card.</span>
+                        </div>
+
+                        <button class="view-button" type="button" data-details>
+                            View Details <i data-lucide="arrow-up-right"></i>
+                        </button>
+                    </div>
+                </article>
+
+                <!-- Card 7 -->
+                <article class="offer-card"
+                    data-name="visa platinum debit card"
+                    data-bank="indusind bank"
+                    data-type="debit"
+                    data-fee="0"
+                    data-benefit="Illustrative debit card listing. Check your account's actual charges and benefits."
+                    data-joining="0">
+
+                    <div class="card-banner gradient-teal">
+                        <div class="banner-top">
+                            <span class="bank-name">INDUSIND BANK</span>
+                            <span class="card-type-badge">DEBIT</span>
+                        </div>
+                        <h3 class="offer-name">Visa Platinum Debit Card</h3>
+                        <div class="banner-bottom">
+                            <span>Banking & payments</span>
+                            <i data-lucide="wallet" style="width:25px;height:25px;"></i>
+                        </div>
+                    </div>
+
+                    <div class="offer-body">
+                        <div class="fee-grid">
+                            <div class="fee-box">
+                                <div class="fee-label">Annual Fee*</div>
+                                <div class="fee-value">₹0</div>
+                            </div>
+                            <div class="fee-box">
+                                <div class="fee-label">Joining Fee*</div>
+                                <div class="fee-value">₹0</div>
+                            </div>
+                        </div>
+
+                        <div class="benefit">
+                            <span class="benefit-icon"><i data-lucide="shield-check"></i></span>
+                            <span>Example of a debit card for everyday banking.</span>
+                        </div>
+
+                        <button class="view-button" type="button" data-details>
+                            View Details <i data-lucide="arrow-up-right"></i>
+                        </button>
+                    </div>
+                </article>
+
+                <!-- Card 8 -->
+                <article class="offer-card"
+                    data-name="boi debit card"
+                    data-bank="bank of india boi"
+                    data-type="debit"
+                    data-fee="0"
+                    data-benefit="Illustrative debit card listing. Actual fees depend on your account and card variant."
+                    data-joining="0">
+
+                    <div class="card-banner gradient-blue">
+                        <div class="banner-top">
+                            <span class="bank-name">BANK OF INDIA</span>
+                            <span class="card-type-badge">DEBIT</span>
+                        </div>
+                        <h3 class="offer-name">BOI Debit Card</h3>
+                        <div class="banner-bottom">
+                            <span>Everyday banking</span>
+                            <i data-lucide="landmark" style="width:25px;height:25px;"></i>
+                        </div>
+                    </div>
+
+                    <div class="offer-body">
+                        <div class="fee-grid">
+                            <div class="fee-box">
+                                <div class="fee-label">Annual Fee*</div>
+                                <div class="fee-value">₹0</div>
+                            </div>
+                            <div class="fee-box">
+                                <div class="fee-label">Joining Fee*</div>
+                                <div class="fee-value">₹0</div>
+                            </div>
+                        </div>
+
+                        <div class="benefit">
+                            <span class="benefit-icon"><i data-lucide="banknote"></i></span>
+                            <span>Example of a standard bank debit card.</span>
+                        </div>
+
+                        <button class="view-button" type="button" data-details>
+                            View Details <i data-lucide="arrow-up-right"></i>
+                        </button>
+                    </div>
+                </article>
+
+                <!-- Card 9 -->
+                <article class="offer-card"
+                    data-name="multicurrency platinum forexplus card"
+                    data-bank="hdfc bank"
+                    data-type="prepaid"
+                    data-fee="500"
+                    data-benefit="Illustrative multi-currency prepaid travel card. Check currency and loading fees."
+                    data-joining="500">
+
+                    <div class="card-banner gradient-green">
+                        <div class="banner-top">
+                            <span class="bank-name">HDFC BANK</span>
+                            <span class="card-type-badge">PREPAID</span>
+                        </div>
+                        <h3 class="offer-name">Multicurrency ForexPlus</h3>
+                        <div class="banner-bottom">
+                            <span>International travel</span>
+                            <i data-lucide="globe" style="width:25px;height:25px;"></i>
+                        </div>
+                    </div>
+
+                    <div class="offer-body">
+                        <div class="fee-grid">
+                            <div class="fee-box">
+                                <div class="fee-label">Annual Fee*</div>
+                                <div class="fee-value">₹500</div>
+                            </div>
+                            <div class="fee-box">
+                                <div class="fee-label">Joining Fee*</div>
+                                <div class="fee-value">₹500</div>
+                            </div>
+                        </div>
+
+                        <div class="benefit">
+                            <span class="benefit-icon"><i data-lucide="plane"></i></span>
+                            <span>Example of a multi-currency travel card.</span>
+                        </div>
+
+                        <button class="view-button" type="button" data-details>
+                            View Details <i data-lucide="arrow-up-right"></i>
+                        </button>
+                    </div>
+                </article>
+
+                <!-- Card 10 -->
+                <article class="offer-card"
+                    data-name="icici expressions sapphiro forex card"
+                    data-bank="icici bank"
+                    data-type="prepaid"
+                    data-fee="500"
+                    data-benefit="Illustrative prepaid forex card listing. Confirm current charges with the issuer."
+                    data-joining="500">
+
+                    <div class="card-banner gradient-purple">
+                        <div class="banner-top">
+                            <span class="bank-name">ICICI BANK</span>
+                            <span class="card-type-badge">PREPAID</span>
+                        </div>
+                        <h3 class="offer-name">Expressions Sapphiro Forex</h3>
+                        <div class="banner-bottom">
+                            <span>Travel & currencies</span>
+                            <i data-lucide="globe-2" style="width:25px;height:25px;"></i>
+                        </div>
+                    </div>
+
+                    <div class="offer-body">
+                        <div class="fee-grid">
+                            <div class="fee-box">
+                                <div class="fee-label">Annual Fee*</div>
+                                <div class="fee-value">₹500</div>
+                            </div>
+                            <div class="fee-box">
+                                <div class="fee-label">Joining Fee*</div>
+                                <div class="fee-value">₹500</div>
+                            </div>
+                        </div>
+
+                        <div class="benefit">
+                            <span class="benefit-icon"><i data-lucide="plane"></i></span>
+                            <span>Example of a prepaid travel-card product.</span>
+                        </div>
+
+                        <button class="view-button" type="button" data-details>
+                            View Details <i data-lucide="arrow-up-right"></i>
+                        </button>
+                    </div>
+                </article>
+
+                <!-- Card 11 -->
+                <article class="offer-card"
+                    data-name="bharat yatra rupay card"
+                    data-bank="pine labs"
+                    data-type="transport"
+                    data-fee="0"
+                    data-benefit="Illustrative transit-card listing. Check supported networks and current charges."
+                    data-joining="0">
+
+                    <div class="card-banner gradient-orange">
+                        <div class="banner-top">
+                            <span class="bank-name">PINE LABS</span>
+                            <span class="card-type-badge">TRANSPORT</span>
+                        </div>
+                        <h3 class="offer-name">Bharat Yatra RuPay Card</h3>
+                        <div class="banner-bottom">
+                            <span>Transit payments</span>
+                            <i data-lucide="train-front" style="width:25px;height:25px;"></i>
+                        </div>
+                    </div>
+
+                    <div class="offer-body">
+                        <div class="fee-grid">
+                            <div class="fee-box">
+                                <div class="fee-label">Annual Fee*</div>
+                                <div class="fee-value">₹0</div>
+                            </div>
+                            <div class="fee-box">
+                                <div class="fee-label">Joining Fee*</div>
+                                <div class="fee-value">₹0</div>
+                            </div>
+                        </div>
+
+                        <div class="benefit">
+                            <span class="benefit-icon"><i data-lucide="train-front"></i></span>
+                            <span>Example of a transport-oriented payment card.</span>
+                        </div>
+
+                        <button class="view-button" type="button" data-details>
+                            View Details <i data-lucide="arrow-up-right"></i>
+                        </button>
+                    </div>
+                </article>
+
+                <!-- Card 12 -->
+                <article class="offer-card"
+                    data-name="airtel payments bank ncmc card"
+                    data-bank="airtel payments bank"
+                    data-type="transport"
+                    data-fee="0"
+                    data-benefit="Illustrative NCMC/transit listing. Availability and fees depend on the issuer."
+                    data-joining="0">
+
+                    <div class="card-banner gradient-indigo">
+                        <div class="banner-top">
+                            <span class="bank-name">AIRTEL PAYMENTS BANK</span>
+                            <span class="card-type-badge">TRANSPORT</span>
+                        </div>
+                        <h3 class="offer-name">Airtel Payments Bank NCMC</h3>
+                        <div class="banner-bottom">
+                            <span>Transit & mobility</span>
+                            <i data-lucide="bus-front" style="width:25px;height:25px;"></i>
+                        </div>
+                    </div>
+
+                    <div class="offer-body">
+                        <div class="fee-grid">
+                            <div class="fee-box">
+                                <div class="fee-label">Annual Fee*</div>
+                                <div class="fee-value">₹0</div>
+                            </div>
+                            <div class="fee-box">
+                                <div class="fee-label">Joining Fee*</div>
+                                <div class="fee-value">₹0</div>
+                            </div>
+                        </div>
+
+                        <div class="benefit">
+                            <span class="benefit-icon"><i data-lucide="bus-front"></i></span>
+                            <span>Example of a transport payment-card listing.</span>
+                        </div>
+
+                        <button class="view-button" type="button" data-details>
+                            View Details <i data-lucide="arrow-up-right"></i>
+                        </button>
+                    </div>
+                </article>
+
+                <!-- Empty state -->
+                <div class="empty-state" id="emptyState">
+                    <i data-lucide="search-x"></i>
+                    <h3>No cards found</h3>
+                    <p>Try another search term or choose a different card category.</p>
+                </div>
+
+            </div>
+        </section>
+
+        <div class="disclaimer">
+            <strong>Important:</strong> This page contains illustrative sample cards, fees, and benefit descriptions for UI demonstration. They are not verified, live offers and may not represent current issuer terms. Verify fees, eligibility, rewards, and conditions on the relevant issuer's official website before applying. CardHub does not submit applications from this page.
+        </div>
+
+    </main>
+
+    <!-- Card details modal -->
+    <div class="modal-backdrop" id="detailsModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+        <div class="modal">
+
+            <div class="modal-header">
+                <div>
+                    <div class="modal-bank" id="modalBank">BANK</div>
+                    <h2 id="modalTitle">Card name</h2>
+                </div>
+
+                <button class="modal-close" id="closeModal" type="button" aria-label="Close details">
+                    <i data-lucide="x"></i>
+                </button>
+            </div>
+
+            <div class="modal-fees">
+                <div class="modal-info">
+                    <span>Annual fee*</span>
+                    <strong id="modalAnnualFee">₹0</strong>
+                </div>
+
+                <div class="modal-info">
+                    <span>Joining fee*</span>
+                    <strong id="modalJoiningFee">₹0</strong>
+                </div>
+            </div>
+
+            <div class="modal-description">
+                <strong>Card information</strong>
+                <p id="modalDescription"></p>
+                <p>
+                    Verify the issuer's official terms, charges, eligibility requirements,
+                    and benefits before applying.
+                </p>
+            </div>
+
+            <div class="modal-actions">
+                <button class="secondary-button" id="closeModalButton" type="button">
+                    Close
+                </button>
+
+                <button class="primary-button" id="addCardButton" type="button">
+                    <i data-lucide="plus"></i>
+                    Add to My Cards
+                </button>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        // Initialize icons.
+        if (window.lucide) {
+            lucide.createIcons();
+        }
+
+        // Mobile sidebar.
+        const sidebar = document.getElementById("sidebar");
+        const mobileOverlay = document.getElementById("mobileOverlay");
+        const mobileMenuButton = document.getElementById("mobileMenuButton");
+
+        function setMobileMenu(open) {
+            sidebar.classList.toggle("open", open);
+            mobileOverlay.classList.toggle("open", open);
+            mobileMenuButton.setAttribute("aria-expanded", String(open));
+        }
+
+        mobileMenuButton.addEventListener("click", () => {
+            setMobileMenu(!sidebar.classList.contains("open"));
+        });
+
+        mobileOverlay.addEventListener("click", () => {
+            setMobileMenu(false);
+        });
+
+        document.querySelectorAll(".nav-link").forEach(link => {
+            link.addEventListener("click", () => setMobileMenu(false));
+        });
+
+        // Back button.
+        document.getElementById("backButton").addEventListener("click", () => {
+            if (window.history.length > 1) {
+                window.history.back();
+            } else {
+                window.location.href = "dashboard.html";
             }
-        );
+        });
 
+        // Search and category filters.
+        const searchInput = document.getElementById("searchInput");
+        const filterPills = document.querySelectorAll(".filter-pill");
+        const cardsGrid = document.getElementById("cardsGrid");
+        const emptyState = document.getElementById("emptyState");
+        const resultsCount = document.getElementById("resultsCount");
+        const sortSelect = document.getElementById("sortSelect");
 
-    const activeButton =
-        document.querySelector(
-            `.filter-button[data-filter="${filter}"]`
-        );
+        let activeFilter = "all";
 
+        function getCards() {
+            return Array.from(cardsGrid.querySelectorAll(".offer-card"));
+        }
 
-    if (activeButton) {
+        function updateCards() {
+            const query = searchInput.value.trim().toLowerCase();
+            const cards = getCards();
 
-        activeButton.classList.add(
-            "active"
-        );
+            let visibleCount = 0;
 
-    }
+            cards.forEach(card => {
+                const searchableText = [
+                    card.dataset.name,
+                    card.dataset.bank,
+                    card.dataset.type,
+                    card.dataset.benefit
+                ].join(" ").toLowerCase();
 
+                const matchesSearch = searchableText.includes(query);
 
-    renderCards();
+                const matchesFilter =
+                    activeFilter === "all" ||
+                    card.dataset.type === activeFilter;
 
-}
+                const visible = matchesSearch && matchesFilter;
 
+                card.style.display = visible ? "" : "none";
 
-/* ==========================================
-   SEARCH
-   ========================================== */
+                if (visible) {
+                    visibleCount++;
+                }
+            });
 
-document
-    .getElementById(
-        "searchInput"
-    )
-    .addEventListener(
-        "input",
-        renderCards
-    );
+            resultsCount.innerHTML =
+                "<strong>" + visibleCount + "</strong> cards found";
 
+            emptyState.style.display = visibleCount === 0 ? "block" : "none";
+        }
 
-/* ==========================================
-   VIEW DETAILS
-   ========================================== */
+        searchInput.addEventListener("input", updateCards);
 
-function viewCard(cardId) {
+        filterPills.forEach(button => {
+            button.addEventListener("click", () => {
+                activeFilter = button.dataset.filter;
 
-    window.location.href =
-        "explore-card-details.html?id=" +
-        cardId;
+                filterPills.forEach(pill => {
+                    const active = pill === button;
+                    pill.classList.toggle("active", active);
+                    pill.setAttribute("aria-pressed", String(active));
+                });
 
-}
+                updateCards();
+            });
 
+            button.setAttribute(
+                "aria-pressed",
+                String(button.classList.contains("active"))
+            );
+        });
 
-/* ==========================================
-   START
-   ========================================== */
+        // Clear search and category filters.
+        document.getElementById("clearFilters").addEventListener("click", () => {
+            searchInput.value = "";
+            activeFilter = "all";
 
-loadCards();
+            filterPills.forEach(button => {
+                const active = button.dataset.filter === "all";
+                button.classList.toggle("active", active);
+                button.setAttribute("aria-pressed", String(active));
+            });
 
+            sortSelect.value = "default";
+            sortCards();
+            updateCards();
+        });
 
-</script>
+        // Sorting.
+        function sortCards() {
+            const cards = getCards();
+            const sortValue = sortSelect.value;
 
+            cards.sort((a, b) => {
+                if (sortValue === "fee-low") {
+                    return Number(a.dataset.fee) - Number(b.dataset.fee);
+                }
 
-<script id="cardhub-sidebar-behavior">
-(function(){
- const nav=document.querySelector('nav.bottom-navigation'); if(!nav||document.getElementById('cardhub-sidebar-toggle'))return;
- const btn=document.createElement('button'); btn.id='cardhub-sidebar-toggle'; btn.type='button'; btn.setAttribute('aria-label','Compact or expand sidebar'); btn.title='Compact / expand sidebar'; btn.textContent='‹'; document.body.appendChild(btn);
- const saved=localStorage.getItem('cardhubSidebarCompact')==='true'; if(saved)document.body.classList.add('cardhub-sidebar-compact');
- function sync(){const compact=document.body.classList.contains('cardhub-sidebar-compact');btn.textContent=compact?'›':'‹';btn.setAttribute('aria-expanded',String(!compact));}
- btn.addEventListener('click',function(){document.body.classList.toggle('cardhub-sidebar-compact');localStorage.setItem('cardhubSidebarCompact',String(document.body.classList.contains('cardhub-sidebar-compact')));sync();}); sync();
-})();
-</script>
+                if (sortValue === "fee-high") {
+                    return Number(b.dataset.fee) - Number(a.dataset.fee);
+                }
+
+                if (sortValue === "name") {
+                    return a.dataset.name.localeCompare(b.dataset.name);
+                }
+
+                return 0;
+            });
+
+            cards.forEach(card => cardsGrid.insertBefore(card, emptyState));
+        }
+
+        sortSelect.addEventListener("change", () => {
+            sortCards();
+            updateCards();
+        });
+
+        // Details modal.
+        const modal = document.getElementById("detailsModal");
+        let selectedCard = null;
+
+        function formatINR(amount) {
+            return new Intl.NumberFormat("en-IN", {
+                style: "currency",
+                currency: "INR",
+                maximumFractionDigits: 0
+            }).format(Number(amount) || 0);
+        }
+
+        function openDetails(card) {
+            selectedCard = card;
+
+            document.getElementById("modalBank").textContent =
+                card.dataset.bank.toUpperCase();
+
+            document.getElementById("modalTitle").textContent =
+                card.querySelector(".offer-name").textContent;
+
+            document.getElementById("modalAnnualFee").textContent =
+                formatINR(card.dataset.fee);
+
+            document.getElementById("modalJoiningFee").textContent =
+                formatINR(card.dataset.joining);
+
+            document.getElementById("modalDescription").textContent =
+                card.dataset.benefit;
+
+            modal.classList.add("open");
+            document.getElementById("closeModal").focus();
+            document.body.style.overflow = "hidden";
+        }
+
+        function closeDetails() {
+            modal.classList.remove("open");
+            document.body.style.overflow = "";
+            selectedCard = null;
+        }
+
+        document.querySelectorAll("[data-details]").forEach(button => {
+            button.addEventListener("click", () => {
+                openDetails(button.closest(".offer-card"));
+            });
+        });
+
+        document.getElementById("closeModal").addEventListener("click", closeDetails);
+        document.getElementById("closeModalButton").addEventListener("click", closeDetails);
+
+        modal.addEventListener("click", event => {
+            if (event.target === modal) {
+                closeDetails();
+            }
+        });
+
+        document.addEventListener("keydown", event => {
+            if (event.key === "Escape") {
+                closeDetails();
+                setMobileMenu(false);
+            }
+        });
+
+        // The current mockup links to Add Card but does not automatically
+        // create a database record. That requires the existing Supabase flow.
+        document.getElementById("addCardButton").addEventListener("click", () => {
+            if (!selectedCard) return;
+
+            const cardName = selectedCard.querySelector(".offer-name").textContent;
+
+            const confirmed = window.confirm(
+                'Open the Add Card page to add "' + cardName +
+                '" to your personal card collection?'
+            );
+
+            if (confirmed) {
+                window.location.href = "add-card.html";
+            }
+        });
+
+        // Set the current user's display name when Supabase Auth is available.
+        // This page remains usable without loading Supabase directly.
+        async function loadUserName() {
+            try {
+                if (!window.supabaseClient) return;
+
+                const { data, error } =
+                    await window.supabaseClient.auth.getUser();
+
+                if (!error && data.user) {
+                    const user = data.user;
+                    const displayName =
+                        user.user_metadata?.full_name ||
+                        user.user_metadata?.name ||
+                        user.email ||
+                        "My CardHub";
+
+                    document.getElementById("profileName").textContent =
+                        displayName;
+
+                    const initials = displayName
+                        .split(/[\s@.]+/)
+                        .filter(Boolean)
+                        .slice(0, 2)
+                        .map(part => part[0].toUpperCase())
+                        .join("");
+
+                    document.querySelector(".avatar").textContent =
+                        initials || "CH";
+                }
+            } catch (error) {
+                console.warn("Could not load profile information.", error);
+            }
+        }
+
+        loadUserName();
+        updateCards();
+    </script>
+
 </body>
-
 </html>
