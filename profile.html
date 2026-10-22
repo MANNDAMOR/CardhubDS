@@ -700,46 +700,26 @@ button:focus-visible,a:focus-visible{outline:3px solid rgba(65,105,225,.35);outl
 @media(max-width:600px){.profile-page{padding:18px 14px 34px!important}.profile-topbar{margin-bottom:20px;padding-bottom:15px}.profile-topbar h1{font-size:25px!important}.profile-hero{padding:25px 18px!important}.info-card{padding:6px 15px!important}.info-row{align-items:flex-start!important}.info-icon{width:36px!important;height:36px!important}.bottom-navigation{z-index:1000}}
 </style>
 
-
-<style id="cardhub-profile-layout-fix">
-/* Use the wide desktop space efficiently: profile hero on the left, account details on the right. */
-#profileContent{display:none;grid-template-columns:minmax(280px,.82fr) minmax(0,1.18fr);gap:22px;align-items:start;width:100%;}
-#profileContent[style*="display: grid"]{display:grid!important;}
-#profileContent .profile-hero{grid-column:1!important;grid-row:1!important;min-height:245px!important;align-self:start!important;}
-#profileContent .profile-section:nth-of-type(2){grid-column:2!important;grid-row:1!important;}
-#profileContent .profile-section:nth-of-type(3){grid-column:1/-1!important;grid-row:2!important;}
-#profileContent .logout-card{grid-column:1/-1!important;}
-@media(max-width:850px){#profileContent{grid-template-columns:minmax(0,1fr)!important;gap:18px!important;}#profileContent .profile-hero,#profileContent .profile-section:nth-of-type(2),#profileContent .profile-section:nth-of-type(3),#profileContent .logout-card{grid-column:1!important;grid-row:auto!important;}#profileContent .profile-hero{min-height:0!important;}}
+<style id="cardhub-shared-sidebar">
+/* CardHub shared sidebar layout */
+:root{--ch-sidebar-width:244px;--ch-sidebar-compact:82px;--ch-sidebar-bg:#15194e;--ch-sidebar-bg2:#321783;--ch-accent:#5638f4}
+nav.bottom-navigation{position:fixed!important;inset:0 auto 0 0!important;width:var(--ch-sidebar-width)!important;height:100vh!important;display:flex!important;flex-direction:column!important;justify-content:flex-start!important;align-items:stretch!important;gap:8px!important;padding:112px 14px 24px!important;margin:0!important;overflow-x:hidden!important;overflow-y:auto!important;background:linear-gradient(180deg,#121b4b 0%,#29156d 100%)!important;border:0!important;border-radius:0!important;box-shadow:none!important;z-index:9999!important;box-sizing:border-box!important;transition:width .22s ease,padding .22s ease!important}
+nav.bottom-navigation:before{content:'C  CardHub';position:fixed;top:0;left:0;width:var(--ch-sidebar-width);height:88px;display:flex;align-items:center;padding-left:26px;box-sizing:border-box;color:#fff;font-size:24px;font-weight:800;letter-spacing:-.5px;background:linear-gradient(180deg,#121b4b 0%,#15194e 100%);transition:width .22s ease}
+nav.bottom-navigation .nav-item{width:100%!important;max-width:none!important;min-width:0!important;min-height:54px!important;display:flex!important;flex-direction:row!important;align-items:center!important;justify-content:flex-start!important;gap:14px!important;margin:0!important;padding:13px 16px!important;border:0!important;border-radius:13px!important;background:transparent!important;color:#eef0ff!important;text-decoration:none!important;text-align:left!important;box-sizing:border-box!important;transition:background .15s ease!important}
+nav.bottom-navigation .nav-item:hover{background:rgba(255,255,255,.11)!important}
+nav.bottom-navigation .nav-item.active{background:linear-gradient(100deg,#6247ff,#4930e8)!important;color:#fff!important;box-shadow:0 6px 18px rgba(43,24,157,.22)!important}
+nav.bottom-navigation .nav-item span{display:inline-flex!important;align-items:center!important;justify-content:center!important;flex:0 0 24px!important;width:24px!important;font-size:19px!important;line-height:1.2!important}
+nav.bottom-navigation .nav-item p{display:block!important;margin:0!important;padding:0!important;font-size:14px!important;font-weight:500!important;line-height:1.3!important;white-space:nowrap!important;color:inherit!important}
+#cardhub-sidebar-toggle{position:fixed;z-index:10001;left:198px;top:98px;width:32px;height:32px;border:1px solid rgba(255,255,255,.22);border-radius:9px;background:#3827a4;color:white;font-size:18px;cursor:pointer;box-shadow:0 3px 10px #0002;transition:left .22s ease}
+body{padding-left:var(--ch-sidebar-width)!important;padding-bottom:0!important;box-sizing:border-box!important;transition:padding-left .22s ease!important}
+body.cardhub-sidebar-compact{padding-left:var(--ch-sidebar-compact)!important}
+body.cardhub-sidebar-compact nav.bottom-navigation{width:var(--ch-sidebar-compact)!important;padding:112px 10px 24px!important}
+body.cardhub-sidebar-compact nav.bottom-navigation:before{width:var(--ch-sidebar-compact);content:'C';padding-left:27px;font-size:25px}
+body.cardhub-sidebar-compact nav.bottom-navigation .nav-item{justify-content:center!important;padding:13px 8px!important}
+body.cardhub-sidebar-compact nav.bottom-navigation .nav-item p{display:none!important}
+body.cardhub-sidebar-compact #cardhub-sidebar-toggle{left:56px}
+@media(max-width:700px){:root{--ch-sidebar-width:200px;--ch-sidebar-compact:68px}nav.bottom-navigation{padding-left:9px!important;padding-right:9px!important}nav.bottom-navigation:before{padding-left:18px;font-size:21px}nav.bottom-navigation .nav-item{gap:9px!important;padding-left:11px!important;padding-right:8px!important}#cardhub-sidebar-toggle{left:157px}body.cardhub-sidebar-compact #cardhub-sidebar-toggle{left:42px}body{overflow-x:hidden}}
 </style>
-
-
-<style id="cardhub-profile-nav-fix">
-/* Fix: keep the mobile bottom navigation in one horizontal row */
-@media (max-width: 900px) {
-  nav.bottom-navigation {
-    position: fixed !important; left: 0 !important; right: 0 !important; bottom: 0 !important;
-    width: 100% !important; height: auto !important; min-height: 58px !important;
-    display: flex !important; flex-direction: row !important; flex-wrap: nowrap !important;
-    align-items: stretch !important; justify-content: space-around !important;
-    gap: 2px !important; padding: 7px 5px calc(7px + env(safe-area-inset-bottom)) !important;
-    margin: 0 !important; box-sizing: border-box !important;
-    background: rgba(255,255,255,.97) !important; border-top: 1px solid #e2e8f0 !important;
-  }
-  nav.bottom-navigation > a.nav-item {
-    display: flex !important; flex: 1 1 20% !important; flex-direction: column !important;
-    align-items: center !important; justify-content: center !important;
-    width: auto !important; min-width: 0 !important; max-width: 20% !important;
-    margin: 0 !important; padding: 5px 1px !important; gap: 2px !important;
-    text-align: center !important; white-space: nowrap !important;
-    text-decoration: none !important; border-radius: 10px !important;
-    box-sizing: border-box !important;
-  }
-  nav.bottom-navigation > a.nav-item span { display: block !important; font-size: 18px !important; line-height: 1.2 !important; }
-  nav.bottom-navigation > a.nav-item p { display: block !important; margin: 0 !important; font-size: 10px !important; line-height: 1.2 !important; white-space: nowrap !important; }
-  body { padding-bottom: 80px !important; }
-}
-</style>
-
 </head>
 
 
@@ -1746,6 +1726,15 @@ loadProfile();
 </script>
 
 
+<script id="cardhub-sidebar-behavior">
+(function(){
+ const nav=document.querySelector('nav.bottom-navigation'); if(!nav||document.getElementById('cardhub-sidebar-toggle'))return;
+ const btn=document.createElement('button'); btn.id='cardhub-sidebar-toggle'; btn.type='button'; btn.setAttribute('aria-label','Compact or expand sidebar'); btn.title='Compact / expand sidebar'; btn.textContent='‹'; document.body.appendChild(btn);
+ const saved=localStorage.getItem('cardhubSidebarCompact')==='true'; if(saved)document.body.classList.add('cardhub-sidebar-compact');
+ function sync(){const compact=document.body.classList.contains('cardhub-sidebar-compact');btn.textContent=compact?'›':'‹';btn.setAttribute('aria-expanded',String(!compact));}
+ btn.addEventListener('click',function(){document.body.classList.toggle('cardhub-sidebar-compact');localStorage.setItem('cardhubSidebarCompact',String(document.body.classList.contains('cardhub-sidebar-compact')));sync();}); sync();
+})();
+</script>
 </body>
 
 </html>
