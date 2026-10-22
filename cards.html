@@ -131,6 +131,44 @@ body .bottom-navigation{display:none!important}
 .ch-mobile-menu{display:none;border:1px solid #e1def1;background:white;border-radius:9px;padding:8px 11px;margin-right:10px}
 .ch-sidebar-overlay{display:none;position:fixed;inset:0;background:#100b3577;z-index:999}
 </style>
+
+<style id="cardhub-layout-repair">
+*{box-sizing:border-box}
+html{min-width:0!important}
+body{min-width:0!important;margin:0!important;background:#f3f4ff!important;color:#17172b}
+main.dashboard{margin:0!important;width:auto!important;max-width:none!important;min-height:100vh;padding:30px 30px 48px 280px!important}
+.dashboard-header{display:flex;align-items:center;justify-content:space-between;gap:18px;max-width:1500px;margin:0 auto 24px!important;padding:0 0 18px!important;border-bottom:1px solid #e4e4f1}
+.dashboard-header h1{font-size:clamp(26px,2.3vw,34px)!important;line-height:1.2;color:#191833!important;margin:8px 0!important}
+.dashboard-header .welcome-text{font-size:14px!important;color:#717187!important;margin:0}
+.notification-button{min-width:44px;min-height:44px;border:1px solid #e2e1ef!important;border-radius:12px!important;background:#fff!important;box-shadow:0 4px 14px #2017470b}
+.summary-grid{max-width:1500px;margin:0 auto 24px!important;display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.summary-card{min-width:0;background:#fff!important;border:1px solid #e2e2f0!important;border-radius:16px!important;padding:22px!important;box-shadow:0 5px 18px #20174708}
+.summary-card p{margin:0 0 9px;color:#77778d;font-size:14px}
+.summary-card h2{margin:0;color:#5838bd;font-size:28px;font-weight:800;overflow-wrap:anywhere}
+.summary-icon{display:inline-grid;place-items:center;width:42px;height:42px;border-radius:13px;background:#eee9ff;color:#6041c1;font-size:20px;margin-bottom:14px}
+main.dashboard>section:not(.summary-grid),main.dashboard>.details-section,main.dashboard>.add-card-banner{max-width:1500px;margin-left:auto!important;margin-right:auto!important}
+main.dashboard h2{letter-spacing:-.02em}
+.add-card-banner{background:linear-gradient(115deg,#fff,#f0edff)!important;border:1px solid #e2ddfa!important;border-radius:18px!important;padding:28px 30px!important;margin-bottom:22px!important;box-shadow:0 9px 25px #281b6209}
+.add-card-banner h2,.add-card-banner h1{color:#5233b2!important;margin-top:0}
+.add-card-banner button,.add-card-banner a.button,.primary-button{border:0!important;border-radius:10px!important;background:#5b38c4!important;color:#fff!important;padding:11px 17px!important;font-weight:700;box-shadow:0 4px 10px #452b991c}
+.card-search input,.search-input{border:1px solid #dedcf0!important;background:#fff!important;border-radius:11px!important;padding:12px 14px!important;max-width:100%;outline:none}
+.filter-row{display:flex!important;flex-wrap:wrap;gap:9px!important}
+.filter-button{border:1px solid #dedbed!important;background:#fff!important;color:#514477!important;border-radius:10px!important;padding:10px 16px!important}
+.filter-button.active,.filter-button[aria-pressed="true"]{background:#5b38c4!important;color:#fff!important;border-color:#5b38c4!important}
+.my-cards-list{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px!important}
+.user-card-item{background:#fff!important;border:1px solid #e3e2ef!important;border-radius:17px!important;box-shadow:0 7px 22px #21174709;padding:18px!important;min-width:0}
+.mini-card{border-radius:14px!important;max-width:100%}
+.user-card-info{min-width:0}
+.user-card-info h2,.user-card-info h3{overflow-wrap:anywhere}
+.details-section{background:#fff!important;border:1px solid #e3e2ef!important;border-radius:16px!important;padding:22px!important;box-shadow:0 5px 18px #20174707}
+button,input,select{font:inherit}
+@media(max-width:1100px){main.dashboard{padding:24px 20px 36px 270px!important}.summary-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.my-cards-list{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:760px){main.dashboard{padding:20px 14px 32px!important}.summary-grid{grid-template-columns:1fr}.my-cards-list{grid-template-columns:1fr}.dashboard-header{align-items:flex-start}.add-card-banner{padding:22px!important}}
+/* Keep the custom left navigation as the only desktop sidebar. */
+.cardhub-sidebar{box-sizing:border-box}
+body .bottom-navigation{display:none!important}
+</style>
+
 </head>
 
 
