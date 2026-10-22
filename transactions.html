@@ -20,15 +20,41 @@
 @media(max-width:760px){.sidebar{transform:translateX(-100%);transition:transform .2s;width:244px}.sidebar.open{transform:translateX(0)}.mobile-overlay.show{display:block;position:fixed;inset:0;background:#0a092b77;z-index:9}.main{margin-left:0;padding:18px 14px 30px}.menu-btn{display:block}.page-head{align-items:flex-start}.page-title{font-size:23px}.subtitle{font-size:13px;line-height:1.4}.head-actions .btn{padding:10px 11px;font-size:12px}.summary{grid-template-columns:1fr;gap:10px}.stat{padding:14px 16px}.stat-value{font-size:22px;margin-top:8px}.filters{grid-template-columns:1fr 1fr;padding:0 14px 15px}.search-wrap{grid-column:1/-1}.panel-header{padding:17px 14px 13px}.list{padding:0 14px 10px}.transaction{grid-template-columns:38px minmax(0,1fr);gap:10px}.transaction-icon{width:38px;height:38px}.transaction-right{grid-column:2;justify-content:space-between;width:100%;padding-top:2px}.transaction-info h3{font-size:13px}.amount{font-size:13px}.panel-header h2{font-size:16px}}
 @media(max-width:390px){.filters{grid-template-columns:1fr}.search-wrap{grid-column:auto}.head-actions .btn{font-size:11px;padding:9px}.transaction-actions{gap:4px}}
 </style>
+
+<style id="cardhub-shared-sidebar">
+:root{--ch-side-width:250px;--ch-side-bg:#191443;--ch-side-active:#5b35d5;--ch-side-text:#e8e5ff}
+body{background:#f4f5ff}
+.cardhub-sidebar{position:fixed;inset:0 auto 0 0;width:var(--ch-side-width);height:100vh;background:var(--ch-side-bg);color:var(--ch-side-text);z-index:1000;padding:28px 18px 16px;display:flex;flex-direction:column;font-family:Inter,Arial,sans-serif;overflow-y:auto}
+.cardhub-brand{display:flex;align-items:center;gap:12px;padding:0 12px 40px;font-size:23px;font-weight:800;color:white;letter-spacing:-.5px}
+.cardhub-brand-icon{width:42px;height:42px;border-radius:13px;background:linear-gradient(145deg,#9670ff,#5d31d7);display:grid;place-items:center;font-size:22px}
+.cardhub-nav-label{font-size:10px;font-weight:800;letter-spacing:2px;color:#aaa1e3;padding:0 12px 15px}
+.cardhub-nav{display:flex;flex-direction:column;gap:5px}
+.cardhub-nav a{height:46px;display:flex;align-items:center;gap:14px;padding:0 14px;border-radius:12px;text-decoration:none;color:#d9d5f3;font-size:14px;font-weight:500;transition:background .15s}
+.cardhub-nav a:hover{background:#ffffff12}.cardhub-nav a.active{background:var(--ch-side-active);color:white;box-shadow:0 7px 20px #3e20a544}
+.cardhub-nav .ch-icon{width:18px;text-align:center;font-size:19px;color:#c9c0ff}
+.cardhub-account{margin-top:auto;padding-top:28px}.cardhub-account .cardhub-nav-label{padding-bottom:15px}
+.cardhub-quick{display:flex;flex-direction:column;gap:4px}.cardhub-quick a{height:44px;display:flex;align-items:center;gap:13px;padding:0 14px;text-decoration:none;color:#d9d5f3;font-size:14px;border-radius:10px}.cardhub-quick a:hover{background:#ffffff12}
+.cardhub-user{margin-top:20px;border-top:1px solid #ffffff18;padding:16px 10px 0;display:flex;align-items:center;gap:11px}.cardhub-avatar{width:39px;height:39px;border-radius:50%;background:#e8ddff;color:#4c2bb4;display:grid;place-items:center;font-weight:800;flex-shrink:0}.cardhub-user strong{display:block;font-size:13px;color:white}.cardhub-user small{display:block;font-size:11px;color:#aaa1d8;margin-top:4px}
+body{padding-left:var(--ch-side-width)!important}
+body .bottom-navigation{display:none!important}
+@media(max-width:760px){.cardhub-sidebar{width:220px;transform:translateX(-100%);transition:transform .2s}.cardhub-sidebar.open{transform:translateX(0)}body{padding-left:0!important}.ch-mobile-menu{display:block!important}.ch-sidebar-overlay.show{display:block}}
+.ch-mobile-menu{display:none;border:1px solid #e1def1;background:white;border-radius:9px;padding:8px 11px;margin-right:10px}
+.ch-sidebar-overlay{display:none;position:fixed;inset:0;background:#100b3577;z-index:999}
+</style>
 </head>
 <body>
+<aside class="cardhub-sidebar" id="cardhubSidebar"><div class="cardhub-brand"><span class="cardhub-brand-icon">▱</span><span>CardHub</span></div><div class="cardhub-nav-label">WORKSPACE</div><nav class="cardhub-nav"><a href="dashboard.html" class=""><span class="ch-icon">▦</span><span>Dashboard</span></a><a href="cards.html" class=""><span class="ch-icon">▱</span><span>Cards</span></a><a href="transactions.html" class="active"><span class="ch-icon">⇄</span><span>Transactions</span></a><a href="explore.html" class=""><span class="ch-icon">◎</span><span>Explore</span></a></nav><section class="cardhub-account"><div class="cardhub-nav-label">ACCOUNT</div><div class="cardhub-quick"><a href="profile.html"><span class="ch-icon">⚙</span><span>Settings &amp; Profile</span></a><a href="add-card.html"><span class="ch-icon">⊕</span><span>Add Card</span></a><a href="add-transaction.html"><span class="ch-icon">⊕</span><span>Add Transaction</span></a></div><div class="cardhub-user"><div class="cardhub-avatar" id="chSidebarAvatar">CH</div><div><strong id="chSidebarName">My CardHub</strong><small>Personal account</small></div></div></section></aside><div class="ch-sidebar-overlay" id="chSidebarOverlay"></div>
 <aside class="sidebar" id="sidebar">
   <div class="brand"><span class="brand-icon">💳</span><span>CardHub</span></div>
   <nav class="nav" aria-label="Main navigation">
     <a href="dashboard.html"><span class="icon">▦</span><span>Dashboard</span></a>
     <a href="cards.html"><span class="icon">▱</span><span>Cards</span></a>
     <a class="active" href="transactions.html"><span class="icon">⇄</span><span>Transactions</span></a>
+    <a href="analytics.html"><span class="icon">▥</span><span>Analytics</span></a>
+    <a href="budgets.html"><span class="icon">♧</span><span>Budgets</span></a>
+    <a href="goals.html"><span class="icon">◎</span><span>Goals</span></a>
     <a href="explore.html"><span class="icon">⊙</span><span>Explore</span></a>
+    <a href="reports.html"><span class="icon">▤</span><span>Reports</span></a>
     <div class="nav-sep"></div>
     <a href="other-options.html"><span class="icon">☷</span><span>Other options</span></a>
     <a href="cardhudge.html"><span class="icon">⚙</span><span>CardHudge</span></a>
@@ -161,6 +187,20 @@ $('clearFilters').addEventListener('click',()=>{['searchInput','typeFilter','cat
 $('refreshBtn').addEventListener('click',loadTransactions);$('addBtn').addEventListener('click',()=>window.location.href='add-transaction.html');
 $('menuBtn').addEventListener('click',()=>{$('sidebar').classList.add('open');$('mobileOverlay').classList.add('show')});$('mobileOverlay').addEventListener('click',()=>{$('sidebar').classList.remove('open');$('mobileOverlay').classList.remove('show')});
 loadTransactions();
+</script>
+<script id="cardhub-sidebar-controls">
+(function(){
+ const side=document.getElementById('cardhubSidebar'), overlay=document.getElementById('chSidebarOverlay');
+ if(!side||!overlay)return;
+ const btn=document.createElement('button');btn.className='ch-mobile-menu';btn.type='button';btn.textContent='☰';btn.setAttribute('aria-label','Open navigation');
+ const heading=document.querySelector('h1');
+ if(heading&&heading.parentElement){heading.parentElement.insertBefore(btn,heading);}
+ btn.addEventListener('click',()=>{side.classList.add('open');overlay.classList.add('show')});
+ overlay.addEventListener('click',()=>{side.classList.remove('open');overlay.classList.remove('show')});
+ const name=document.getElementById('welcomeName');
+ const userName=document.getElementById('chSidebarName');
+ if(name&&userName)userName.textContent=name.textContent.replace(/\\s*👋\\s*$/,'')||'My CardHub';
+})();
 </script>
 </body>
 </html>
