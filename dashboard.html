@@ -34,7 +34,7 @@ body .bottom-navigation{display:none!important}
 *{box-sizing:border-box}
 html{min-width:0!important}
 body{min-width:0!important;margin:0!important;background:#f3f4ff!important;color:#17172b}
-main.dashboard{margin:0!important;width:auto!important;max-width:none!important;min-height:100vh;padding:30px 30px 48px 280px!important}
+main.dashboard{margin:0!important;width:auto!important;max-width:none!important;min-height:100vh;padding:30px 30px 48px!important}
 .dashboard-header{display:flex;align-items:center;justify-content:space-between;gap:18px;max-width:1500px;margin:0 auto 24px!important;padding:0 0 18px!important;border-bottom:1px solid #e4e4f1}
 .dashboard-header h1{font-size:clamp(26px,2.3vw,34px)!important;line-height:1.2;color:#191833!important;margin:8px 0!important}
 .dashboard-header .welcome-text{font-size:14px!important;color:#717187!important;margin:0}
@@ -60,7 +60,7 @@ main.dashboard h2{letter-spacing:-.02em}
 .user-card-info h2,.user-card-info h3{overflow-wrap:anywhere}
 .details-section{background:#fff!important;border:1px solid #e3e2ef!important;border-radius:16px!important;padding:22px!important;box-shadow:0 5px 18px #20174707}
 button,input,select{font:inherit}
-@media(max-width:1100px){main.dashboard{padding:24px 20px 36px 270px!important}.summary-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.my-cards-list{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:1100px){main.dashboard{padding:24px 20px 36px!important}.summary-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.my-cards-list{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:760px){main.dashboard{padding:20px 14px 32px!important}.summary-grid{grid-template-columns:1fr}.my-cards-list{grid-template-columns:1fr}.dashboard-header{align-items:flex-start}.add-card-banner{padding:22px!important}}
 /* Targeted fix: restore the dashboard card preview and quick-action tiles. */
 .dashboard-section{margin-top:24px!important}
@@ -76,6 +76,15 @@ button,input,select{font:inherit}
 .action-card>span{display:grid!important;place-items:center!important;width:40px!important;height:40px!important;border-radius:12px!important;background:#eee9ff!important;color:#5b38c4!important;font-size:23px!important}
 .action-card p{margin:0!important;font-size:15px!important;font-weight:700!important;color:#282044!important}
 @media(max-width:760px){.cards-scroll{grid-template-columns:1fr!important}.quick-actions{grid-template-columns:repeat(2,minmax(0,1fr))!important}.section-header h2{font-size:24px!important}}
+/* Correct the double offset: body already reserves sidebar width. */
+main.dashboard{padding-left:30px!important}
+@media(max-width:1100px){main.dashboard{padding-left:20px!important}}
+@media(max-width:760px){main.dashboard{padding-left:14px!important}}
+/* Explicitly restore the quick-action tiles. */
+.quick-actions{display:flex!important;flex-wrap:wrap!important;align-items:stretch!important;gap:14px!important}
+.quick-actions .action-card{appearance:none!important;-webkit-appearance:none!important;display:flex!important;flex-direction:column!important;align-items:flex-start!important;justify-content:center!important;gap:12px!important;width:160px!important;min-height:110px!important;padding:20px!important;border:1px solid #e2e0f0!important;border-radius:15px!important;background:#fff!important;color:#292044!important;box-shadow:0 5px 18px #20174708!important;font-family:inherit!important;font-size:15px!important;line-height:1.4!important;cursor:pointer!important;text-align:left!important}
+.quick-actions .action-card>span{display:grid!important;place-items:center!important;width:40px!important;height:40px!important;border-radius:12px!important;background:#eee9ff!important;color:#5b38c4!important;font-size:23px!important}
+.quick-actions .action-card p{margin:0!important;font-size:15px!important;font-weight:700!important;color:#282044!important}
 /* Keep the custom left navigation as the only desktop sidebar. */
 .cardhub-sidebar{box-sizing:border-box}
 body .bottom-navigation{display:none!important}
