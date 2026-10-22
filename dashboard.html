@@ -85,6 +85,25 @@ main.dashboard{padding-left:30px!important}
 .quick-actions .action-card{appearance:none!important;-webkit-appearance:none!important;display:flex!important;flex-direction:column!important;align-items:flex-start!important;justify-content:center!important;gap:12px!important;width:160px!important;min-height:110px!important;padding:20px!important;border:1px solid #e2e0f0!important;border-radius:15px!important;background:#fff!important;color:#292044!important;box-shadow:0 5px 18px #20174708!important;font-family:inherit!important;font-size:15px!important;line-height:1.4!important;cursor:pointer!important;text-align:left!important}
 .quick-actions .action-card>span{display:grid!important;place-items:center!important;width:40px!important;height:40px!important;border-radius:12px!important;background:#eee9ff!important;color:#5b38c4!important;font-size:23px!important}
 .quick-actions .action-card p{margin:0!important;font-size:15px!important;font-weight:700!important;color:#282044!important}
+/* Final dashboard layout and card preview restoration */
+main.dashboard{display:flex!important;flex-direction:column!important;align-items:stretch!important;gap:0!important}
+main.dashboard>.dashboard-header,main.dashboard>.summary-grid,main.dashboard>.dashboard-section{width:100%!important;max-width:1500px!important;flex:0 0 auto!important;align-self:stretch!important}
+main.dashboard>.dashboard-section{display:block!important;clear:both!important;float:none!important}
+main.dashboard>.quick-actions-section{order:3!important}
+main.dashboard>section.dashboard-section:last-child{order:4!important}
+.cards-scroll{display:grid!important;grid-template-columns:repeat(auto-fit,minmax(245px,1fr))!important;overflow:visible!important;padding:0!important}
+.card-preview{display:flex!important;flex-direction:column!important;justify-content:space-between!important;min-width:0!important;width:100%!important;height:180px!important;padding:20px!important;border-radius:18px!important;background:linear-gradient(135deg,#29264f 0%,#4c3b8e 55%,#7659d6 100%)!important;color:#fff!important;box-shadow:0 10px 25px #20174720!important;overflow:hidden!important}
+.card-preview .card-top{display:flex!important;justify-content:space-between!important;align-items:center!important;font-size:13px!important;font-weight:700!important;color:#fff!important}
+.card-preview .card-name{margin:12px 0 4px!important;font-size:16px!important;font-weight:700!important;color:#fff!important}
+.card-preview .card-number{margin:0!important;font-size:16px!important;letter-spacing:2px!important;color:#f6f3ff!important}
+.card-preview .card-bottom{display:flex!important;justify-content:space-between!important;gap:12px!important;margin-top:10px!important;font-size:11px!important;color:#f0ecff!important;opacity:.95!important}
+.quick-actions{display:flex!important;flex-wrap:wrap!important;align-items:stretch!important;gap:14px!important;margin:0 0 24px!important}
+.quick-actions .action-card{appearance:none!important;-webkit-appearance:none!important;display:flex!important;flex:0 0 160px!important;flex-direction:column!important;align-items:flex-start!important;justify-content:center!important;gap:12px!important;width:160px!important;min-height:120px!important;padding:20px!important;border:1px solid #e2e0f0!important;border-radius:15px!important;background:#fff!important;color:#292044!important;box-shadow:0 5px 18px #20174708!important;font-family:inherit!important;font-size:15px!important;line-height:1.4!important;cursor:pointer!important;text-align:left!important}
+.quick-actions .action-card>span{display:grid!important;place-items:center!important;flex:0 0 40px!important;width:40px!important;height:40px!important;border-radius:12px!important;background:#eee9ff!important;color:#5b38c4!important;font-size:23px!important}
+.quick-actions .action-card p{margin:0!important;font-size:15px!important;font-weight:700!important;color:#282044!important}
+.transaction-list{width:100%!important;display:block!important;clear:both!important}
+@media(max-width:760px){.cards-scroll{grid-template-columns:1fr!important}.quick-actions .action-card{flex-basis:calc(50% - 7px)!important;width:calc(50% - 7px)!important}}
+
 /* Keep the custom left navigation as the only desktop sidebar. */
 .cardhub-sidebar{box-sizing:border-box}
 body .bottom-navigation{display:none!important}
@@ -138,12 +157,6 @@ body .bottom-navigation{display:none!important}
 
             </div>
 
-
-
-
-            </div>
-
-
             <div class="summary-card">
 
                 <span class="summary-icon">₹</span>
@@ -187,47 +200,22 @@ body .bottom-navigation{display:none!important}
         </section>
 
 
-       <!-- Quick Actions -->
-
-
+        <!-- Quick Actions -->
+        <section class="dashboard-section quick-actions-section">
             <div class="section-header">
-
                 <h2>Quick Actions</h2>
-
             </div>
-
-
             <div class="quick-actions">
-
-                <button
-                    class="action-card"
-                    onclick="window.location.href='add-card.html'"
-                >
-
+                <button class="action-card" type="button" onclick="window.location.href='add-card.html'">
                     <span>＋</span>
-
                     <p>Add Card</p>
-
                 </button>
-
-
-                <button
-                    class="action-card"
-                    onclick="window.location.href='explore.html'"
-                >
-
+                <button class="action-card" type="button" onclick="window.location.href='explore.html'">
                     <span>🔎</span>
-
                     <p>Explore</p>
-
                 </button>
-
-
-               
-
-
-               
-
+            </div>
+        </section>
 
         <!-- Recent Transactions -->
         <section class="dashboard-section">
