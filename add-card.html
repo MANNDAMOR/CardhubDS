@@ -568,20 +568,31 @@ document
                Only last 4 digits are stored.
                ========================= */
 
-            const { data, error } =
-                await supabaseClient
-                    .from("cards")
-                    .insert({
-                        name: name,
-                        type: type,
-                        issuer: issuer,
-                        number_last4: number.slice(-4),
-                        expiry: expiry || null,
-                        status: status,
-                        notes: notes || null
-                    })
-                    .select()
-                    .single();
+           ```javascript
+const { data: { user }, error: userError } =
+    await supabaseClient.auth.getUser();
+
+if (userError || !user) {
+    alert("Please log in again before saving your card.");
+    return;
+}
+
+const { data, error } = await supabaseClient
+    .from("cards")
+    .insert({
+        user_id: user.id,
+        name: name,
+        type: type,
+        issuer: issuer,
+        number_last4: number.slice(-4),
+        expiry: expiry || null,
+        status: status,
+        notes: notes || null
+    })
+    .select()
+    .single();
+```
+
 
 
             /* =========================
