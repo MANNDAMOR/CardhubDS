@@ -197,6 +197,26 @@ main.dashboard > .details-section h2 { margin:0 0 17px; color:#30216f; font-size
 @media(max-width:650px) { main.dashboard { padding:22px 14px 90px; } .bottom-navigation { inset:auto 0 0 0; width:100%; height:auto; padding:8px 8px calc(8px + env(safe-area-inset-bottom)); flex-direction:row; justify-content:space-around; gap:3px; border-radius:16px 16px 0 0; } .bottom-navigation::before { display:none; } .nav-item { flex:1; flex-direction:column; justify-content:center; gap:4px; padding:9px 4px; text-align:center; } .nav-item span { width:auto; font-size:17px; } .nav-item p { font-size:10px; } .transaction-summary { gap:10px; } .summary-box { padding:17px 15px; } .summary-box strong { font-size:23px; } .transaction-add-box { padding:17px; align-items:flex-start; flex-direction:column; gap:13px; } .add-transaction-button { width:100%; } .form-row { grid-template-columns:1fr; gap:12px; } main.dashboard > .details-section,.transactions-section { padding:18px 15px; } .transaction-item { padding:13px 11px; gap:9px; } .transaction-right { max-width:42%; } }
 </style>
 
+<style id="cardhub-shared-sidebar">
+/* CardHub shared sidebar layout */
+:root{--ch-sidebar-width:244px;--ch-sidebar-compact:82px;--ch-sidebar-bg:#15194e;--ch-sidebar-bg2:#321783;--ch-accent:#5638f4}
+nav.bottom-navigation{position:fixed!important;inset:0 auto 0 0!important;width:var(--ch-sidebar-width)!important;height:100vh!important;display:flex!important;flex-direction:column!important;justify-content:flex-start!important;align-items:stretch!important;gap:8px!important;padding:112px 14px 24px!important;margin:0!important;overflow-x:hidden!important;overflow-y:auto!important;background:linear-gradient(180deg,#121b4b 0%,#29156d 100%)!important;border:0!important;border-radius:0!important;box-shadow:none!important;z-index:9999!important;box-sizing:border-box!important;transition:width .22s ease,padding .22s ease!important}
+nav.bottom-navigation:before{content:'C  CardHub';position:fixed;top:0;left:0;width:var(--ch-sidebar-width);height:88px;display:flex;align-items:center;padding-left:26px;box-sizing:border-box;color:#fff;font-size:24px;font-weight:800;letter-spacing:-.5px;background:linear-gradient(180deg,#121b4b 0%,#15194e 100%);transition:width .22s ease}
+nav.bottom-navigation .nav-item{width:100%!important;max-width:none!important;min-width:0!important;min-height:54px!important;display:flex!important;flex-direction:row!important;align-items:center!important;justify-content:flex-start!important;gap:14px!important;margin:0!important;padding:13px 16px!important;border:0!important;border-radius:13px!important;background:transparent!important;color:#eef0ff!important;text-decoration:none!important;text-align:left!important;box-sizing:border-box!important;transition:background .15s ease!important}
+nav.bottom-navigation .nav-item:hover{background:rgba(255,255,255,.11)!important}
+nav.bottom-navigation .nav-item.active{background:linear-gradient(100deg,#6247ff,#4930e8)!important;color:#fff!important;box-shadow:0 6px 18px rgba(43,24,157,.22)!important}
+nav.bottom-navigation .nav-item span{display:inline-flex!important;align-items:center!important;justify-content:center!important;flex:0 0 24px!important;width:24px!important;font-size:19px!important;line-height:1.2!important}
+nav.bottom-navigation .nav-item p{display:block!important;margin:0!important;padding:0!important;font-size:14px!important;font-weight:500!important;line-height:1.3!important;white-space:nowrap!important;color:inherit!important}
+#cardhub-sidebar-toggle{position:fixed;z-index:10001;left:198px;top:98px;width:32px;height:32px;border:1px solid rgba(255,255,255,.22);border-radius:9px;background:#3827a4;color:white;font-size:18px;cursor:pointer;box-shadow:0 3px 10px #0002;transition:left .22s ease}
+body{padding-left:var(--ch-sidebar-width)!important;padding-bottom:0!important;box-sizing:border-box!important;transition:padding-left .22s ease!important}
+body.cardhub-sidebar-compact{padding-left:var(--ch-sidebar-compact)!important}
+body.cardhub-sidebar-compact nav.bottom-navigation{width:var(--ch-sidebar-compact)!important;padding:112px 10px 24px!important}
+body.cardhub-sidebar-compact nav.bottom-navigation:before{width:var(--ch-sidebar-compact);content:'C';padding-left:27px;font-size:25px}
+body.cardhub-sidebar-compact nav.bottom-navigation .nav-item{justify-content:center!important;padding:13px 8px!important}
+body.cardhub-sidebar-compact nav.bottom-navigation .nav-item p{display:none!important}
+body.cardhub-sidebar-compact #cardhub-sidebar-toggle{left:56px}
+@media(max-width:700px){:root{--ch-sidebar-width:200px;--ch-sidebar-compact:68px}nav.bottom-navigation{padding-left:9px!important;padding-right:9px!important}nav.bottom-navigation:before{padding-left:18px;font-size:21px}nav.bottom-navigation .nav-item{gap:9px!important;padding-left:11px!important;padding-right:8px!important}#cardhub-sidebar-toggle{left:157px}body.cardhub-sidebar-compact #cardhub-sidebar-toggle{left:42px}body{overflow-x:hidden}}
+</style>
 </head>
 
 
@@ -1514,6 +1534,15 @@ loadTransactions();
 </script>
 
 
+<script id="cardhub-sidebar-behavior">
+(function(){
+ const nav=document.querySelector('nav.bottom-navigation'); if(!nav||document.getElementById('cardhub-sidebar-toggle'))return;
+ const btn=document.createElement('button'); btn.id='cardhub-sidebar-toggle'; btn.type='button'; btn.setAttribute('aria-label','Compact or expand sidebar'); btn.title='Compact / expand sidebar'; btn.textContent='‹'; document.body.appendChild(btn);
+ const saved=localStorage.getItem('cardhubSidebarCompact')==='true'; if(saved)document.body.classList.add('cardhub-sidebar-compact');
+ function sync(){const compact=document.body.classList.contains('cardhub-sidebar-compact');btn.textContent=compact?'›':'‹';btn.setAttribute('aria-expanded',String(!compact));}
+ btn.addEventListener('click',function(){document.body.classList.toggle('cardhub-sidebar-compact');localStorage.setItem('cardhubSidebarCompact',String(document.body.classList.contains('cardhub-sidebar-compact')));sync();}); sync();
+})();
+</script>
 </body>
 
 </html>
