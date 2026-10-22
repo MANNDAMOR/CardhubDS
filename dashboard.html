@@ -1,944 +1,2286 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CardHub | Dashboard</title>
-
-    <!-- Supabase -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
-
-        :root {
-            --primary: #5035f5;
-            --primary-dark: #24165f;
-            --text: #171b4b;
-            --muted: #64748b;
-            --white: #ffffff;
-            --border: #e5eaf5;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Inter', sans-serif;
-            color: var(--text);
-            background: linear-gradient(135deg, #e7f4ff, #f4efff, #e5f8ff);
-            min-height: 100vh;
-        }
-
-        a {
-            text-decoration: none;
-            color: inherit;
-        }
-
-        button {
-            font-family: inherit;
-            cursor: pointer;
-        }
-
-        /* Main Layout */
-
-        .layout {
-            display: flex;
-            min-height: 100vh;
-        }
-
-        /* Sidebar */
-
-        .sidebar {
-            width: 245px;
-            flex-shrink: 0;
-            padding: 25px 16px;
-            background: linear-gradient(180deg, #111b50, #211064, #3920a6);
-            color: white;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .brand {
-            display: flex;
-            align-items: center;
-            gap: 13px;
-            padding: 0 10px;
-            margin-bottom: 65px;
-            font-size: 23px;
-            font-weight: 800;
-        }
-
-        .brand-icon {
-            width: 43px;
-            height: 43px;
-            border-radius: 14px;
-            display: grid;
-            place-items: center;
-            background: linear-gradient(135deg, #8b5cf6, #4338ff);
-            box-shadow: 0 5px 20px #4f46e566;
-            font-size: 25px;
-        }
-
-        .menu-label {
-            color: #a9b5f6;
-            font-size: 12px;
-            letter-spacing: 1.5px;
-            margin: 0 16px 14px;
-        }
-
-        .nav-menu {
-            display: flex;
-            flex-direction: column;
-            gap: 9px;
-        }
-
-        .nav-link {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 15px 16px;
-            border-radius: 13px;
-            font-size: 14px;
-            transition: 0.25s;
-        }
-
-        .nav-link:hover {
-            background: #ffffff1c;
-            transform: translateX(3px);
-        }
-
-        .nav-link.active {
-            background: linear-gradient(100deg, #6048ff, #4430e7);
-            box-shadow: 0 7px 20px #2911b544;
-        }
-
-        .nav-icon {
-            font-size: 19px;
-        }
-
-        /* Main Content */
-
-        .main {
-            flex: 1;
-            min-width: 0;
-            padding: 32px;
-        }
-
-        .topbar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 20px;
-            margin-bottom: 28px;
-        }
-
-        .page-title {
-            font-size: 34px;
-            font-weight: 800;
-            letter-spacing: -1px;
-        }
-
-        .page-subtitle {
-            margin-top: 7px;
-            color: var(--muted);
-            font-size: 17px;
-        }
-
-        .user-area {
-            display: flex;
-            align-items: center;
-            gap: 13px;
-        }
-
-        .avatar {
-            width: 48px;
-            height: 48px;
-            border-radius: 50%;
-            display: grid;
-            place-items: center;
-            background: linear-gradient(135deg, #dbeafe, #e9d5ff);
-            color: #4f35df;
-            font-weight: 800;
-            font-size: 21px;
-        }
-
-        .user-name {
-            font-size: 16px;
-            font-weight: 700;
-        }
-
-        .user-email {
-            margin-top: 4px;
-            color: var(--muted);
-            font-size: 12px;
-        }
-
-        .logout-btn {
-            background: #ffffff88;
-            border: 1px solid #d8d5fb;
-            padding: 12px 17px;
-            border-radius: 10px;
-            color: #4b4786;
-            font-size: 14px;
-            transition: 0.2s;
-        }
-
-        .logout-btn:hover {
-            background: #fee2e2;
-            color: #b91c1c;
-        }
-
-        /* Statistics Cards */
-
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(3, minmax(0, 1fr));
-            gap: 20px;
-            margin-bottom: 24px;
-        }
-
-        .stat-card {
-            position: relative;
-            overflow: hidden;
-            min-height: 190px;
-            padding: 24px;
-            border: 1px solid #ffffff;
-            border-radius: 20px;
-            box-shadow: 0 8px 25px #6677a10f;
-            transition: 0.3s;
-        }
-
-        .stat-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 14px 30px #6677a122;
-        }
-
-        .stat-card.blue {
-            background: linear-gradient(135deg, #ffffff, #e0f2fe);
-        }
-
-        .stat-card.purple {
-            background: linear-gradient(135deg, #ffffff, #f3e8ff);
-        }
-
-        .stat-card.green {
-            background: linear-gradient(135deg, #ffffff, #d1fae5);
-        }
-
-        .stat-icon {
-            display: grid;
-            place-items: center;
-            width: 62px;
-            height: 62px;
-            border-radius: 15px;
-            font-size: 28px;
-            margin-bottom: 15px;
-        }
-
-        .blue .stat-icon {
-            background: #bae6fd;
-        }
-
-        .purple .stat-icon {
-            background: #e9c5ff;
-        }
-
-        .green .stat-icon {
-            background: #bbf7d0;
-        }
-
-        .stat-label {
-            color: #536184;
-            font-size: 14px;
-        }
-
-        .stat-value {
-            font-size: 34px;
-            font-weight: 800;
-            margin-top: 10px;
-        }
-
-        .stat-decoration {
-            position: absolute;
-            right: 17px;
-            bottom: 12px;
-            font-size: 65px;
-            opacity: 0.12;
-            transform: rotate(-12deg);
-        }
-
-        /* Dashboard Columns */
-
-        .content-grid {
-            display: grid;
-            grid-template-columns: minmax(0, 1.25fr) minmax(330px, 0.85fr);
-            gap: 20px;
-            align-items: start;
-        }
-
-        .left-column,
-        .right-column {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-            min-width: 0;
-        }
-
-        /* Welcome Banner */
-
-        .welcome-banner {
-            position: relative;
-            overflow: hidden;
-            padding: 31px;
-            border-radius: 20px;
-            color: white;
-            background: linear-gradient(115deg, #4925ef, #4245f5 60%, #a52bf5);
-            box-shadow: 0 12px 25px #6045ee22;
-        }
-
-        .welcome-banner::before {
-            content: "";
-            position: absolute;
-            width: 260px;
-            height: 260px;
-            right: -60px;
-            top: -110px;
-            border-radius: 50%;
-            background: #ffffff0d;
-        }
-
-        .welcome-banner h2 {
-            position: relative;
-            font-size: 27px;
-            margin-bottom: 10px;
-        }
-
-        .welcome-banner p {
-            position: relative;
-            max-width: 570px;
-            font-size: 17px;
-            line-height: 1.7;
-            color: #eeeaff;
-        }
-
-        .welcome-btn {
-            position: relative;
-            display: inline-block;
-            margin-top: 15px;
-            background: white;
-            color: #4b27ef;
-            border-radius: 12px;
-            padding: 14px 20px;
-            font-size: 14px;
-            font-weight: 700;
-            transition: 0.25s;
-        }
-
-        .welcome-btn:hover {
-            background: #e9e5ff;
-            transform: translateY(-2px);
-        }
-
-        .banner-decoration {
-            position: absolute;
-            right: 35px;
-            bottom: -18px;
-            font-size: 115px;
-            opacity: 0.25;
-            transform: rotate(-15deg);
-        }
-
-        /* Common Panels */
-
-        .panel {
-            background: #ffffffdc;
-            border: 1px solid #ffffff;
-            border-radius: 20px;
-            padding: 25px;
-            box-shadow: 0 8px 25px #64748b0b;
-            backdrop-filter: blur(10px);
-        }
-
-        .panel-heading {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 10px;
-            margin-bottom: 22px;
-        }
-
-        .panel-heading h2 {
-            font-size: 20px;
-            font-weight: 800;
-        }
-
-        .view-all {
-            color: #5935f5;
-            font-weight: 700;
-            font-size: 13px;
-        }
-
-        .view-all:hover {
-            color: #a21caf;
-        }
-
-        /* Quick Access */
-
-        .quick-grid {
-            display: grid;
-            grid-template-columns: repeat(2, minmax(0, 1fr));
-            gap: 13px;
-        }
-
-        .quick-card {
-            display: block;
-            padding: 17px;
-            min-height: 130px;
-            border-radius: 15px;
-            border: 1px solid var(--border);
-            transition: 0.25s;
-        }
-
-        .quick-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 10px 22px #64748b17;
-        }
-
-        .quick-card.blue {
-            background: linear-gradient(135deg, #f0f9ff, #e0f2fe);
-            border-color: #bae6fd;
-        }
-
-        .quick-card.purple {
-            background: linear-gradient(135deg, #fdf4ff, #f3e8ff);
-            border-color: #e9c5ff;
-        }
-
-        .quick-card.green {
-            background: linear-gradient(135deg, #f0fdf4, #d1fae5);
-            border-color: #a7f3d0;
-        }
-
-        .quick-card.orange {
-            background: linear-gradient(135deg, #fff7ed, #ffe4e6);
-            border-color: #fed7aa;
-        }
-
-        .quick-icon {
-            font-size: 28px;
-            margin-bottom: 10px;
-        }
-
-        .quick-card h3 {
-            font-size: 18px;
-            margin-bottom: 7px;
-        }
-
-        .quick-card p {
-            font-size: 14px;
-            color: #64748b;
-        }
-
-        /* Transactions */
-
-        .transactions-empty {
-            min-height: 160px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            gap: 10px;
-        }
-
-        .empty-icon {
-            font-size: 42px;
-        }
-
-        .empty-message {
-            color: #64748b;
-            line-height: 1.6;
-        }
-
-        .empty-link {
-            color: #5b35f5;
-            font-size: 13px;
-            font-weight: 700;
-        }
-
-        /* CardHub Information */
-
-        .about-panel {
-            position: relative;
-            overflow: hidden;
-            background: linear-gradient(135deg, #ffffff, #ede9fe, #e0f2fe);
-        }
-
-        .about-panel h2 {
-            font-size: 29px;
-            margin-bottom: 8px;
-        }
-
-        .about-panel p {
-            color: #536184;
-            line-height: 1.6;
-        }
-
-        /* Responsive */
-
-        @media (max-width: 1100px) {
-            .sidebar {
-                width: 210px;
-            }
-
-            .main {
-                padding: 24px;
-            }
-
-            .content-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .stats-grid {
-                gap: 12px;
-            }
-        }
-
-        @media (max-width: 760px) {
-            .layout {
-                flex-direction: column;
-            }
-
-            .sidebar {
-                width: 100%;
-                padding: 15px;
-            }
-
-            .brand {
-                margin-bottom: 20px;
-            }
-
-            .menu-label {
-                margin-top: 5px;
-            }
-
-            .nav-menu {
-                display: grid;
-                grid-template-columns: repeat(3, minmax(0, 1fr));
-                gap: 7px;
-            }
-
-            .nav-link {
-                justify-content: center;
-                padding: 12px 5px;
-                gap: 5px;
-                font-size: 12px;
-            }
-
-            .main {
-                padding: 18px;
-            }
-
-            .topbar {
-                align-items: flex-start;
-                flex-direction: column;
-            }
-
-            .page-title {
-                font-size: 28px;
-            }
-
-            .user-area {
-                width: 100%;
-                flex-wrap: wrap;
-            }
-
-            .stats-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .stat-card {
-                min-height: 160px;
-            }
-
-            .welcome-banner {
-                padding: 23px;
-            }
-
-            .welcome-banner h2 {
-                font-size: 23px;
-            }
-
-            .welcome-banner p {
-                font-size: 15px;
-            }
-
-            .banner-decoration {
-                right: 5px;
-                font-size: 80px;
-            }
-
-            .panel {
-                padding: 19px;
-            }
-
-            .quick-grid {
-                grid-template-columns: repeat(2, minmax(0, 1fr));
-            }
-        }
-
-        @media (max-width: 390px) {
-            .nav-menu {
-                grid-template-columns: repeat(2, minmax(0, 1fr));
-            }
-
-            .quick-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .user-email {
-                word-break: break-all;
-            }
-        }
-    </style>
+
+<meta charset="UTF-8">
+
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
+
+<title>Dashboard - CardHub</title>
+
+<link
+    rel="stylesheet"
+    href="css/style.css"
+>
+
+<style>
+
+/* =========================================
+   DASHBOARD MODERN UI
+========================================= */
+
+.modern-dashboard {
+    min-height: 100vh;
+    padding: 22px 18px 110px;
+    box-sizing: border-box;
+}
+
+.dashboard-inner {
+    max-width: 700px;
+    margin: auto;
+}
+
+
+/* =========================================
+   HEADER
+========================================= */
+
+.modern-header {
+    display: flex;
+
+    align-items: center;
+    justify-content: space-between;
+
+    margin-bottom: 24px;
+}
+
+.welcome-small {
+    margin: 0 0 5px;
+
+    font-size: 13px;
+
+    color: #858b98;
+}
+
+.welcome-name {
+    margin: 0;
+
+    font-size: 26px;
+
+    font-weight: 750;
+}
+
+.notification-button {
+    width: 45px;
+    height: 45px;
+
+    border: none;
+
+    border-radius: 15px;
+
+    background: white;
+
+    box-shadow:
+        0 6px 22px
+        rgba(0,0,0,.07);
+
+    cursor: pointer;
+
+    font-size: 20px;
+
+    position: relative;
+}
+
+.notification-dot {
+    position: absolute;
+
+    top: 9px;
+    right: 9px;
+
+    width: 7px;
+    height: 7px;
+
+    border-radius: 50%;
+
+    background: #ef4444;
+}
+
+
+/* =========================================
+   EXPENSE HERO
+========================================= */
+
+.expense-hero {
+
+    position: relative;
+
+    overflow: hidden;
+
+    padding: 25px;
+
+    border-radius: 25px;
+
+    color: white;
+
+    background:
+        linear-gradient(
+            135deg,
+            #111827,
+            #293548
+        );
+
+    box-shadow:
+        0 15px 35px
+        rgba(0,0,0,.15);
+
+    margin-bottom: 13px;
+}
+
+.expense-hero::before {
+
+    content: "";
+
+    position: absolute;
+
+    width: 180px;
+    height: 180px;
+
+    border-radius: 50%;
+
+    background:
+        rgba(255,255,255,.05);
+
+    right: -70px;
+    top: -75px;
+}
+
+.expense-hero::after {
+
+    content: "";
+
+    position: absolute;
+
+    width: 110px;
+    height: 110px;
+
+    border-radius: 50%;
+
+    background:
+        rgba(255,255,255,.04);
+
+    left: -45px;
+    bottom: -65px;
+}
+
+.hero-content {
+    position: relative;
+
+    z-index: 2;
+}
+
+.hero-label {
+
+    margin: 0 0 7px;
+
+    font-size: 12px;
+
+    opacity: .7;
+
+    text-transform: uppercase;
+
+    letter-spacing: .08em;
+}
+
+.hero-expense {
+
+    margin: 0;
+
+    font-size: 34px;
+
+    font-weight: 800;
+
+    letter-spacing: -.03em;
+}
+
+.hero-bottom {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    margin-top: 18px;
+
+    font-size: 12px;
+
+    opacity: .7;
+}
+
+.hero-status {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 6px;
+}
+
+.hero-dot {
+
+    width: 7px;
+    height: 7px;
+
+    border-radius: 50%;
+
+    background: #4ade80;
+}
+
+
+/* =========================================
+   STATS
+========================================= */
+
+.stats-grid {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, 1fr);
+
+    gap: 12px;
+
+    margin-bottom: 28px;
+}
+
+.stat-card {
+
+    padding: 18px;
+
+    border-radius: 19px;
+
+    background: white;
+
+    box-shadow:
+        0 5px 25px
+        rgba(0,0,0,.06);
+}
+
+.stat-top {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    margin-bottom: 13px;
+}
+
+.stat-icon {
+
+    width: 40px;
+    height: 40px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 13px;
+
+    background: #f3f4f6;
+
+    font-size: 18px;
+}
+
+.stat-value {
+
+    margin: 0;
+
+    font-size: 25px;
+
+    font-weight: 750;
+}
+
+.stat-label {
+
+    margin: 4px 0 0;
+
+    font-size: 12px;
+
+    color: #888;
+}
+
+
+/* =========================================
+   SECTION HEADER
+========================================= */
+
+.modern-section {
+
+    margin-top: 27px;
+}
+
+.section-heading {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    margin-bottom: 12px;
+}
+
+.section-heading h2 {
+
+    margin: 0;
+
+    font-size: 18px;
+}
+
+.section-heading a {
+
+    color: #666;
+
+    text-decoration: none;
+
+    font-size: 12px;
+
+    font-weight: 650;
+}
+
+
+/* =========================================
+   CARDS
+========================================= */
+
+.cards-scroll {
+
+    display: flex;
+
+    gap: 13px;
+
+    overflow-x: auto;
+
+    padding:
+        2px 2px 8px;
+
+    scrollbar-width: none;
+}
+
+.cards-scroll::-webkit-scrollbar {
+    display: none;
+}
+
+.modern-card {
+
+    min-width: 245px;
+
+    height: 145px;
+
+    flex-shrink: 0;
+
+    padding: 18px;
+
+    box-sizing: border-box;
+
+    border-radius: 20px;
+
+    color: white;
+
+    background:
+        linear-gradient(
+            135deg,
+            #1f2937,
+            #4b5563
+        );
+
+    box-shadow:
+        0 10px 25px
+        rgba(0,0,0,.12);
+
+    cursor: pointer;
+
+    transition:
+        transform .2s ease;
+}
+
+.modern-card:hover {
+
+    transform:
+        translateY(-4px);
+}
+
+.modern-card:nth-child(2n) {
+
+    background:
+        linear-gradient(
+            135deg,
+            #172033,
+            #334155
+        );
+}
+
+.modern-card-top {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    font-size: 11px;
+
+    opacity: .8;
+}
+
+.modern-card-name {
+
+    margin: 22px 0 8px;
+
+    font-size: 17px;
+
+    font-weight: 700;
+}
+
+.modern-card-number {
+
+    margin: 0 0 13px;
+
+    font-size: 12px;
+
+    letter-spacing: .12em;
+
+    opacity: .75;
+}
+
+.modern-card-bottom {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    font-size: 10px;
+
+    opacity: .65;
+}
+
+
+/* =========================================
+   QUICK ACTIONS
+========================================= */
+
+.quick-grid {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(4, 1fr);
+
+    gap: 9px;
+}
+
+.quick-action {
+
+    border: none;
+
+    background: white;
+
+    border-radius: 18px;
+
+    padding: 15px 7px;
+
+    cursor: pointer;
+
+    box-shadow:
+        0 5px 22px
+        rgba(0,0,0,.06);
+
+    transition:
+        transform .2s ease;
+}
+
+.quick-action:hover {
+
+    transform:
+        translateY(-3px);
+}
+
+.quick-icon {
+
+    width: 42px;
+    height: 42px;
+
+    margin: 0 auto 8px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 13px;
+
+    background: #f3f4f6;
+
+    font-size: 18px;
+}
+
+.quick-action p {
+
+    margin: 0;
+
+    font-size: 11px;
+
+    font-weight: 650;
+}
+
+
+/* =========================================
+   RECENT TRANSACTIONS
+========================================= */
+
+.transaction-container {
+
+    background: white;
+
+    border-radius: 20px;
+
+    padding: 5px 17px;
+
+    box-shadow:
+        0 5px 25px
+        rgba(0,0,0,.06);
+}
+
+.transaction-row {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+    padding: 15px 0;
+
+    border-bottom:
+        1px solid #eeeeee;
+
+    cursor: pointer;
+}
+
+.transaction-row:last-child {
+
+    border-bottom: none;
+}
+
+.transaction-icon {
+
+    width: 42px;
+    height: 42px;
+
+    flex-shrink: 0;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 13px;
+
+    background: #f3f4f6;
+
+    font-size: 17px;
+}
+
+.transaction-info {
+
+    flex: 1;
+
+    min-width: 0;
+}
+
+.transaction-info h3 {
+
+    margin: 0 0 4px;
+
+    font-size: 14px;
+
+    white-space: nowrap;
+
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+}
+
+.transaction-info p {
+
+    margin: 0;
+
+    font-size: 11px;
+
+    color: #8a8f99;
+}
+
+.transaction-right {
+
+    text-align: right;
+}
+
+.transaction-amount {
+
+    display: block;
+
+    font-size: 14px;
+
+    font-weight: 700;
+}
+
+.transaction-category {
+
+    display: block;
+
+    margin-top: 3px;
+
+    font-size: 10px;
+
+    color: #888;
+}
+
+
+/* =========================================
+   ALERT
+========================================= */
+
+.alert-card {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 13px;
+
+    padding: 16px;
+
+    border-radius: 18px;
+
+    background: white;
+
+    box-shadow:
+        0 5px 25px
+        rgba(0,0,0,.06);
+}
+
+.alert-icon {
+
+    width: 42px;
+    height: 42px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 13px;
+
+    background: #f3f4f6;
+
+    font-size: 18px;
+}
+
+.alert-card h3 {
+
+    margin: 0 0 4px;
+
+    font-size: 13px;
+}
+
+.alert-card p {
+
+    margin: 0;
+
+    font-size: 11px;
+
+    color: #888;
+
+    line-height: 1.5;
+}
+
+
+/* =========================================
+   EMPTY
+========================================= */
+
+.empty-state {
+
+    width: 100%;
+
+    padding: 30px 20px;
+
+    box-sizing: border-box;
+
+    text-align: center;
+
+    background: white;
+
+    border-radius: 20px;
+
+    color: #777;
+
+    box-shadow:
+        0 5px 25px
+        rgba(0,0,0,.05);
+}
+
+.empty-state h3 {
+
+    margin: 0 0 6px;
+
+    font-size: 15px;
+
+    color: #333;
+}
+
+.empty-state p {
+
+    margin: 0 0 15px;
+
+    font-size: 12px;
+}
+
+.empty-button {
+
+    border: none;
+
+    padding: 11px 17px;
+
+    border-radius: 11px;
+
+    background: #111827;
+
+    color: white;
+
+    font-size: 12px;
+
+    font-weight: 650;
+
+    cursor: pointer;
+}
+
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media(max-width:500px) {
+
+    .modern-dashboard {
+
+        padding-left: 14px;
+        padding-right: 14px;
+
+    }
+
+    .welcome-name {
+
+        font-size: 23px;
+
+    }
+
+    .hero-expense {
+
+        font-size: 30px;
+
+    }
+
+    .quick-grid {
+
+        grid-template-columns:
+            repeat(2, 1fr);
+
+        gap: 9px;
+
+    }
+
+    .modern-card {
+
+        min-width: 235px;
+
+    }
+
+}
+
+
+
+/* =========================================
+   CARDHUB DESKTOP WEBSITE LAYOUT
+   Desktop-first dashboard; mobile layout is not targeted.
+========================================= */
+
+html {
+    min-width: 1024px;
+}
+
+body {
+    min-width: 1024px;
+    background: #f3f6fb;
+    color: #17243b;
+}
+
+/* Reserve room for a proper left-hand website navigation */
+main.dashboard {
+    width: 100%;
+    max-width: none;
+    margin: 0;
+    padding: 0;
+}
+
+.modern-dashboard {
+    min-height: 100vh;
+    padding: 34px 42px 50px 282px;
+    box-sizing: border-box;
+}
+
+.dashboard-inner {
+    width: 100%;
+    max-width: 1500px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: minmax(0, 1.55fr) minmax(340px, 1fr);
+    gap: 26px 30px;
+    align-items: start;
+}
+
+/* Header spans the page content */
+.modern-header {
+    grid-column: 1 / -1;
+    margin-bottom: 0;
+    padding: 4px 0 2px;
+}
+
+.welcome-small {
+    font-size: 14px;
+    color: #7a8597;
+}
+
+.welcome-name {
+    font-size: 32px;
+    letter-spacing: -0.035em;
+    color: #14213a;
+}
+
+.notification-button {
+    width: 48px;
+    height: 48px;
+    border: 1px solid #e7ecf3;
+    border-radius: 15px;
+    box-shadow: 0 5px 18px rgba(23, 36, 59, .06);
+}
+
+/* Hero and stats span full width */
+.expense-hero,
+.stats-grid {
+    grid-column: 1 / -1;
+}
+
+.expense-hero {
+    padding: 30px 34px;
+    border-radius: 24px;
+    margin: 0;
+    box-shadow: 0 18px 42px rgba(16, 24, 40, .14);
+}
+
+.hero-label {
+    font-size: 13px;
+}
+
+.hero-expense {
+    font-size: 42px;
+}
+
+.hero-bottom {
+    font-size: 13px;
+}
+
+.stats-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px;
+    margin: 0;
+}
+
+.stat-card {
+    min-height: 130px;
+    padding: 24px;
+    border: 1px solid #e8edf4;
+    box-shadow: 0 8px 26px rgba(23, 36, 59, .045);
+}
+
+.stat-value {
+    font-size: 30px;
+    color: #14213a;
+}
+
+.stat-label {
+    font-size: 13px;
+}
+
+/* Desktop sections become a two-column content grid */
+.dashboard-inner > .modern-section {
+    min-width: 0;
+    margin-top: 0;
+}
+
+.dashboard-inner > .modern-section:nth-of-type(3) {
+    grid-column: 1;
+    grid-row: 4;
+}
+
+.dashboard-inner > .modern-section:nth-of-type(4) {
+    grid-column: 2;
+    grid-row: 4;
+}
+
+.dashboard-inner > .modern-section#alertSection {
+    grid-column: 2;
+    grid-row: 5;
+}
+
+.dashboard-inner > .modern-section:nth-of-type(6) {
+    grid-column: 1;
+    grid-row: 5;
+}
+
+.section-heading {
+    margin-bottom: 16px;
+}
+
+.section-heading h2 {
+    font-size: 21px;
+    letter-spacing: -.02em;
+    color: #182742;
+}
+
+.section-heading a {
+    font-size: 13px;
+    color: #43536d;
+}
+
+/* Cards are presented as website tiles, not a mobile carousel */
+.cards-scroll {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+    overflow: visible;
+    padding: 0;
+}
+
+.modern-card {
+    min-width: 0;
+    width: 100%;
+    height: 178px;
+    padding: 20px;
+    border-radius: 18px;
+    box-shadow: 0 10px 24px rgba(20, 30, 50, .11);
+}
+
+.modern-card-name {
+    margin-top: 24px;
+    font-size: 17px;
+}
+
+.modern-card-number {
+    font-size: 13px;
+}
+
+.quick-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+}
+
+.quick-action {
+    min-height: 125px;
+    padding: 20px 14px;
+    border: 1px solid #e8edf4;
+    border-radius: 16px;
+    box-shadow: 0 7px 22px rgba(23, 36, 59, .045);
+}
+
+.quick-icon {
+    width: 46px;
+    height: 46px;
+    background: #eef2f8;
+    font-size: 20px;
+}
+
+.quick-action p {
+    font-size: 13px;
+}
+
+.transaction-container,
+.alert-card {
+    border: 1px solid #e8edf4;
+    box-shadow: 0 8px 24px rgba(23, 36, 59, .045);
+}
+
+.transaction-container {
+    padding: 5px 22px;
+}
+
+.transaction-row {
+    padding: 18px 0;
+}
+
+.transaction-info h3 {
+    font-size: 15px;
+}
+
+.transaction-info p,
+.transaction-category {
+    font-size: 12px;
+}
+
+.transaction-amount {
+    font-size: 15px;
+}
+
+.alert-card {
+    padding: 20px;
+}
+
+/* Desktop left navigation */
+.bottom-navigation {
+    position: fixed;
+    inset: 0 auto 0 0;
+    transform: none;
+    width: 230px;
+    max-width: none;
+    height: 100vh;
+    padding: 34px 18px;
+    background: #ffffff;
+    border: 0;
+    border-right: 1px solid #e5eaf2;
+    border-radius: 0;
+    box-shadow: 8px 0 30px rgba(23, 36, 59, .035);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: stretch;
+    gap: 10px;
+    z-index: 100;
+}
+
+.bottom-navigation::before {
+    content: "CARDHUB";
+    display: block;
+    padding: 8px 14px 30px;
+    color: #17243b;
+    font-size: 22px;
+    font-weight: 800;
+    letter-spacing: .08em;
+}
+
+.nav-item {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    min-width: 0;
+    padding: 14px 15px;
+    border-radius: 12px;
+    text-align: left;
+    color: #69768b;
+    transition: background .18s ease, color .18s ease;
+}
+
+.nav-item:hover,
+.nav-item.active {
+    color: #17243b;
+    background: #eef3fa;
+}
+
+.nav-item span {
+    width: 24px;
+    margin: 0;
+    text-align: center;
+    font-size: 19px;
+}
+
+.nav-item p {
+    font-size: 14px;
+    font-weight: 600;
+}
+
+/* Use the available desktop width instead of narrow phone styling */
+@media (min-width: 1024px) {
+    .dashboard-inner > .modern-section:nth-of-type(3) {
+        grid-column: 1;
+        grid-row: 4;
+    }
+
+    .dashboard-inner > .modern-section:nth-of-type(4) {
+        grid-column: 2;
+        grid-row: 4;
+    }
+
+    .dashboard-inner > .modern-section#alertSection {
+        grid-column: 2;
+        grid-row: 5;
+    }
+
+    .dashboard-inner > .modern-section:nth-of-type(6) {
+        grid-column: 1;
+        grid-row: 5;
+    }
+}
+
+</style>
+
+<style id="cardhub-shared-sidebar">
+/* CardHub shared sidebar layout */
+:root{--ch-sidebar-width:244px;--ch-sidebar-compact:82px;--ch-sidebar-bg:#15194e;--ch-sidebar-bg2:#321783;--ch-accent:#5638f4}
+nav.bottom-navigation{position:fixed!important;inset:0 auto 0 0!important;width:var(--ch-sidebar-width)!important;height:100vh!important;display:flex!important;flex-direction:column!important;justify-content:flex-start!important;align-items:stretch!important;gap:8px!important;padding:112px 14px 24px!important;margin:0!important;overflow-x:hidden!important;overflow-y:auto!important;background:linear-gradient(180deg,#121b4b 0%,#29156d 100%)!important;border:0!important;border-radius:0!important;box-shadow:none!important;z-index:9999!important;box-sizing:border-box!important;transition:width .22s ease,padding .22s ease!important}
+nav.bottom-navigation:before{content:'C  CardHub';position:fixed;top:0;left:0;width:var(--ch-sidebar-width);height:88px;display:flex;align-items:center;padding-left:26px;box-sizing:border-box;color:#fff;font-size:24px;font-weight:800;letter-spacing:-.5px;background:linear-gradient(180deg,#121b4b 0%,#15194e 100%);transition:width .22s ease}
+nav.bottom-navigation .nav-item{width:100%!important;max-width:none!important;min-width:0!important;min-height:54px!important;display:flex!important;flex-direction:row!important;align-items:center!important;justify-content:flex-start!important;gap:14px!important;margin:0!important;padding:13px 16px!important;border:0!important;border-radius:13px!important;background:transparent!important;color:#eef0ff!important;text-decoration:none!important;text-align:left!important;box-sizing:border-box!important;transition:background .15s ease!important}
+nav.bottom-navigation .nav-item:hover{background:rgba(255,255,255,.11)!important}
+nav.bottom-navigation .nav-item.active{background:linear-gradient(100deg,#6247ff,#4930e8)!important;color:#fff!important;box-shadow:0 6px 18px rgba(43,24,157,.22)!important}
+nav.bottom-navigation .nav-item span{display:inline-flex!important;align-items:center!important;justify-content:center!important;flex:0 0 24px!important;width:24px!important;font-size:19px!important;line-height:1.2!important}
+nav.bottom-navigation .nav-item p{display:block!important;margin:0!important;padding:0!important;font-size:14px!important;font-weight:500!important;line-height:1.3!important;white-space:nowrap!important;color:inherit!important}
+#cardhub-sidebar-toggle{position:fixed;z-index:10001;left:198px;top:98px;width:32px;height:32px;border:1px solid rgba(255,255,255,.22);border-radius:9px;background:#3827a4;color:white;font-size:18px;cursor:pointer;box-shadow:0 3px 10px #0002;transition:left .22s ease}
+body{padding-left:var(--ch-sidebar-width)!important;padding-bottom:0!important;box-sizing:border-box!important;transition:padding-left .22s ease!important}
+body.cardhub-sidebar-compact{padding-left:var(--ch-sidebar-compact)!important}
+body.cardhub-sidebar-compact nav.bottom-navigation{width:var(--ch-sidebar-compact)!important;padding:112px 10px 24px!important}
+body.cardhub-sidebar-compact nav.bottom-navigation:before{width:var(--ch-sidebar-compact);content:'C';padding-left:27px;font-size:25px}
+body.cardhub-sidebar-compact nav.bottom-navigation .nav-item{justify-content:center!important;padding:13px 8px!important}
+body.cardhub-sidebar-compact nav.bottom-navigation .nav-item p{display:none!important}
+body.cardhub-sidebar-compact #cardhub-sidebar-toggle{left:56px}
+@media(max-width:700px){:root{--ch-sidebar-width:200px;--ch-sidebar-compact:68px}nav.bottom-navigation{padding-left:9px!important;padding-right:9px!important}nav.bottom-navigation:before{padding-left:18px;font-size:21px}nav.bottom-navigation .nav-item{gap:9px!important;padding-left:11px!important;padding-right:8px!important}#cardhub-sidebar-toggle{left:157px}body.cardhub-sidebar-compact #cardhub-sidebar-toggle{left:42px}body{overflow-x:hidden}}
+</style>
 </head>
+
 
 <body>
 
-<div class="layout">
 
-    <!-- Sidebar -->
-    <aside class="sidebar">
+<main class="dashboard">
 
-        <div class="brand">
-            <div class="brand-icon">C</div>
-            <span>CardHub</span>
+
+<div class="modern-dashboard">
+
+
+<div class="dashboard-inner">
+
+
+    <!-- =====================================
+         HEADER
+    ====================================== -->
+
+    <header class="modern-header">
+
+        <div>
+
+            <p class="welcome-small">
+                Welcome back
+            </p>
+
+            <h1
+                class="welcome-name"
+                id="welcomeName"
+            >
+                User 👋
+            </h1>
+
         </div>
 
-        <div class="menu-label">MAIN MENU</div>
 
-        <nav class="nav-menu">
-            <a href="dashboard.html" class="nav-link active">
-                <span class="nav-icon">📊</span>
-                Dashboard
-            </a>
+        <button
+            class="notification-button"
+            id="notificationButton"
+            type="button"
+        >
 
-            <a href="cards.html" class="nav-link">
-                <span class="nav-icon">💳</span>
-                Cards
-            </a>
+            🔔
 
-            <a href="explore.html" class="nav-link">
-                <span class="nav-icon">🔎</span>
-                Explore
-            </a>
+            <span
+                class="notification-dot"
+            ></span>
 
-            <a href="transactions.html" class="nav-link">
-                <span class="nav-icon">💸</span>
-                Transactions
-            </a>
+        </button>
 
-            <a href="profile.html" class="nav-link">
-                <span class="nav-icon">👤</span>
-                Profile
-            </a>
-        </nav>
+    </header>
 
-    </aside>
 
-    <!-- Main Content -->
-    <main class="main">
+    <!-- =====================================
+         EXPENSE HERO
+    ====================================== -->
 
-        <!-- Header -->
-        <header class="topbar">
+    <section class="expense-hero">
 
-            <div>
-                <h1 class="page-title">Dashboard</h1>
-                <p class="page-subtitle">Your cards. One place.</p>
+
+        <div class="hero-content">
+
+            <p class="hero-label">
+                Total Expenses
+            </p>
+
+
+            <h2
+                class="hero-expense"
+                id="totalExpense"
+            >
+                ₹0.00
+            </h2>
+
+
+            <div class="hero-bottom">
+
+                <span>
+                    Across your CardHub transactions
+                </span>
+
+
+                <span class="hero-status">
+
+                    <span class="hero-dot"></span>
+
+                    All systems ready
+
+                </span>
+
             </div>
 
-            <div class="user-area">
+        </div>
 
-                <div class="avatar" id="userAvatar">M</div>
 
-                <div>
-                    <div class="user-name" id="userName">
-                        CardHub User
-                    </div>
+    </section>
 
-                    <div class="user-email" id="userEmail">
-                        Loading account...
-                    </div>
+
+    <!-- =====================================
+         STATS
+    ====================================== -->
+
+    <section class="stats-grid">
+
+
+        <div class="stat-card">
+
+            <div class="stat-top">
+
+                <div class="stat-icon">
+                    💳
                 </div>
 
-                <button class="logout-btn" id="logoutButton">
-                    Log out
+            </div>
+
+
+            <h2
+                class="stat-value"
+                id="totalCards"
+            >
+                0
+            </h2>
+
+
+            <p class="stat-label">
+                Total Cards
+            </p>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <div class="stat-top">
+
+                <div class="stat-icon">
+                    ✓
+                </div>
+
+            </div>
+
+
+            <h2
+                class="stat-value"
+                id="activeCards"
+            >
+                0
+            </h2>
+
+
+            <p class="stat-label">
+                Active Cards
+            </p>
+
+        </div>
+
+
+    </section>
+
+
+    <!-- =====================================
+         MY CARDS
+    ====================================== -->
+
+    <section class="modern-section">
+
+
+        <div class="section-heading">
+
+            <h2>
+                My Cards
+            </h2>
+
+
+            <a href="cards.html">
+                View all →
+            </a>
+
+        </div>
+
+
+        <div
+            class="cards-scroll"
+            id="dashboardCards"
+        >
+
+            <div class="empty-state">
+
+                Loading cards...
+
+            </div>
+
+        </div>
+
+
+    </section>
+
+
+    <!-- =====================================
+         RECENT TRANSACTIONS
+    ====================================== -->
+
+    <section class="modern-section">
+
+
+        <div class="section-heading">
+
+            <h2>
+                Recent Activity
+            </h2>
+
+
+            <a href="transactions.html">
+                View all →
+            </a>
+
+        </div>
+
+
+        <div
+            class="transaction-container"
+            id="dashboardTransactions"
+        >
+
+            <div class="empty-state">
+
+                Loading transactions...
+
+            </div>
+
+        </div>
+
+
+    </section>
+
+
+    <!-- =====================================
+         ALERT
+    ====================================== -->
+
+    <section
+        class="modern-section"
+        id="alertSection"
+    >
+
+
+        <div class="section-heading">
+
+            <h2>
+                CardHub Reminder
+            </h2>
+
+        </div>
+
+
+        <div class="alert-card">
+
+
+            <div class="alert-icon">
+                🔒
+            </div>
+
+
+            <div>
+
+                <h3>
+                    Keep your cards secure
+                </h3>
+
+                <p>
+                    CardHub stores only safe card
+                    information. Never store CVV,
+                    PIN or OTP.
+                </p>
+
+            </div>
+
+
+        </div>
+
+
+    </section>
+
+
+
+
+</div>
+
+
+</div>
+
+
+<!-- =====================================
+     BOTTOM NAVIGATION
+====================================== -->
+
+<nav class="bottom-navigation">
+
+
+    <a
+        href="dashboard.html"
+        class="nav-item active"
+    >
+
+        <span>
+            ⌂
+        </span>
+
+        <p>
+            Home
+        </p>
+
+    </a>
+
+
+    <a
+        href="cards.html"
+        class="nav-item"
+    >
+
+        <span>
+            💳
+        </span>
+
+        <p>
+            Cards
+        </p>
+
+    </a>
+
+
+    <a
+        href="explore.html"
+        class="nav-item"
+    >
+
+        <span>
+            🔎
+        </span>
+
+        <p>
+            Explore
+        </p>
+
+    </a>
+
+
+    <a
+        href="transactions.html"
+        class="nav-item"
+    >
+
+        <span>
+            ↕
+        </span>
+
+        <p>
+            Transactions
+        </p>
+
+    </a>
+
+
+    <a
+        href="profile.html"
+        class="nav-item"
+    >
+
+        <span>
+            👤
+        </span>
+
+        <p>
+            Profile
+        </p>
+
+    </a>
+
+
+</nav>
+
+
+</main>
+
+
+<!-- =====================================
+     SUPABASE
+====================================== -->
+
+<script
+    src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"
+></script>
+
+
+<script>
+
+
+/* =========================================
+   SUPABASE
+========================================= */
+
+const SUPABASE_URL =
+    "https://wrsqhsuktqldnyjrbuma.supabase.co";
+
+
+const SUPABASE_PUBLISHABLE_KEY =
+    "sb_publishable_1-wC9ij9iOkR0txvg6j5bA_i1XLPSj7";
+
+
+const supabaseClient =
+    window.supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_PUBLISHABLE_KEY
+    );
+
+
+/* =========================================
+   SAFE HTML
+========================================= */
+
+function escapeHtml(value) {
+
+    return String(value ?? "")
+
+        .replace(
+            /&/g,
+            "&amp;"
+        )
+
+        .replace(
+            /</g,
+            "&lt;"
+        )
+
+        .replace(
+            />/g,
+            "&gt;"
+        )
+
+        .replace(
+            /"/g,
+            "&quot;"
+        )
+
+        .replace(
+            /'/g,
+            "&#039;"
+        );
+
+}
+
+
+/* =========================================
+   LOAD DASHBOARD
+========================================= */
+
+async function loadDashboard() {
+
+
+    /* ---------------------------------------
+       AUTH
+    --------------------------------------- */
+
+    const {
+
+        data: {
+            user
+        },
+
+        error: authError
+
+    } =
+        await supabaseClient
+            .auth
+            .getUser();
+
+
+    if (
+        authError ||
+        !user
+    ) {
+
+        window.location.href =
+            "index.html";
+
+        return;
+
+    }
+
+
+    /* ---------------------------------------
+       USER NAME
+    --------------------------------------- */
+
+    const name =
+        user.user_metadata?.full_name ||
+        user.user_metadata?.name ||
+        user.user_metadata?.display_name ||
+        user.email?.split("@")[0] ||
+        "User";
+
+
+    document
+        .getElementById(
+            "welcomeName"
+        )
+        .textContent =
+            name + " 👋";
+
+
+    await loadCards(
+        user.id
+    );
+
+
+    await loadTransactions(
+        user.id
+    );
+
+}
+
+
+/* =========================================
+   LOAD CARDS
+========================================= */
+
+async function loadCards(
+    userId
+) {
+
+
+    const {
+
+        data: cards,
+
+        error
+
+    } =
+        await supabaseClient
+            .from("cards")
+            .select("*")
+            .eq(
+                "user_id",
+                userId
+            )
+            .order(
+                "created_at",
+                {
+                    ascending: false
+                }
+            );
+
+
+    if (error) {
+
+        console.error(
+            "Cards error:",
+            error
+        );
+
+        return;
+
+    }
+
+
+    const safeCards =
+        cards || [];
+
+
+    /* TOTAL */
+
+    document
+        .getElementById(
+            "totalCards"
+        )
+        .textContent =
+            safeCards.length;
+
+
+    /* ACTIVE */
+
+    const active =
+        safeCards.filter(
+            function(card) {
+
+                return String(
+                    card.status || ""
+                )
+                .toLowerCase()
+                === "active";
+
+            }
+        );
+
+
+    document
+        .getElementById(
+            "activeCards"
+        )
+        .textContent =
+            active.length;
+
+
+    /* DISPLAY */
+
+    const container =
+        document
+            .getElementById(
+                "dashboardCards"
+            );
+
+
+    if (
+        safeCards.length === 0
+    ) {
+
+        container.innerHTML = `
+
+            <div class="empty-state">
+
+                <h3>
+                    No cards yet
+                </h3>
+
+                <p>
+                    Add your first card to CardHub.
+                </p>
+
+                <button
+                    class="empty-button"
+                    onclick="
+                        window.location.href='add-card.html'
+                    "
+                >
+                    + Add Card
                 </button>
 
             </div>
 
-        </header>
+        `;
 
-        <!-- Statistics -->
-        <section class="stats-grid">
+        return;
 
-            <div class="stat-card blue">
-                <div class="stat-icon">💳</div>
-                <div class="stat-label">Total Cards</div>
-                <div class="stat-value" id="totalCards">28</div>
-                <div class="stat-decoration">💳</div>
-            </div>
-
-            <div class="stat-card purple">
-                <div class="stat-icon">💸</div>
-                <div class="stat-label">Total Transactions</div>
-                <div class="stat-value" id="totalTransactions">—</div>
-                <div class="stat-decoration">📊</div>
-            </div>
-
-            <div class="stat-card green">
-                <div class="stat-icon">👤</div>
-                <div class="stat-label">Account Status</div>
-                <div class="stat-value" style="font-size:28px;">
-                    Active
-                </div>
-                <div class="stat-decoration">✓</div>
-            </div>
-
-        </section>
-
-        <!-- Main Grid -->
-        <section class="content-grid">
-
-            <div class="left-column">
-
-                <!-- Welcome Banner -->
-                <div class="welcome-banner">
-
-                    <h2>Welcome to CardHub! 👋</h2>
-
-                    <p>
-                        Manage your cards, explore available options,
-                        and keep track of your transactions in one place.
-                    </p>
-
-                    <a href="cards.html" class="welcome-btn">
-                        View My Cards →
-                    </a>
-
-                    <div class="banner-decoration">💳</div>
-
-                </div>
-
-                <!-- Recent Transactions -->
-                <section class="panel">
-
-                    <div class="panel-heading">
-                        <h2>Recent Transactions</h2>
-
-                        <a href="transactions.html" class="view-all">
-                            View All →
-                        </a>
-                    </div>
-
-                    <div class="transactions-empty">
-
-                        <div class="empty-icon">🧾</div>
-
-                        <p class="empty-message">
-                            Your recent transactions will appear here.
-                        </p>
-
-                        <a href="transactions.html" class="empty-link">
-                            Open Transactions
-                        </a>
-
-                    </div>
-
-                </section>
-
-            </div>
-
-            <div class="right-column">
-
-                <!-- Quick Access -->
-                <section class="panel">
-
-                    <div class="panel-heading">
-                        <h2>Quick Access</h2>
-                    </div>
-
-                    <div class="quick-grid">
-
-                        <a href="cards.html" class="quick-card blue">
-                            <div class="quick-icon">💳</div>
-                            <h3>My Cards</h3>
-                            <p>Manage cards</p>
-                        </a>
-
-                        <a href="explore.html" class="quick-card purple">
-                            <div class="quick-icon">🔎</div>
-                            <h3>Explore</h3>
-                            <p>Discover cards</p>
-                        </a>
-
-                        <a href="transactions.html" class="quick-card green">
-                            <div class="quick-icon">💸</div>
-                            <h3>Transactions</h3>
-                            <p>Track activity</p>
-                        </a>
-
-                        <a href="profile.html" class="quick-card orange">
-                            <div class="quick-icon">👤</div>
-                            <h3>My Profile</h3>
-                            <p>Account settings</p>
-                        </a>
-
-                    </div>
-
-                </section>
-
-                <!-- About CardHub -->
-                <section class="panel about-panel">
-
-                    <h2>CardHub</h2>
-
-                    <p>
-                        Your personal card management platform.
-                        Manage your cards and keep your financial
-                        information organized in one place.
-                    </p>
-
-                </section>
-
-            </div>
-
-        </section>
-
-    </main>
-
-</div>
-
-<script>
-    /*
-      Keep these credentials identical to your existing js/script.js.
-      The publishable key is intended for frontend use.
-    */
-
-    const SUPABASE_URL =
-        "https://wrsqhsuktqldnyjrbuma.supabase.co";
-
-    const SUPABASE_KEY =
-        "sb_publishable_1-wC9ij9iOkR0txvg6j5bA_i1XLPSj7";
-
-    const supabaseClient = window.supabase.createClient(
-        SUPABASE_URL,
-        SUPABASE_KEY
-    );
-
-    async function loadDashboard() {
-        try {
-            const {
-                data: { session },
-                error
-            } = await supabaseClient.auth.getSession();
-
-            if (error) {
-                console.error("Session error:", error.message);
-                return;
-            }
-
-            // If there is no logged-in user, return to login.
-            if (!session) {
-                window.location.replace("index.html");
-                return;
-            }
-
-            const user = session.user;
-
-            const email = user.email || "No email available";
-
-            const displayName =
-                user.user_metadata?.full_name ||
-                user.user_metadata?.name ||
-                email.split("@")[0];
-
-            document.getElementById("userName").textContent =
-                displayName;
-
-            document.getElementById("userEmail").textContent =
-                email;
-
-            document.getElementById("userAvatar").textContent =
-                displayName.charAt(0).toUpperCase();
-
-            /*
-              Optional database counts.
-
-              These queries assume your tables are named:
-              cards and transactions.
-
-              If your database uses different table names or columns,
-              update these queries to match your existing schema.
-            */
-
-            const cardsResult = await supabaseClient
-                .from("cards")
-                .select("*", { count: "exact", head: true })
-                .eq("user_id", user.id);
-
-            if (!cardsResult.error) {
-                document.getElementById("totalCards").textContent =
-                    cardsResult.count ?? 0;
-            } else {
-                console.warn(
-                    "Could not load card count:",
-                    cardsResult.error.message
-                );
-            }
-
-            const transactionsResult = await supabaseClient
-                .from("transactions")
-                .select("*", { count: "exact", head: true })
-                .eq("user_id", user.id);
-
-            if (!transactionsResult.error) {
-                document.getElementById("totalTransactions").textContent =
-                    transactionsResult.count ?? 0;
-            } else {
-                console.warn(
-                    "Could not load transaction count:",
-                    transactionsResult.error.message
-                );
-            }
-
-        } catch (error) {
-            console.error("Dashboard error:", error);
-        }
     }
 
-    // Logout
-    document.getElementById("logoutButton").addEventListener(
-        "click",
-        async function () {
-            const { error } = await supabaseClient.auth.signOut();
 
-            if (error) {
-                alert("Unable to log out. Please try again.");
-                console.error(error.message);
-                return;
-            }
+    container.innerHTML = "";
 
-            window.location.replace("index.html");
+
+    safeCards.forEach(
+        function(card) {
+
+
+            const last4 =
+                card.number_last4 ||
+                "0000";
+
+
+            const element =
+                document.createElement(
+                    "div"
+                );
+
+
+            element.className =
+                "modern-card";
+
+
+            element.onclick =
+                function() {
+
+                    window.location.href =
+                        "card-details.html?id=" +
+                        encodeURIComponent(
+                            card.id
+                        );
+
+                };
+
+
+            element.innerHTML = `
+
+                <div class="modern-card-top">
+
+                    <span>
+                        ${escapeHtml(
+                            card.issuer ||
+                            "CardHub"
+                        )}
+                    </span>
+
+                    <span>
+                        💳
+                    </span>
+
+                </div>
+
+
+                <div class="modern-card-name">
+
+                    ${escapeHtml(
+                        card.name ||
+                        "Unnamed Card"
+                    )}
+
+                </div>
+
+
+                <p class="modern-card-number">
+
+                    •••• •••• •••• ${escapeHtml(
+                        last4
+                    )}
+
+                </p>
+
+
+                <div class="modern-card-bottom">
+
+                    <span>
+                        ${escapeHtml(
+                            card.type ||
+                            "Card"
+                        )}
+                    </span>
+
+                    <span>
+                        ${escapeHtml(
+                            String(
+                                card.status ||
+                                "ACTIVE"
+                            ).toUpperCase()
+                        )}
+                    </span>
+
+                </div>
+
+            `;
+
+
+            container.appendChild(
+                element
+            );
+
         }
     );
 
-    loadDashboard();
+}
+
+
+/* =========================================
+   LOAD TRANSACTIONS
+========================================= */
+
+async function loadTransactions(
+    userId
+) {
+
+
+    const container =
+        document
+            .getElementById(
+                "dashboardTransactions"
+            );
+
+
+    try {
+
+
+        /* -----------------------------------
+           RECENT
+        ----------------------------------- */
+
+        const {
+
+            data: transactions,
+
+            error
+
+        } =
+            await supabaseClient
+                .from("transactions")
+                .select(
+                    "id,card_id,merchant,amount,type,category,transaction_date"
+                )
+                .eq(
+                    "type",
+                    "expense"
+                )
+                .order(
+                    "transaction_date",
+                    {
+                        ascending: false
+                    }
+                )
+                .order(
+                    "id",
+                    {
+                        ascending: false
+                    }
+                )
+                .limit(4);
+
+
+        if (error) {
+
+            throw error;
+
+        }
+
+
+        const safeTransactions =
+            transactions || [];
+
+
+        /* -----------------------------------
+           TOTAL EXPENSE
+        ----------------------------------- */
+
+        const {
+
+            data: expenseRows,
+
+            error: expenseError
+
+        } =
+            await supabaseClient
+                .from("transactions")
+                .select("amount")
+                .eq(
+                    "type",
+                    "expense"
+                );
+
+
+        if (!expenseError) {
+
+
+            const total =
+                (
+                    expenseRows || []
+                )
+                .reduce(
+                    function(
+                        sum,
+                        transaction
+                    ) {
+
+                        return sum +
+                            Number(
+                                transaction.amount ||
+                                0
+                            );
+
+                    },
+                    0
+                );
+
+
+            document
+                .getElementById(
+                    "totalExpense"
+                )
+                .textContent =
+                    "₹" +
+                    total.toLocaleString(
+                        "en-IN",
+                        {
+                            minimumFractionDigits: 2,
+                            maximumFractionDigits: 2
+                        }
+                    );
+
+        }
+
+
+        /* -----------------------------------
+           EMPTY
+        ----------------------------------- */
+
+        if (
+            safeTransactions.length === 0
+        ) {
+
+            container.innerHTML = `
+
+                <div class="empty-state">
+
+                    <h3>
+                        No activity yet
+                    </h3>
+
+                    <p>
+                        Your recent expenses will
+                        appear here.
+                    </p>
+
+                    <button
+                        class="empty-button"
+                        onclick="
+                            window.location.href='add-transaction.html'
+                        "
+                    >
+                        + Add Expense
+                    </button>
+
+                </div>
+
+            `;
+
+            return;
+
+        }
+
+
+        container.innerHTML = "";
+
+
+        /* -----------------------------------
+           DISPLAY
+        ----------------------------------- */
+
+        safeTransactions.forEach(
+            function(transaction) {
+
+
+                const row =
+                    document.createElement(
+                        "div"
+                    );
+
+
+                row.className =
+                    "transaction-row";
+
+
+                row.onclick =
+                    function() {
+
+                        window.location.href =
+                            "edit-transaction.html?id=" +
+                            encodeURIComponent(
+                                transaction.id
+                            );
+
+                    };
+
+
+                const amount =
+                    Number(
+                        transaction.amount ||
+                        0
+                    );
+
+
+                const date =
+                    transaction
+                        .transaction_date
+                        ? new Date(
+                            transaction
+                                .transaction_date +
+                            "T00:00:00"
+                        )
+                        .toLocaleDateString(
+                            "en-IN",
+                            {
+                                day: "2-digit",
+                                month: "short"
+                            }
+                        )
+                        : "-";
+
+
+                row.innerHTML = `
+
+                    <div class="transaction-icon">
+
+                        💳
+
+                    </div>
+
+
+                    <div class="transaction-info">
+
+                        <h3>
+
+                            ${escapeHtml(
+                                transaction.merchant ||
+                                "Transaction"
+                            )}
+
+                        </h3>
+
+
+                        <p>
+
+                            ${escapeHtml(
+                                date
+                            )}
+
+                        </p>
+
+                    </div>
+
+
+                    <div class="transaction-right">
+
+                        <strong
+                            class="transaction-amount"
+                        >
+
+                            ₹${amount.toLocaleString(
+                                "en-IN",
+                                {
+                                    minimumFractionDigits: 2,
+                                    maximumFractionDigits: 2
+                                }
+                            )}
+
+                        </strong>
+
+
+                        <span
+                            class="transaction-category"
+                        >
+
+                            ${escapeHtml(
+                                transaction.category ||
+                                "Expense"
+                            )}
+
+                        </span>
+
+                    </div>
+
+                `;
+
+
+                container.appendChild(
+                    row
+                );
+
+            }
+        );
+
+
+    } catch (error) {
+
+
+        console.error(
+            "Transaction error:",
+            error
+        );
+
+
+        container.innerHTML = `
+
+            <div class="empty-state">
+
+                <h3>
+                    Couldn't load activity
+                </h3>
+
+                <p>
+                    Please refresh the page.
+                </p>
+
+            </div>
+
+        `;
+
+    }
+
+}
+
+
+/* =========================================
+   NOTIFICATION
+========================================= */
+
+document
+    .getElementById(
+        "notificationButton"
+    )
+    .addEventListener(
+        "click",
+        function() {
+
+
+            const alertSection =
+                document
+                    .getElementById(
+                        "alertSection"
+                    );
+
+
+            alertSection.scrollIntoView(
+                {
+                    behavior: "smooth"
+                }
+            );
+
+
+            document
+                .querySelector(
+                    ".notification-dot"
+                )
+                .style.display =
+                    "none";
+
+        }
+    );
+
+
+/* =========================================
+   START
+========================================= */
+
+loadDashboard();
+
+
 </script>
 
+
+<script id="cardhub-sidebar-behavior">
+(function(){
+ const nav=document.querySelector('nav.bottom-navigation'); if(!nav||document.getElementById('cardhub-sidebar-toggle'))return;
+ const btn=document.createElement('button'); btn.id='cardhub-sidebar-toggle'; btn.type='button'; btn.setAttribute('aria-label','Compact or expand sidebar'); btn.title='Compact / expand sidebar'; btn.textContent='‹'; document.body.appendChild(btn);
+ const saved=localStorage.getItem('cardhubSidebarCompact')==='true'; if(saved)document.body.classList.add('cardhub-sidebar-compact');
+ function sync(){const compact=document.body.classList.contains('cardhub-sidebar-compact');btn.textContent=compact?'›':'‹';btn.setAttribute('aria-expanded',String(!compact));}
+ btn.addEventListener('click',function(){document.body.classList.toggle('cardhub-sidebar-compact');localStorage.setItem('cardhubSidebarCompact',String(document.body.classList.contains('cardhub-sidebar-compact')));sync();}); sync();
+})();
+</script>
 </body>
+
 </html>
