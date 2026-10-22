@@ -793,3 +793,77 @@ nav.bottom-navigation > a.nav-item.active {
     }
 }
 ```
+/* CardHub shared top navigation — append this file after existing page styles */
+:root { --ch-topnav-height: 82px; }
+html { scroll-padding-top: calc(var(--ch-topnav-height) + 16px) !important; }
+body { padding-left: 0 !important; padding-top: var(--ch-topnav-height) !important; padding-bottom: 0 !important; }
+
+/* Shared bottom-navigation markup becomes a fixed horizontal top bar */
+nav.bottom-navigation {
+  position: fixed !important;
+  inset: 0 0 auto 0 !important;
+  transform: none !important;
+  width: 100% !important;
+  max-width: none !important;
+  height: var(--ch-topnav-height) !important;
+  min-height: var(--ch-topnav-height) !important;
+  margin: 0 !important;
+  padding: 10px clamp(12px, 2.2vw, 32px) !important;
+  box-sizing: border-box !important;
+  display: flex !important;
+  flex-direction: row !important;
+  flex-wrap: nowrap !important;
+  align-items: center !important;
+  justify-content: flex-end !important;
+  gap: clamp(4px, 1vw, 14px) !important;
+  overflow-x: auto !important;
+  overflow-y: hidden !important;
+  background: rgba(255,255,255,.97) !important;
+  border: 0 !important;
+  border-bottom: 1px solid #e5eaf3 !important;
+  border-radius: 0 !important;
+  box-shadow: 0 5px 22px rgba(31,52,94,.08) !important;
+  backdrop-filter: blur(18px) !important;
+  z-index: 99999 !important;
+}
+nav.bottom-navigation::before { content: "CardHub" !important; display: block !important; flex: 1 0 auto !important; margin-right: auto !important; padding: 0 14px 0 4px !important; color: #25156e !important; font-size: 23px !important; font-weight: 850 !important; letter-spacing: -.6px !important; white-space: nowrap !important; }
+nav.bottom-navigation > a.nav-item {
+  position: relative !important;
+  flex: 0 0 auto !important;
+  width: auto !important;
+  max-width: none !important;
+  min-width: 0 !important;
+  height: 48px !important;
+  margin: 0 !important;
+  padding: 0 15px !important;
+  display: inline-flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 9px !important;
+  border-radius: 12px !important;
+  color: #65718b !important;
+  background: transparent !important;
+  text-decoration: none !important;
+  text-align: center !important;
+  white-space: nowrap !important;
+  box-sizing: border-box !important;
+}
+nav.bottom-navigation > a.nav-item span { display: inline-block !important; width: auto !important; font-size: 18px !important; line-height: 1 !important; }
+nav.bottom-navigation > a.nav-item p { display: inline-block !important; margin: 0 !important; padding: 0 !important; font-size: 13px !important; line-height: 1.2 !important; white-space: nowrap !important; }
+nav.bottom-navigation > a.nav-item.active { color: #fff !important; background: linear-gradient(135deg,#6842ff,#4528e8) !important; font-weight: 750 !important; box-shadow: 0 5px 14px rgba(87,57,240,.2) !important; }
+
+/* Undo old left-sidebar/body offsets from previous experiments */
+.sidebar, .desktop-sidebar, .sidebar-navigation { display: none !important; }
+main.dashboard, .dashboard, .profile-page { margin-left: 0 !important; }
+main.dashboard { padding-top: 24px !important; }
+
+@media (max-width: 760px) {
+  :root { --ch-topnav-height: 70px; }
+  nav.bottom-navigation { justify-content: flex-start !important; gap: 3px !important; padding: 8px 10px !important; }
+  nav.bottom-navigation::before { font-size: 19px !important; padding-left: 2px !important; padding-right: 8px !important; }
+  nav.bottom-navigation > a.nav-item { height: 44px !important; padding: 0 10px !important; gap: 6px !important; }
+  nav.bottom-navigation > a.nav-item p { font-size: 12px !important; }
+  nav.bottom-navigation > a.nav-item span { font-size: 16px !important; }
+  main.dashboard { padding-left: 14px !important; padding-right: 14px !important; }
+}
