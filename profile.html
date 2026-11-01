@@ -48,10 +48,9 @@ button,input{font:inherit}button{cursor:pointer}.app{min-height:100vh}.sidebar{p
     <div class="layout">
       <section class="left-col">
         <section class="panel identity">
-          <div class="photo-wrap"><div class="avatar" id="avatar">U</div><button class="camera" id="cameraBtn" title="Choose profile photo" aria-label="Choose profile photo">📷</button></div>
+          <div class="photo-wrap"><div class="avatar" id="avatar">U</div></div>
           <div class="identity-info">
             <h2 id="displayName">Your Name</h2><p id="displayEmail">Sign in to load your email</p><p id="joinedDate">CardHub member</p>
-            <div class="identity-actions"><button class="btn" id="uploadBtn">Upload New Photo</button><button class="btn btn-outline" id="removePhotoBtn">Remove Photo</button><input type="file" id="photoInput" accept="image/*" hidden></div>
           </div>
         </section>
         <div class="forms-grid">
@@ -94,7 +93,6 @@ button,input{font:inherit}button{cursor:pointer}.app{min-height:100vh}.sidebar{p
           <button class="connected-row" data-connect="Instagram"><span class="social-icon ig">◎</span><span>Other account</span><span class="chevron">›</span></button>
           <div class="notice">Social linking needs provider OAuth setup.</div>
         </section>
-        <section class="panel delete-panel"><button class="delete-row" id="deleteAccountBtn"><span>Delete Account</span><span class="chevron">›</span></button></section>
         <section class="save-panel bottom-actions"><button class="btn" id="saveAllBtn">Save Changes</button></section>
       </aside>
     </div>
@@ -107,8 +105,8 @@ button,input{font:inherit}button{cursor:pointer}.app{min-height:100vh}.sidebar{p
 <script>
 /* CardHub profile page.
    Configure the same Supabase project credentials used by the rest of your site below.
-   Profile fields are stored in auth user_metadata; notification preferences are stored in localStorage
-   until you connect them to a database table. */
+   Profile fields are stored in auth user_metadata and copied to the profiles table;
+   notification preferences are stored in localStorage until you connect them to a database table. */
 const SUPABASE_URL = 'https://wrsqhsuktqldnyjrbuma.supabase.co';
 const SUPABASE_ANON_KEY = 'sb_publishable_1-wC9ij9iOkR0txvg6j5bA_i1XLPSj7';
 const supabaseClient = (window.supabase && SUPABASE_URL && SUPABASE_ANON_KEY)
@@ -121,8 +119,9 @@ let preferences = {...defaultPrefs, ...JSON.parse(localStorage.getItem('cardhubN
 function toast(message){const el=$('toast');el.textContent=message;el.classList.add('show');clearTimeout(toast.timer);toast.timer=setTimeout(()=>el.classList.remove('show'),3500)}
 function setStatus(id,message,good=true){const el=$(id);el.textContent=message;el.style.color=good?'#4c8a64':'#a34848'}
 function getFullName(){return [$('firstName').value.trim(),$('lastName').value.trim()].filter(Boolean).join(' ') || currentUser?.user_metadata?.full_name || currentUser?.email?.split('@')[0] || 'Your Name'}
-function renderAvatar(url,name){const initials=(name||'U').split(/\\s+/).filter(Boolean).slice(0,2).map(x=>x[0]).join('').toUpperCase()||'U';['avatar','sideAvatar'].forEach(id=>{const el=$(id);el.innerHTML='';if(id==='avatar'&&url){const img=document.createElement('img');img.src=url;img.alt='Profile photo';img.onerror=()=>{el.textContent=initials};el.appendChild(img)}else el.textContent=initials})}
-function updateIdentity(){const name=getFullName();$('displayName').textContent=name;$('displayEmail').textContent=currentUser?.email||$('email').value||'Not signed in';$('sideName').textContent=name;renderAvatar(currentUser?.user_metadata?.avatar_url,name)}
+/* Avatar shows the person's initials only (no photo option). */
+function renderAvatar(name){const initials=(name||'U').split(/\s+/).filter(Boolean).slice(0,2).map(x=>x[0]).join('').toUpperCase()||'U';['avatar','sideAvatar'].forEach(id=>{$(id).textContent=initials})}
+function updateIdentity(){const name=getFullName();$('displayName').textContent=name;$('displayEmail').textContent=currentUser?.email||$('email').value||'Not signed in';$('sideName').textContent=name;renderAvatar(name)}
 function renderPreferences(){document.querySelectorAll('.pref-switch').forEach(btn=>{const on=!!preferences[btn.dataset.pref];btn.setAttribute('aria-checked',String(on))})}
 async function initProfile(){
  const savedName=localStorage.getItem('cardhubProfileName')||'';
@@ -139,7 +138,8 @@ async function initProfile(){
   $('firstName').value=meta.first_name||parts.shift()||'';
   $('lastName').value=meta.last_name||parts.join(' ')||'';
   $('email').value=user.email||'';
-  $('phone').value=meta.phone||savedPhone||'';
+  /* "mobile" is saved by the Create Account page; "phone" is saved by this page */
+  $('phone').value=meta.phone||meta.mobile||savedPhone||'';
   $('joinedDate').textContent='Joined: '+new Date(user.created_at).toLocaleDateString(undefined,{year:'numeric',month:'short',day:'numeric'});
   updateIdentity();
  }catch(err){setStatus('personalStatus','Could not load profile: '+(err.message||'unknown error'),false)}
@@ -151,31 +151,15 @@ async function saveProfile(){
  const full=[first,last].filter(Boolean).join(' ');
  const {error}=await supabaseClient.auth.updateUser({data:{first_name:first,last_name:last,full_name:full,phone}});
  if(error){setStatus('personalStatus','Could not save: '+error.message,false);return false}
+ /* Keep the profiles table in step with the account details */
+ const {error:profileError}=await supabaseClient.from('profiles').update({full_name:full,mobile:phone||null}).eq('id',currentUser.id);
+ if(profileError){console.error('profiles update error:',profileError)}
  localStorage.setItem('cardhubProfileName',full);localStorage.setItem('cardhubProfilePhone',phone);
  updateIdentity();setStatus('personalStatus','Profile saved successfully.');toast('Profile details saved.');return true
 }
 $('personalForm').addEventListener('submit',async e=>{e.preventDefault();await saveProfile()});
 $('saveAllBtn').addEventListener('click',async()=>{const ok=await saveProfile();preferences={...preferences};localStorage.setItem('cardhubNotificationPreferences',JSON.stringify(preferences));setStatus('notificationStatus','Notification preferences saved on this device.');if(ok)toast('Changes saved.')});
 document.querySelectorAll('.pref-switch').forEach(btn=>btn.addEventListener('click',()=>{const key=btn.dataset.pref;preferences[key]=!preferences[key];renderPreferences();localStorage.setItem('cardhubNotificationPreferences',JSON.stringify(preferences));setStatus('notificationStatus','Preferences saved on this device.')}));
-$('uploadBtn').addEventListener('click',()=>$('photoInput').click());$('cameraBtn').addEventListener('click',()=>$('photoInput').click());
-$('photoInput').addEventListener('change',async e=>{
- const file=e.target.files?.[0];if(!file)return;
- if(!file.type.startsWith('image/')){toast('Choose an image file.');return}
- if(file.size>5*1024*1024){toast('Image must be 5 MB or smaller.');return}
- const reader=new FileReader();reader.onload=async()=>{
-  const dataUrl=reader.result;
-  if(!currentUser){toast('Sign in before saving a profile photo.');return}
-  const {error}=await supabaseClient.auth.updateUser({data:{avatar_url:dataUrl}});
-  if(error){toast('Photo could not be saved: '+error.message);return}
-  renderAvatar(dataUrl,getFullName());toast('Profile photo updated.');
- };reader.readAsDataURL(file)
-});
-$('removePhotoBtn').addEventListener('click',async()=>{
- if(!currentUser){toast('Sign in first.');return}
- const {error}=await supabaseClient.auth.updateUser({data:{avatar_url:null}});
- if(error){toast('Could not remove photo: '+error.message);return}
- renderAvatar(null,getFullName());$('photoInput').value='';toast('Profile photo removed.')
-});
 function setSwitch(btn,on){btn.setAttribute('aria-checked',String(on))}
 const twoFactorKey='cardhubTwoFactorUiPreference';
 setSwitch($('twoFactorSwitch'),localStorage.getItem(twoFactorKey)==='true');
@@ -196,10 +180,9 @@ $('signOutAllBtn').addEventListener('click',()=>openModal('Sign out of all devic
  if(!supabaseClient)return;
  const {error}=await supabaseClient.auth.signOut({scope:'global'});
  if(error){toast('Sign-out failed: '+error.message);return}
- window.location.href='login.html'
+ window.location.href='index.html'
 }));
 document.querySelectorAll('.connected-row').forEach(btn=>btn.addEventListener('click',()=>toast(btn.dataset.connect+' linking is not configured yet. Set up the provider in Supabase Auth first.')));
-$('deleteAccountBtn').addEventListener('click',()=>openModal('Delete account','This cannot be completed securely from a browser-only page. Contact your CardHub administrator or implement a server-side account deletion endpoint.',()=>toast('Account deletion requires a secure server-side endpoint.')));
 function openModal(title,text,action){$('modalTitle').textContent=title;$('modalText').textContent=text;modalAction=action;$('modalBackdrop').classList.add('show')}
 function closeModal(){$('modalBackdrop').classList.remove('show');modalAction=null}
 $('modalCancel').addEventListener('click',closeModal);$('modalConfirm').addEventListener('click',async()=>{const action=modalAction;closeModal();if(action)await action()});$('modalBackdrop').addEventListener('click',e=>{if(e.target===$('modalBackdrop'))closeModal()});
