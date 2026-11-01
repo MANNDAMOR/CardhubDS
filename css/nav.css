@@ -158,13 +158,24 @@
 
 /* PAGE LAYOUT */
 
+/* Sidebar spacing for desktop */
 body {
     margin-left: 250px !important;
     min-width: 0 !important;
 }
 
-main.dashboard {
-    margin-left: 0 !important;
+/* Do not override individual page layouts */
+main,
+.main,
+.dashboard {
+    box-sizing: border-box;
+}
+
+/* MOBILE */
+@media (max-width: 800px) {
+    body {
+        margin-left: 76px !important;
+    }
 }
 
 /* MOBILE */
