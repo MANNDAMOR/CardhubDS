@@ -1,79 +1,94 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>CardHub</title>
-
-    <link rel="stylesheet" href="css/style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#191443">
+<title>Log in | CardHub</title>
+<link rel="stylesheet" href="css/auth.css">
 </head>
-
 <body>
 
-    <main class="app">
+<main class="auth-shell">
 
-        <!-- Logo -->
+    <!-- LEFT PANEL -->
+    <section class="auth-visual">
+
         <div class="brand">
-            <div class="logo">C</div>
-            <h1>CardHub</h1>
-            <p>Your cards. One place.</p>
+            <div class="brand-mark">C</div>
+            <span class="brand-name">CardHub</span>
         </div>
 
-        <!-- Login Card -->
-        <section class="login-card">
+        <div class="visual-copy">
+            <div class="eyebrow">Welcome back</div>
+            <h1>Your cards.<br>One place.</h1>
+            <p>
+                Log in to see your cards and keep track of your transactions.
+            </p>
+        </div>
+
+        <div class="visual-card">
+            <div class="visual-card-top">
+                <span>CardHub</span>
+                <span>▰</span>
+            </div>
+            <div class="chip"></div>
+            <div class="visual-card-number">
+                •••• &nbsp;•••• &nbsp;•••• &nbsp;5464
+            </div>
+            <div class="visual-card-bottom">
+                <span>YOUR NAME</span>
+                <span>MEMBER</span>
+            </div>
+        </div>
+
+    </section>
+
+    <!-- RIGHT PANEL -->
+    <section class="auth-panel">
+        <div class="auth-content">
+
+            <div class="brand mobile-brand">
+                <div class="brand-mark">C</div>
+                <span class="brand-name">CardHub</span>
+            </div>
 
             <h2>Welcome back</h2>
-            <p class="subtitle">Login to manage your cards</p>
+            <p class="auth-subtitle">Log in to manage your cards.</p>
 
             <form id="loginForm">
 
                 <div class="input-group">
-                    <label for="email">Email</label>
+                    <label for="email">Email address</label>
                     <input
                         type="email"
                         id="email"
-                        placeholder="Enter email address"
+                        placeholder="you@example.com"
+                        autocomplete="email"
                         required
                     >
                 </div>
 
                 <div class="input-group">
                     <label for="password">Password</label>
-
                     <div class="password-box">
                         <input
                             type="password"
                             id="password"
-                            placeholder="Enter password"
+                            placeholder="Enter your password"
+                            autocomplete="current-password"
                             required
                         >
-
-                        <button
-                            type="button"
-                            id="showPassword"
-                            class="show-password"
-                        >
-                            Show
-                        </button>
+                        <button type="button" id="showPassword" class="show-password">Show</button>
                     </div>
                 </div>
 
-                <button type="submit" class="login-button">
-                    Login
-                </button>
+                <button type="submit" class="login-button">Log in</button>
 
-                <div style="display:flex;align-items:center;gap:10px;margin:18px 0;color:#777;">
-                    <span style="flex:1;height:1px;background:#ddd;"></span>
-                    <span style="font-size:13px;">OR</span>
-                    <span style="flex:1;height:1px;background:#ddd;"></span>
-                </div>
+                <div class="divider">OR</div>
 
-                <button
-                    type="button"
-                    id="googleLoginButton"
-                    style="width:100%;padding:12px;border:1px solid #d9d9d9;border-radius:8px;background:#fff;color:#222;font-size:15px;font-weight:600;cursor:pointer;"
-                >
+                <button type="button" id="googleLoginButton" class="google-button">
+                    <span class="google-g">G</span>
                     Continue with Google
                 </button>
 
@@ -81,24 +96,20 @@
 
             <p class="register-text">
                 Don't have an account?
-                <button id="registerButton" class="link-button">
-                    Create Account
-                </button>
+                <button type="button" id="registerButton" class="link-button">Create account</button>
             </p>
 
-        </section>
+            <div class="auth-foot">
+                Semester 3 PBL · Card Management Platform
+            </div>
 
-        <!-- Demo information -->
-        <div class="demo-info">
-            <span>Semester 3 PBL</span>
-            <span>•</span>
-            <span>Card Management Platform</span>
         </div>
+    </section>
 
-    </main>
+</main>
 
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="js/script.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="js/script.js"></script>
 
 </body>
 </html>
