@@ -3,54 +3,118 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#191443">
 
-    <title>Create Account - CardHub</title>
+    <title>Create Account | CardHub</title>
 
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/auth.css">
 </head>
 
 <body>
 
-    <main class="app">
+<main class="auth-shell">
 
-        <!-- Brand -->
+    <section class="auth-visual">
+
         <div class="brand">
-            <div class="logo">C</div>
-            <h1>CardHub</h1>
-            <p>Your cards. One place.</p>
+            <div class="brand-mark">C</div>
+            <span class="brand-name">CardHub</span>
         </div>
 
-        <!-- Registration Card -->
-        <section class="login-card">
+        <div class="visual-copy">
+            <div class="eyebrow">Get started with CardHub</div>
 
-            <h2>Create Account</h2>
-            <p class="subtitle">Create your CardHub account</p>
+            <h1>Everything<br>in one place.</h1>
+
+            <p>
+                Create your account to organize your cards
+                and keep track of your transactions.
+            </p>
+        </div>
+
+        <div class="visual-card">
+            <div class="visual-card-top">
+                <span>CardHub</span>
+                <span>▰</span>
+            </div>
+
+            <div class="chip"></div>
+
+            <div class="visual-card-number">
+                •••• &nbsp;•••• &nbsp;•••• &nbsp;5464
+            </div>
+
+            <div class="visual-card-bottom">
+                <span>YOUR NAME</span>
+                <span>MEMBER</span>
+            </div>
+        </div>
+
+    </section>
+
+
+    <section class="auth-panel">
+
+        <div class="auth-content">
+
+            <div class="brand mobile-brand">
+                <div class="brand-mark">C</div>
+                <span class="brand-name">CardHub</span>
+            </div>
+
+            <h2>Create your account</h2>
+
+            <p class="auth-subtitle">
+                Enter your details to get started.
+            </p>
 
             <form id="registerForm">
 
+                <!-- FULL NAME -->
                 <div class="input-group">
-                    <label for="name">Full Name</label>
+                    <label for="name">Full name</label>
 
                     <input
                         type="text"
                         id="name"
                         placeholder="Enter your full name"
+                        autocomplete="name"
                         required
                     >
                 </div>
 
+
+                <!-- MOBILE NUMBER -->
                 <div class="input-group">
-                    <label for="mobile">Mobile Number</label>
+                    <label for="mobile">Mobile number</label>
 
                     <input
                         type="tel"
                         id="mobile"
-                        placeholder="Enter 10-digit mobile number"
+                        placeholder="10-digit mobile number"
                         maxlength="10"
+                        inputmode="numeric"
+                        pattern="[0-9]{10}"
                         required
                     >
                 </div>
 
+
+                <!-- EMAIL ADDRESS -->
+                <div class="input-group">
+                    <label for="email">Email address</label>
+
+                    <input
+                        type="email"
+                        id="email"
+                        placeholder="you@example.com"
+                        autocomplete="email"
+                        required
+                    >
+                </div>
+
+
+                <!-- PASSWORD -->
                 <div class="input-group">
                     <label for="password">Password</label>
 
@@ -58,26 +122,32 @@
                         type="password"
                         id="password"
                         placeholder="Create a password"
+                        autocomplete="new-password"
                         required
                     >
                 </div>
 
+
+                <!-- CONFIRM PASSWORD -->
                 <div class="input-group">
-                    <label for="confirmPassword">Confirm Password</label>
+                    <label for="confirmPassword">Confirm password</label>
 
                     <input
                         type="password"
                         id="confirmPassword"
-                        placeholder="Confirm your password"
+                        placeholder="Enter password again"
+                        autocomplete="new-password"
                         required
                     >
                 </div>
 
+
                 <button type="submit" class="login-button">
-                    Create Account
+                    Create account
                 </button>
 
             </form>
+
 
             <p class="register-text">
                 Already have an account?
@@ -87,53 +157,62 @@
                     class="link-button"
                     onclick="window.location.href='index.html'"
                 >
-                    Login
+                    Log in
                 </button>
             </p>
 
-        </section>
+            <div class="auth-foot">
+                CardHub · Your cards. One place.
+            </div>
 
-        <div class="demo-info">
-            <span>Semester 3 PBL</span>
-            <span>•</span>
-            <span>Card Management Platform</span>
         </div>
 
-    </main>
+    </section>
 
-    <script>
+</main>
 
-        const registerForm = document.getElementById("registerForm");
 
-        registerForm.addEventListener("submit", function(event) {
+<script>
+const form = document.getElementById("registerForm");
+const mobileInput = document.getElementById("mobile");
 
-            event.preventDefault();
+mobileInput.addEventListener("input", function () {
+    mobileInput.value = mobileInput.value
+        .replace(/\D/g, "")
+        .slice(0, 10);
+});
 
-            const name = document.getElementById("name").value.trim();
-            const mobile = document.getElementById("mobile").value.trim();
-            const password = document.getElementById("password").value;
-            const confirmPassword = document.getElementById("confirmPassword").value;
+form.addEventListener("submit", function (event) {
+    event.preventDefault();
 
-            if (mobile.length !== 10) {
-                alert("Please enter a valid 10-digit mobile number.");
-                return;
-            }
+    const email = document.getElementById("email").value.trim();
+    const mobile = mobileInput.value.trim();
+    const password = document.getElementById("password").value;
+    const confirmPassword = document.getElementById("confirmPassword").value;
 
-            if (password.length < 4) {
-                alert("Password must contain at least 4 characters.");
-                return;
-            }
+    if (!/^[0-9]{10}$/.test(mobile)) {
+        alert("Enter a valid 10-digit mobile number.");
+        return;
+    }
 
-            if (password !== confirmPassword) {
-                alert("Passwords do not match.");
-                return;
-            }
+    if (!email) {
+        alert("Please enter your email address.");
+        return;
+    }
 
-            alert("Account created successfully. Backend will be connected later.");
+    if (password.length < 6) {
+        alert("Password must contain at least 6 characters.");
+        return;
+    }
 
-        });
+    if (password !== confirmPassword) {
+        alert("Passwords do not match.");
+        return;
+    }
 
-    </script>
+    alert("Form validated. Supabase registration is not connected yet.");
+});
+</script>
 
 </body>
 </html>
