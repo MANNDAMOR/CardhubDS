@@ -1,3 +1,1161 @@
+make this nav in all page and remove add card add traction and setting and profile and when i click on my cardhub it redirct to prilf.html
+Pasted text(20261101-080438).txt
+Document
+this is full code u edit and give me
+Pasted text(20261101-080954).txt
+Document
+here u go
+
+Updated your cards.html using the file you uploaded.
+
+Download
+
+Download updated cards.html
+
+Changes made
+Removed the old sidebar HTML and CSS.
+Connected shared css/nav.css.
+Connected shared js/nav.js.
+Removed old mobile sidebar controls.
+Removed conflicting left-side spacing.
+Preserved your existing Supabase connection, card loading, search and filters.
+What to do
+Replace your local cards.html with this downloaded file.
+Save it.
+Open Cards using Live Server.
+Check that the sidebar looks identical to Dashboard.
+Click My CardHub and verify it opens profile.html.
+
+Next file: transactions.html. Upload it when Cards is working.
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>My Cards - CardHub</title>
+
+    <link
+        rel="stylesheet"
+        href="css/style.css"
+    >
+
+    <link rel="stylesheet" href="css/nav.css">
+
+
+<style id="cardhub-desktop-page">
+/* CardHub desktop website theme for card pages */
+html { min-width: 0; }
+body { min-width: 0; background: #f3f6fb; color: #17243b; }
+main.dashboard {
+  width: auto; max-width: none; min-height: 100vh;
+  margin: 0; padding: 34px 46px 54px;
+  box-sizing: border-box;
+}
+.dashboard-header {
+  max-width: 1500px; margin: 0 auto 28px;
+  padding: 0 0 22px; border-bottom: 1px solid #e5eaf2;
+}
+.dashboard-header h1 { color: #17243b; font-size: 32px; letter-spacing: -.035em; }
+.dashboard-header .welcome-text { color: #7a8597; font-size: 14px; }
+.notification-button {
+  border: 1px solid #e5eaf2; border-radius: 14px; background: #fff;
+  box-shadow: 0 5px 18px rgba(23,36,59,.06);
+}
+.add-card-banner, .details-card, .details-section, .card-search,
+.filter-row, .my-cards-list {
+  max-width: 1500px; margin-left: auto; margin-right: auto;
+}
+.add-card-banner {
+  padding: 28px 32px; border-radius: 20px; margin-bottom: 24px;
+  box-shadow: 0 10px 28px rgba(23,36,59,.07);
+}
+.card-search { margin-top: 22px; margin-bottom: 18px; }
+.card-search input { min-height: 50px; border-radius: 12px; }
+.filter-row { gap: 10px; margin-bottom: 26px; }
+.filter-button { border-radius: 10px; padding: 11px 20px; }
+.my-cards-list {
+  display: grid; grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 22px; align-items: stretch;
+}
+.user-card-item {
+  min-width: 0; padding: 20px; border-radius: 18px;
+  background: #fff; border: 1px solid #e5eaf2;
+  box-shadow: 0 8px 26px rgba(23,36,59,.055);
+  transition: transform .18s ease, box-shadow .18s ease;
+}
+.user-card-item:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 15px 32px rgba(23,36,59,.11);
+}
+.mini-card { width: 100%; box-sizing: border-box; border-radius: 15px; }
+.user-card-info { padding-top: 18px; }
+.card-arrow { font-size: 24px; }
+.details-card {
+  width: 100%; max-width: 720px; box-sizing: border-box;
+  margin: 0 0 26px; padding: 30px 34px; border-radius: 22px;
+  box-shadow: 0 18px 40px rgba(20,30,50,.14);
+}
+.details-card-number { font-size: 26px; letter-spacing: .12em; margin: 34px 0; }
+.details-section {
+  width: 100%; box-sizing: border-box; margin-top: 24px; padding: 26px 28px;
+  border: 1px solid #e5eaf2; border-radius: 18px; background: #fff;
+  box-shadow: 0 8px 26px rgba(23,36,59,.045);
+}
+.details-section h2 { margin-top: 0; margin-bottom: 20px; font-size: 21px; color: #182742; }
+.details-actions { gap: 12px; }
+.info-box { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 28px; }
+.info-row { min-width: 0; padding: 16px 0; border-bottom: 1px solid #edf0f5; }
+.info-row strong { overflow-wrap: anywhere; text-align: right; }
+.benefits-box { border-radius: 14px; }
+.transaction-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.transaction-list .transaction { min-width: 0; border: 1px solid #edf0f5; border-radius: 12px; padding: 16px; }
+.security-warning { border-radius: 14px; padding: 20px; }
+.bottom-navigation {
+  position: fixed; inset: 0 auto 0 0; transform: none;
+  width: 230px; max-width: none; height: 100vh; box-sizing: border-box;
+  padding: 34px 18px; background: #fff; border: 0; border-right: 1px solid #e5eaf2;
+  border-radius: 0; box-shadow: 8px 0 30px rgba(23,36,59,.035);
+  display: flex; flex-direction: column; justify-content: flex-start;
+  align-items: stretch; gap: 10px; z-index: 100;
+}
+.bottom-navigation::before {
+  content: "CARDHUB"; display: block; padding: 8px 14px 30px;
+  color: #17243b; font-size: 22px; font-weight: 800; letter-spacing: .08em;
+}
+.nav-item {
+  display: flex; align-items: center; gap: 14px; min-width: 0;
+  padding: 14px 15px; border-radius: 12px; text-align: left; color: #69768b;
+}
+.nav-item:hover, .nav-item.active { color: #17243b; background: #eef3fa; }
+.nav-item span { width: 24px; margin: 0; text-align: center; font-size: 19px; }
+.nav-item p { font-size: 14px; font-weight: 600; }
+@media (min-width: 1400px) {
+  .details-layout { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); gap: 24px; align-items: start; }
+}
+</style>
+
+
+<style id="cardhub-layout-repair">
+*{box-sizing:border-box}
+html{min-width:0!important}
+body{min-width:0!important;margin:0!important;background:#f3f4ff!important;color:#17172b}
+main.dashboard{margin:0!important;width:auto!important;max-width:none!important;min-height:100vh;padding:30px 30px 48px!important}
+.dashboard-header{display:flex;align-items:center;justify-content:space-between;gap:18px;max-width:1500px;margin:0 auto 24px!important;padding:0 0 18px!important;border-bottom:1px solid #e4e4f1}
+.dashboard-header h1{font-size:clamp(26px,2.3vw,34px)!important;line-height:1.2;color:#191833!important;margin:8px 0!important}
+.dashboard-header .welcome-text{font-size:14px!important;color:#717187!important;margin:0}
+.notification-button{min-width:44px;min-height:44px;border:1px solid #e2e1ef!important;border-radius:12px!important;background:#fff!important;box-shadow:0 4px 14px #2017470b}
+.summary-grid{max-width:1500px;margin:0 auto 24px!important;display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.summary-card{min-width:0;background:#fff!important;border:1px solid #e2e2f0!important;border-radius:16px!important;padding:22px!important;box-shadow:0 5px 18px #20174708}
+.summary-card p{margin:0 0 9px;color:#77778d;font-size:14px}
+.summary-card h2{margin:0;color:#5838bd;font-size:28px;font-weight:800;overflow-wrap:anywhere}
+.summary-icon{display:inline-grid;place-items:center;width:42px;height:42px;border-radius:13px;background:#eee9ff;color:#6041c1;font-size:20px;margin-bottom:14px}
+main.dashboard>section:not(.summary-grid),main.dashboard>.details-section,main.dashboard>.add-card-banner{max-width:1500px;margin-left:auto!important;margin-right:auto!important}
+main.dashboard h2{letter-spacing:-.02em}
+.add-card-banner{background:linear-gradient(115deg,#fff,#f0edff)!important;border:1px solid #e2ddfa!important;border-radius:18px!important;padding:28px 30px!important;margin-bottom:22px!important;box-shadow:0 9px 25px #281b6209}
+.add-card-banner h2,.add-card-banner h1{color:#5233b2!important;margin-top:0}
+.add-card-banner button,.add-card-banner a.button,.primary-button{border:0!important;border-radius:10px!important;background:#5b38c4!important;color:#fff!important;padding:11px 17px!important;font-weight:700;box-shadow:0 4px 10px #452b991c}
+.card-search input,.search-input{border:1px solid #dedcf0!important;background:#fff!important;border-radius:11px!important;padding:12px 14px!important;max-width:100%;outline:none}
+.filter-row{display:flex!important;flex-wrap:wrap;gap:9px!important}
+.filter-button{border:1px solid #dedbed!important;background:#fff!important;color:#514477!important;border-radius:10px!important;padding:10px 16px!important}
+.filter-button.active,.filter-button[aria-pressed="true"]{background:#5b38c4!important;color:#fff!important;border-color:#5b38c4!important}
+.my-cards-list{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px!important}
+.user-card-item{background:#fff!important;border:1px solid #e3e2ef!important;border-radius:17px!important;box-shadow:0 7px 22px #21174709;padding:18px!important;min-width:0}
+.mini-card{border-radius:14px!important;max-width:100%}
+.user-card-info{min-width:0}
+.user-card-info h2,.user-card-info h3{overflow-wrap:anywhere}
+.details-section{background:#fff!important;border:1px solid #e3e2ef!important;border-radius:16px!important;padding:22px!important;box-shadow:0 5px 18px #20174707}
+button,input,select{font:inherit}
+@media(max-width:1100px){main.dashboard{padding:24px 20px 36px!important}.summary-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.my-cards-list{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:760px){main.dashboard{padding:20px 14px 32px!important}.summary-grid{grid-template-columns:1fr}.my-cards-list{grid-template-columns:1fr}.dashboard-header{align-items:flex-start}.add-card-banner{padding:22px!important}}
+/* Keep the custom left navigation as the only desktop sidebar. */
+.cardhub-sidebar{box-sizing:border-box}
+body .bottom-navigation{display:none!important}
+</style>
+
+</head>
+
+
+<body>
+<main class="dashboard">
+
+
+    <!-- =========================
+         HEADER
+    ========================== -->
+
+    <header class="dashboard-header">
+
+        <div>
+
+            <p class="welcome-text">
+                CardHub
+            </p>
+
+            <h1>
+                My Cards
+            </h1>
+
+        </div>
+
+
+        <button
+            class="notification-button"
+            onclick="window.location.href='dashboard.html'"
+        >
+            ←
+        </button>
+
+    </header>
+
+
+
+    <!-- =========================
+         ADD CARD
+    ========================== -->
+
+    <section class="add-card-banner">
+
+        <div>
+
+            <h2>
+                Add an existing card
+            </h2>
+
+            <p>
+                Keep all your cards together in one place.
+            </p>
+
+        </div>
+
+
+        <button
+            class="add-card-button"
+            onclick="window.location.href='add-card.html'"
+        >
+            + Add Card
+        </button>
+
+    </section>
+
+
+
+    <!-- =========================
+         SEARCH
+    ========================== -->
+
+    <div class="card-search">
+
+        <span>
+            🔎
+        </span>
+
+        <input
+            type="text"
+            id="cardSearch"
+            placeholder="Search your cards..."
+        >
+
+    </div>
+
+
+
+    <!-- =========================
+         FILTERS
+    ========================== -->
+
+    <div class="filter-row">
+
+
+        <button
+            class="filter-button active"
+            data-filter="all"
+        >
+            All
+        </button>
+
+
+        <button
+            class="filter-button"
+            data-filter="credit"
+        >
+            Credit
+        </button>
+
+
+        <button
+            class="filter-button"
+            data-filter="debit"
+        >
+            Debit
+        </button>
+
+
+        <button
+            class="filter-button"
+            data-filter="prepaid"
+        >
+            Prepaid
+        </button>
+
+
+        <button
+            class="filter-button"
+            data-filter="transport"
+        >
+            Transport/NCMC
+        </button>
+
+
+    </div>
+
+
+
+    <!-- =========================
+         CARDS
+    ========================== -->
+
+    <section
+        class="my-cards-list"
+        id="myCardsList"
+    >
+
+        <!-- Cards loaded by JavaScript -->
+
+    </section>
+
+
+
+    <!-- =========================
+         BOTTOM NAVIGATION
+    ========================== -->
+
+    
+
+
+</main>
+
+
+
+<!-- =========================
+     SUPABASE
+========================== -->
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+
+<script>
+
+
+/* ==============================
+   SUPABASE CONNECTION
+============================== */
+
+const SUPABASE_URL =
+    "https://wrsqhsuktqldnyjrbuma.supabase.co";
+
+
+const SUPABASE_PUBLISHABLE_KEY =
+    "sb_publishable_1-wC9ij9iOkR0txvg6j5bA_i1XLPSj7";
+
+
+const supabaseClient =
+    window.supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_PUBLISHABLE_KEY
+    );
+
+
+
+/* ==============================
+   ELEMENTS
+============================== */
+
+const cardsList =
+    document.getElementById(
+        "myCardsList"
+    );
+
+
+const searchInput =
+    document.getElementById(
+        "cardSearch"
+    );
+
+
+const filterButtons =
+    document.querySelectorAll(
+        ".filter-button"
+    );
+
+
+let allCards = [];
+
+let selectedFilter = "all";
+
+
+
+/* ==============================
+   ESCAPE HTML
+============================== */
+
+function escapeHtml(value) {
+
+    return String(value)
+
+        .replace(
+            /&/g,
+            "&amp;"
+        )
+
+        .replace(
+            /</g,
+            "&lt;"
+        )
+
+        .replace(
+            />/g,
+            "&gt;"
+        )
+
+        .replace(
+            /"/g,
+            "&quot;"
+        )
+
+        .replace(
+            /'/g,
+            "&#039;"
+        );
+
+}
+
+
+
+/* ==============================
+   NORMALIZE CARD TYPE
+============================== */
+
+function normalizeCardType(type) {
+
+    const value =
+        String(type || "")
+            .toLowerCase()
+            .trim();
+
+
+    if (value === "credit") {
+        return "credit";
+    }
+
+
+    if (value === "debit") {
+        return "debit";
+    }
+
+
+    if (value === "prepaid") {
+        return "prepaid";
+    }
+
+
+    if (
+        value === "transport" ||
+        value === "ncmc"
+    ) {
+
+        return "transport";
+
+    }
+
+
+    return "";
+
+}
+
+
+
+/* ==============================
+   DISPLAY CARDS
+============================== */
+
+function displayCards(cards) {
+
+
+    cardsList.innerHTML = "";
+
+
+    if (cards.length === 0) {
+
+
+        cardsList.innerHTML = `
+
+            <div class="empty-cards">
+
+                <h3>
+                    No cards found
+                </h3>
+
+                <p>
+                    Add your first card to CardHub.
+                </p>
+
+                <button
+                    class="add-card-button"
+                    onclick="window.location.href='add-card.html'"
+                >
+                    + Add Card
+                </button>
+
+            </div>
+
+        `;
+
+
+        return;
+
+    }
+
+
+
+    cards.forEach(
+        function(card) {
+
+
+            const cardElement =
+                document.createElement(
+                    "div"
+                );
+
+
+            cardElement.className =
+                "user-card-item";
+
+
+            cardElement.onclick =
+                function() {
+
+                    window.location.href =
+                        "card-details.html?id=" +
+                        encodeURIComponent(
+                            card.id
+                        );
+
+                };
+
+
+
+            /* LAST FOUR */
+
+            const lastFour =
+                card.number_last4 ||
+                (
+                    card.number
+                        ? String(
+                            card.number
+                        ).slice(-4)
+                        : "----"
+                );
+
+
+
+            /* STATUS */
+
+            const status =
+                card.status ||
+                "Active";
+
+
+
+            /* TYPE */
+
+            const type =
+                normalizeCardType(
+                    card.type
+                );
+
+
+
+            const displayType =
+                type === "transport"
+                    ? "Transport/NCMC"
+                    : (
+                        type
+                            ? type.charAt(0).toUpperCase() +
+                              type.slice(1)
+                            : "Card"
+                    );
+
+
+
+            cardElement.innerHTML = `
+
+
+                <div class="mini-card credit-card">
+
+
+                    <div class="mini-card-top">
+
+                        <span>
+                            CardHub
+                        </span>
+
+                        <span>
+                            💳
+                        </span>
+
+                    </div>
+
+
+
+                    <div class="mini-card-number">
+
+                        •••• ${escapeHtml(
+                            lastFour
+                        )}
+
+                    </div>
+
+
+
+                    <div class="mini-card-bottom">
+
+
+                        <span>
+
+                            ${escapeHtml(
+                                card.issuer ||
+                                "Unknown"
+                            )}
+
+                        </span>
+
+
+                        <span>
+
+                            ${escapeHtml(
+                                status
+                            ).toUpperCase()}
+
+                        </span>
+
+
+                    </div>
+
+
+                </div>
+
+
+
+                <div class="user-card-info">
+
+
+                    <h3>
+
+                        ${escapeHtml(
+                            card.name ||
+                            "Unnamed Card"
+                        )}
+
+                    </h3>
+
+
+                    <p>
+
+                        ${escapeHtml(
+                            displayType
+                        )}
+
+                        •
+                        
+                        ${escapeHtml(
+                            card.issuer ||
+                            "Unknown"
+                        )}
+
+                    </p>
+
+
+                    <span class="active-badge">
+
+                        ${escapeHtml(
+                            status
+                        )}
+
+                    </span>
+
+
+                </div>
+
+
+
+                <span class="card-arrow">
+                    ›
+                </span>
+
+
+            `;
+
+
+
+            cardsList.appendChild(
+                cardElement
+            );
+
+
+        }
+    );
+
+}
+
+
+
+/* ==============================
+   SEARCH + FILTER
+============================== */
+
+function updateCards() {
+
+
+    const searchValue =
+        searchInput.value
+            .toLowerCase()
+            .trim();
+
+
+
+    const filteredCards =
+        allCards.filter(
+            function(card) {
+
+
+                const name =
+                    String(
+                        card.name || ""
+                    ).toLowerCase();
+
+
+                const issuer =
+                    String(
+                        card.issuer || ""
+                    ).toLowerCase();
+
+
+                const type =
+                    normalizeCardType(
+                        card.type
+                    );
+
+
+                const searchMatch =
+                    name.includes(
+                        searchValue
+                    ) ||
+                    issuer.includes(
+                        searchValue
+                    );
+
+
+                let filterMatch =
+                    true;
+
+
+
+                if (
+                    selectedFilter !==
+                    "all"
+                ) {
+
+                    filterMatch =
+                        type ===
+                        selectedFilter;
+
+                }
+
+
+
+                return (
+                    searchMatch &&
+                    filterMatch
+                );
+
+
+            }
+        );
+
+
+
+    displayCards(
+        filteredCards
+    );
+
+}
+
+
+
+/* ==============================
+   SEARCH
+============================== */
+
+searchInput.addEventListener(
+    "input",
+    updateCards
+);
+
+
+
+/* ==============================
+   FILTER BUTTONS
+============================== */
+
+filterButtons.forEach(
+    function(button) {
+
+
+        button.addEventListener(
+            "click",
+            function() {
+
+
+                filterButtons.forEach(
+                    function(btn) {
+
+                        btn.classList.remove(
+                            "active"
+                        );
+
+                    }
+                );
+
+
+                button.classList.add(
+                    "active"
+                );
+
+
+                selectedFilter =
+                    button.dataset.filter;
+
+
+                updateCards();
+
+            }
+        );
+
+    }
+);
+
+
+
+/* ==============================
+   LOAD CARDS
+============================== */
+
+async function loadCards() {
+
+
+    cardsList.innerHTML = `
+
+        <div class="empty-cards">
+
+            <h3>
+                Loading cards...
+            </h3>
+
+            <p>
+                Connecting to CardHub database.
+            </p>
+
+        </div>
+
+    `;
+
+
+
+    /* =========================
+       CHECK LOGIN
+    ========================= */
+
+    const {
+        data: {
+            user
+        },
+        error: authError
+
+    } =
+        await supabaseClient.auth.getUser();
+
+
+
+    if (
+        authError ||
+        !user
+    ) {
+
+        window.location.href =
+            "index.html";
+
+        return;
+
+    }
+
+
+
+    /* =========================
+       LOAD USER CARDS
+    ========================= */
+
+    const {
+        data,
+        error
+
+    } =
+        await supabaseClient
+
+            .from("cards")
+
+            .select("*")
+
+            .eq(
+                "user_id",
+                user.id
+            )
+
+            .order(
+                "created_at",
+                {
+                    ascending: false
+                }
+            );
+
+
+
+    /* =========================
+       DATABASE ERROR
+    ========================= */
+
+    if (error) {
+
+
+        console.error(
+            "Supabase error:",
+            error
+        );
+
+
+        cardsList.innerHTML = `
+
+            <div class="empty-cards">
+
+                <h3>
+                    Could not load cards
+                </h3>
+
+                <p>
+                    ${escapeHtml(
+                        error.message
+                    )}
+                </p>
+
+
+                <button
+                    class="add-card-button"
+                    onclick="loadCards()"
+                >
+                    Try Again
+                </button>
+
+            </div>
+
+        `;
+
+
+        return;
+
+    }
+
+
+
+    /* =========================
+       KEEP ONLY SEM 3 TYPES
+    ========================= */
+
+    allCards =
+        (data || []).filter(
+            function(card) {
+
+                return (
+                    normalizeCardType(
+                        card.type
+                    ) !== ""
+                );
+
+            }
+        );
+
+
+
+    /* =========================
+       LOCAL STORAGE SYNC
+    ========================= */
+
+    const localCards =
+        allCards.map(
+            function(card) {
+
+                return {
+
+                    id:
+                        String(
+                            card.id
+                        ),
+
+                    user_id:
+                        card.user_id,
+
+                    type:
+                        normalizeCardType(
+                            card.type
+                        ),
+
+                    name:
+                        card.name,
+
+                    issuer:
+                        card.issuer,
+
+                    number:
+                        "••••" +
+                        (
+                            card.number_last4 ||
+                            "----"
+                        ),
+
+                    number_last4:
+                        card.number_last4,
+
+                    expiry:
+                        card.expiry,
+
+                    status:
+                        card.status,
+
+                    notes:
+                        card.notes
+
+                };
+
+            }
+        );
+
+
+
+    localStorage.setItem(
+        "cardhubCards",
+        JSON.stringify(
+            localCards
+        )
+    );
+
+
+
+    /* =========================
+       DISPLAY
+    ========================= */
+
+    updateCards();
+
+}
+
+
+
+/* ==============================
+   START
+============================== */
+
+loadCards();
+
+
+</script>
+
+
+<script src="js/nav.js"></script>
+</body>
+
+</html>
+cards_updated.html
+HTML
+Pasted text(20261101-081148).txt
+Document
+here u go
+
+Updated your transactions.html using the file you uploaded.
+
+Download
+
+Download updated transactions.html
+
+Changes made
+Removed both old navigation sidebars.
+Connected shared css/nav.css.
+Connected shared js/nav.js.
+Removed old mobile navigation controls.
+Preserved transaction search and filters.
+Preserved Supabase connection and transaction loading.
+Preserved Add, Edit, Delete and Refresh functionality.
+What to do
+Replace your local transactions.html with this file.
+Save it.
+Open it using Live Server.
+Check that the sidebar matches Dashboard and Cards.
+
+Next: Upload explore.html.
+
+transactions_updated.html
+HTML
+Pasted text(20261101-081432).txt
+Document
+here u go
+Analysis errored
+Analyzed
+from pathlib import Path
+out = Path("/mnt/data/cardhub_explore_updated.html")
+out.write_text(html, encoding="utf-8")
+print(f"Created {out.name} ({len(html.splitlines())} lines).")
+
+STDOUT/STDERR
+Created cardhub_explore_updated.html (1932 lines).
+
+
+Updated your explore.html using your uploaded file.
+
+Download
+
+Download updated explore.html
+
+Changes made
+Removed the old sidebar.
+Removed old mobile navigation code.
+Connected css/nav.css.
+Connected js/nav.js.
+Preserved card search and category filters.
+Preserved sorting and card details pop-up.
+Preserved Add to My Cards navigation.
+What to do
+Download the file.
+Replace your existing explore.html.
+Open it using Live Server.
+Check whether the navigation matches the other pages.
+
+Next: Upload profile.html. 
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -40,20 +1198,6 @@
 
         button {
             cursor: pointer;
-        }
-
-        .sidebar {
-            position: fixed;
-            inset: 0 auto 0 0;
-            width: 250px;
-            padding: 28px 18px;
-            background: var(--dark-purple);
-            color: white;
-            display: flex;
-            flex-direction: column;
-            z-index: 30;
-            overflow-y: auto;
-            transition: transform .25s ease;
         }
 
         .brand {
@@ -846,10 +1990,6 @@
             font-weight: 700;
         }
 
-        .mobile-menu-button {
-            display: none;
-        }
-
         .mobile-overlay {
             display: none;
         }
@@ -865,29 +2005,10 @@
         }
 
         @media (max-width: 800px) {
-            .sidebar {
-                transform: translateX(-100%);
-            }
-
-            .sidebar.open {
-                transform: translateX(0);
-            }
-
-            .mobile-overlay.open {
-                position: fixed;
-                inset: 0;
-                z-index: 20;
-                display: block;
-                background: #100b3275;
-            }
 
             .main {
                 margin-left: 0;
                 padding: 20px 16px 35px;
-            }
-
-            .mobile-menu-button {
-                display: grid;
             }
 
             .topbar {
@@ -990,76 +2111,11 @@
             }
         }
     </style>
+    <link rel="stylesheet" href="css/nav.css">
 </head>
 
 <body>
-
-    <!-- Mobile overlay -->
-    <div class="mobile-overlay" id="mobileOverlay"></div>
-
-    <!-- Sidebar -->
-    <aside class="sidebar" id="sidebar">
-
-        <a href="dashboard.html" class="brand" style="color:white;text-decoration:none;">
-            <span class="brand-icon">
-                <i data-lucide="wallet-cards"></i>
-            </span>
-            <span>CardHub</span>
-        </a>
-
-        <div class="nav-label">Workspace</div>
-
-        <nav aria-label="Main navigation">
-            <a href="dashboard.html" class="nav-link">
-                <i data-lucide="layout-dashboard"></i>
-                Dashboard
-            </a>
-
-            <a href="cards.html" class="nav-link">
-                <i data-lucide="credit-card"></i>
-                Cards
-            </a>
-
-            <a href="transactions.html" class="nav-link">
-                <i data-lucide="arrow-left-right"></i>
-                Transactions
-            </a>
-
-            <a href="explore.html" class="nav-link active" aria-current="page">
-                <i data-lucide="compass"></i>
-                Explore
-            </a>
-        </nav>
-
-        <div class="sidebar-bottom">
-            <div class="nav-label">Account</div>
-
-            <a href="profile.html" class="nav-link">
-                <i data-lucide="settings"></i>
-                Settings & Profile
-            </a>
-
-            <a href="add-card.html" class="nav-link">
-                <i data-lucide="plus-circle"></i>
-                Add Card
-            </a>
-
-            <a href="add-transaction.html" class="nav-link">
-                <i data-lucide="circle-plus"></i>
-                Add Transaction
-            </a>
-
-            <div class="profile-mini">
-                <div class="avatar">CH</div>
-                <div>
-                    <div class="profile-name" id="profileName">My CardHub</div>
-                    <div class="profile-caption">Personal account</div>
-                </div>
-            </div>
-        </div>
-    </aside>
-
-    <!-- Main content -->
+<!-- Main content -->
     <main class="main">
 
         <!-- Header -->
@@ -1784,29 +2840,7 @@
         if (window.lucide) {
             lucide.createIcons();
         }
-
-        // Mobile sidebar.
-        const sidebar = document.getElementById("sidebar");
-        const mobileOverlay = document.getElementById("mobileOverlay");
-        const mobileMenuButton = document.getElementById("mobileMenuButton");
-
-        function setMobileMenu(open) {
-            sidebar.classList.toggle("open", open);
-            mobileOverlay.classList.toggle("open", open);
-            mobileMenuButton.setAttribute("aria-expanded", String(open));
-        }
-
-        mobileMenuButton.addEventListener("click", () => {
-            setMobileMenu(!sidebar.classList.contains("open"));
-        });
-
-        mobileOverlay.addEventListener("click", () => {
-            setMobileMenu(false);
-        });
-
-        document.querySelectorAll(".nav-link").forEach(link => {
-            link.addEventListener("click", () => setMobileMenu(false));
-        });
+        
 
         // Back button.
         document.getElementById("backButton").addEventListener("click", () => {
@@ -2051,5 +3085,8 @@
         updateCards();
     </script>
 
+    <script src="js/nav.js"></script>
 </body>
 </html>
+cardhub_explore_updated.html
+HTML
