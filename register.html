@@ -1,15 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="theme-color" content="#191443">
-
-    <title>Create Account | CardHub</title>
-
-    <link rel="stylesheet" href="css/auth.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#191443">
+<title>Create Account | CardHub</title>
+<link rel="stylesheet" href="css/auth.css">
 </head>
-
 <body>
 
 <main class="auth-shell">
@@ -23,9 +20,7 @@
 
         <div class="visual-copy">
             <div class="eyebrow">Get started with CardHub</div>
-
             <h1>Everything<br>in one place.</h1>
-
             <p>
                 Create your account to organize your cards
                 and keep track of your transactions.
@@ -37,13 +32,10 @@
                 <span>CardHub</span>
                 <span>▰</span>
             </div>
-
             <div class="chip"></div>
-
             <div class="visual-card-number">
                 •••• &nbsp;•••• &nbsp;•••• &nbsp;5464
             </div>
-
             <div class="visual-card-bottom">
                 <span>YOUR NAME</span>
                 <span>MEMBER</span>
@@ -52,9 +44,7 @@
 
     </section>
 
-
     <section class="auth-panel">
-
         <div class="auth-content">
 
             <div class="brand mobile-brand">
@@ -63,132 +53,82 @@
             </div>
 
             <h2>Create your account</h2>
-
-            <p class="auth-subtitle">
-                Enter your details to get started.
-            </p>
+            <p class="auth-subtitle">Enter your details to get started.</p>
 
             <form id="registerForm">
 
-                <!-- FULL NAME -->
                 <div class="input-group">
                     <label for="name">Full name</label>
-
-                    <input
-                        type="text"
-                        id="name"
-                        placeholder="Enter your full name"
-                        autocomplete="name"
-                        required
-                    >
+                    <input type="text" id="name" placeholder="Enter your full name" autocomplete="name" required>
                 </div>
 
-
-                <!-- MOBILE NUMBER -->
                 <div class="input-group">
                     <label for="mobile">Mobile number</label>
-
-                    <input
-                        type="tel"
-                        id="mobile"
-                        placeholder="10-digit mobile number"
-                        maxlength="10"
-                        inputmode="numeric"
-                        pattern="[0-9]{10}"
-                        required
-                    >
+                    <input type="tel" id="mobile" placeholder="10-digit mobile number" maxlength="10" inputmode="numeric" pattern="[0-9]{10}" required>
                 </div>
 
-
-                <!-- EMAIL ADDRESS -->
                 <div class="input-group">
                     <label for="email">Email address</label>
-
-                    <input
-                        type="email"
-                        id="email"
-                        placeholder="you@example.com"
-                        autocomplete="email"
-                        required
-                    >
+                    <input type="email" id="email" placeholder="you@example.com" autocomplete="email" required>
                 </div>
 
-
-                <!-- PASSWORD -->
                 <div class="input-group">
                     <label for="password">Password</label>
-
-                    <input
-                        type="password"
-                        id="password"
-                        placeholder="Create a password"
-                        autocomplete="new-password"
-                        required
-                    >
+                    <input type="password" id="password" placeholder="Create a password" autocomplete="new-password" required>
                 </div>
 
-
-                <!-- CONFIRM PASSWORD -->
                 <div class="input-group">
                     <label for="confirmPassword">Confirm password</label>
-
-                    <input
-                        type="password"
-                        id="confirmPassword"
-                        placeholder="Enter password again"
-                        autocomplete="new-password"
-                        required
-                    >
+                    <input type="password" id="confirmPassword" placeholder="Enter password again" autocomplete="new-password" required>
                 </div>
 
-
-                <button type="submit" class="login-button">
-                    Create account
-                </button>
+                <button type="submit" id="registerSubmit" class="login-button">Create account</button>
 
             </form>
 
-
             <p class="register-text">
                 Already have an account?
-
-                <button
-                    type="button"
-                    class="link-button"
-                    onclick="window.location.href='index.html'"
-                >
-                    Log in
-                </button>
+                <button type="button" class="link-button" onclick="window.location.href='index.html'">Log in</button>
             </p>
 
-            <div class="auth-foot">
-                CardHub · Your cards. One place.
-            </div>
+            <div class="auth-foot">CardHub · Your cards. One place.</div>
 
         </div>
-
     </section>
 
 </main>
 
-
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
+
+const SUPABASE_URL = "https://wrsqhsuktqldnyjrbuma.supabase.co";
+const SUPABASE_KEY = "sb_publishable_1-wC9ij9iOkR0txvg6j5bA_i1XLPSj7";
+
+const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
 const form = document.getElementById("registerForm");
 const mobileInput = document.getElementById("mobile");
+const submitButton = document.getElementById("registerSubmit");
 
+// Allow digits only, maximum 10
 mobileInput.addEventListener("input", function () {
-    mobileInput.value = mobileInput.value
-        .replace(/\D/g, "")
-        .slice(0, 10);
+    mobileInput.value = mobileInput.value.replace(/\D/g, "").slice(0, 10);
 });
 
-form.addEventListener("submit", function (event) {
+form.addEventListener("submit", async function (event) {
+
     event.preventDefault();
 
-    const email = document.getElementById("email").value.trim();
+    const fullName = document.getElementById("name").value.trim();
     const mobile = mobileInput.value.trim();
+    const email = document.getElementById("email").value.trim();
     const password = document.getElementById("password").value;
     const confirmPassword = document.getElementById("confirmPassword").value;
+
+    if (!fullName) {
+        alert("Please enter your full name.");
+        return;
+    }
 
     if (!/^[0-9]{10}$/.test(mobile)) {
         alert("Enter a valid 10-digit mobile number.");
@@ -210,8 +150,61 @@ form.addEventListener("submit", function (event) {
         return;
     }
 
-    alert("Form validated. Supabase registration is not connected yet.");
+    submitButton.disabled = true;
+    submitButton.textContent = "Creating account...";
+
+    try {
+
+        // Full name and mobile are saved with the account.
+        // A database trigger copies them into the profiles table.
+        const { data, error } = await supabaseClient.auth.signUp({
+            email: email,
+            password: password,
+            options: {
+                data: {
+                    full_name: fullName,
+                    mobile: mobile
+                },
+                emailRedirectTo: window.location.origin + "/index.html"
+            }
+        });
+
+        if (error) {
+            console.error("Registration error:", error);
+            alert(error.message);
+            return;
+        }
+
+        // Email already registered (Supabase returns no identities)
+        if (data.user && data.user.identities && data.user.identities.length === 0) {
+            alert("This email is already registered. Please log in.");
+            return;
+        }
+
+        // Email confirmation OFF: user is already logged in
+        if (data.session) {
+            window.location.href = "dashboard.html";
+            return;
+        }
+
+        // Email confirmation ON: user must confirm by email first
+        alert("Account created. Please check your email and click the confirmation link, then log in.");
+        window.location.href = "index.html";
+
+    } catch (err) {
+
+        console.error("Registration exception:", err);
+        alert("Something went wrong. Please try again.");
+
+    } finally {
+
+        submitButton.disabled = false;
+        submitButton.textContent = "Create account";
+
+    }
+
 });
+
 </script>
 
 </body>
