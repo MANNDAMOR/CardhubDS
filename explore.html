@@ -24,7 +24,7 @@
       max-width: 1440px;
       min-height: 100vh;
       margin: 0 auto;
-      padding: 36px clamp(18px, 4vw, 52px);
+      padding: 34px clamp(16px, 4vw, 48px) 50px;
     }
 
     .page-header {
@@ -32,13 +32,13 @@
       align-items: center;
       justify-content: space-between;
       gap: 20px;
-      margin-bottom: 28px;
+      margin-bottom: 26px;
     }
 
     .eyebrow {
-      margin: 0 0 7px;
+      margin: 0 0 6px;
       color: #7255d7;
-      font-size: 13px;
+      font-size: 12px;
       font-weight: 700;
       letter-spacing: .08em;
       text-transform: uppercase;
@@ -59,27 +59,29 @@
 
     .add-button {
       display: inline-flex;
-      min-height: 46px;
+      min-height: 44px;
       align-items: center;
       justify-content: center;
-      padding: 0 18px;
-      border-radius: 12px;
+      padding: 0 16px;
+      border-radius: 11px;
       background: #6042c5;
       color: #fff;
+      font-size: 13px;
       font-weight: 700;
       text-decoration: none;
+      white-space: nowrap;
     }
 
     .search-box {
       display: flex;
-      max-width: 480px;
-      min-height: 48px;
+      max-width: 500px;
+      min-height: 46px;
       align-items: center;
       gap: 10px;
-      margin-bottom: 20px;
-      padding: 0 15px;
+      margin-bottom: 17px;
+      padding: 0 14px;
       border: 1px solid #e5e4ef;
-      border-radius: 13px;
+      border-radius: 12px;
       background: #fff;
       color: #85859a;
     }
@@ -97,19 +99,19 @@
     .categories {
       display: flex;
       flex-wrap: wrap;
-      gap: 9px;
-      margin-bottom: 24px;
+      gap: 8px;
+      margin-bottom: 22px;
     }
 
     .category-button {
-      min-height: 38px;
-      padding: 0 15px;
+      min-height: 36px;
+      padding: 0 14px;
       border: 1px solid #e4e2ee;
       border-radius: 999px;
       background: #fff;
       color: #626278;
       font: inherit;
-      font-size: 13px;
+      font-size: 12px;
       font-weight: 600;
       cursor: pointer;
     }
@@ -125,95 +127,170 @@
       align-items: center;
       justify-content: space-between;
       gap: 12px;
-      margin: 0 0 15px;
+      margin: 0 0 14px;
     }
 
     .section-heading h2 {
       margin: 0;
       color: #282443;
-      font-size: 20px;
+      font-size: 19px;
     }
 
-    .result-count {
-      color: #77788e;
-      font-size: 13px;
-    }
+    .result-count { color: #77788e; font-size: 13px; }
 
-    .offers-grid {
+    .cards-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(min(100%, 270px), 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(min(100%, 285px), 1fr));
       gap: 18px;
     }
 
-    .offer-card {
-      display: flex;
-      min-height: 220px;
-      flex-direction: column;
-      padding: 20px;
+    .catalog-card {
+      overflow: hidden;
+      padding: 12px;
       border: 1px solid #e8e7f0;
       border-radius: 18px;
       background: #fff;
       box-shadow: 0 8px 24px #28204a0a;
+      transition: transform .18s ease, box-shadow .18s ease;
     }
 
-    .offer-top {
+    .catalog-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 14px 30px #28204a16;
+    }
+
+    .card-face {
+      position: relative;
       display: flex;
-      align-items: center;
-      gap: 13px;
-    }
-
-    .offer-icon {
-      display: grid;
-      width: 46px;
-      height: 46px;
-      flex: 0 0 46px;
-      place-items: center;
+      min-height: 174px;
+      flex-direction: column;
+      justify-content: space-between;
+      overflow: hidden;
+      padding: 18px;
       border-radius: 14px;
-      background: #eee9ff;
-      font-size: 22px;
+      background: linear-gradient(135deg, #34245f, #6549bd);
+      color: #fff;
     }
 
-    .offer-card h3 {
-      margin: 0;
-      color: #292541;
-      font-size: 16px;
+    .card-face::after {
+      position: absolute;
+      right: -24px;
+      bottom: -48px;
+      width: 145px;
+      height: 145px;
+      border: 1px solid #ffffff2b;
+      border-radius: 50%;
+      content: "";
     }
 
-    .offer-merchant {
-      margin: 4px 0 0;
-      color: #77788e;
-      font-size: 13px;
+    .catalog-card:nth-child(4n + 2) .card-face {
+      background: linear-gradient(135deg, #163c59, #3186a0);
     }
 
-    .offer-description {
-      flex: 1;
-      margin: 18px 0;
-      color: #66677d;
-      font-size: 14px;
-      line-height: 1.55;
+    .catalog-card:nth-child(4n + 3) .card-face {
+      background: linear-gradient(135deg, #71364f, #c56878);
     }
 
-    .offer-bottom {
+    .catalog-card:nth-child(4n + 4) .card-face {
+      background: linear-gradient(135deg, #24534b, #5c9b7c);
+    }
+
+    .card-face-top,
+    .card-face-bottom {
+      position: relative;
+      z-index: 1;
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 10px;
-      padding-top: 14px;
+    }
+
+    .card-brand {
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: .04em;
+    }
+
+    .card-type {
+      padding: 5px 8px;
+      border: 1px solid #ffffff55;
+      border-radius: 999px;
+      background: #ffffff18;
+      font-size: 10px;
+      text-transform: uppercase;
+    }
+
+    .card-product-name {
+      position: relative;
+      z-index: 1;
+      max-width: 90%;
+      margin: 18px 0;
+      font-size: 18px;
+      font-weight: 700;
+      line-height: 1.25;
+      overflow-wrap: anywhere;
+    }
+
+    .card-face-bottom {
+      color: #eee9ff;
+      font-size: 11px;
+    }
+
+    .card-description {
+      min-height: 62px;
+      margin: 15px 4px 12px;
+      color: #66677d;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .tag-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin: 0 4px 14px;
+    }
+
+    .tag {
+      padding: 5px 8px;
+      border-radius: 999px;
+      background: #f1edff;
+      color: #6042b0;
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: capitalize;
+    }
+
+    .card-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 12px 4px 3px;
       border-top: 1px solid #efedf5;
     }
 
-    .offer-category {
-      color: #7255d7;
-      font-size: 12px;
-      font-weight: 700;
+    .issuer-label {
+      color: #77788e;
+      font-size: 11px;
     }
 
-    .add-card-link {
-      color: #6042c5;
-      font-size: 13px;
+    .apply-link {
+      display: inline-flex;
+      min-height: 36px;
+      align-items: center;
+      justify-content: center;
+      padding: 0 12px;
+      border-radius: 9px;
+      background: #6042c5;
+      color: #fff;
+      font-size: 12px;
       font-weight: 700;
       text-decoration: none;
+      white-space: nowrap;
     }
+
+    .apply-link:hover { background: #5033b3; }
 
     .empty-state {
       grid-column: 1 / -1;
@@ -225,91 +302,22 @@
       text-align: center;
     }
 
-    .empty-state h3 {
-      margin: 0 0 7px;
-      color: #302b4d;
-    }
-
+    .empty-state h3 { margin: 0 0 7px; color: #302b4d; }
     .empty-state p { margin: 0; }
 
-    @media (max-width: 600px) {
-      .explore-page { padding: 24px 15px 34px; }
-      .page-header { align-items: flex-start; }
-      .add-button { min-height: 42px; padding: 0 12px; font-size: 13px; }
-      .offers-grid { grid-template-columns: 1fr; }
+    .disclaimer {
+      margin: 20px 0 0;
+      color: #77788e;
+      font-size: 12px;
+      line-height: 1.5;
     }
 
-    .offer-card {
-  display: block;
-  overflow: hidden;
-  padding: 0;
-  border: 1px solid #e8e7f0;
-  border-radius: 18px;
-  background: #fff;
-  box-shadow: 0 8px 24px #28204a0a;
-  transition: transform .18s ease, box-shadow .18s ease;
-}
-
-.offer-card:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 14px 30px #28204a16;
-}
-
-.offer-top {
-  position: relative;
-  display: flex;
-  min-height: 174px;
-  align-items: flex-start;
-  gap: 13px;
-  overflow: hidden;
-  padding: 20px;
-  border-radius: 14px;
-  background: linear-gradient(135deg, #34245f, #6549bd);
-  color: #fff;
-}
-
-.offer-card:nth-child(4n + 2) .offer-top {
-  background: linear-gradient(135deg, #163c59, #3186a0);
-}
-
-.offer-card:nth-child(4n + 3) .offer-top {
-  background: linear-gradient(135deg, #71364f, #c56878);
-}
-
-.offer-card:nth-child(4n + 4) .offer-top {
-  background: linear-gradient(135deg, #24534b, #5c9b7c);
-}
-
-.offer-icon {
-  display: grid;
-  width: 42px;
-  height: 42px;
-  flex: 0 0 42px;
-  place-items: center;
-  border: 1px solid #ffffff40;
-  border-radius: 12px;
-  background: #ffffff20;
-  font-size: 21px;
-}
-
-.offer-top h3 {
-  color: #fff;
-}
-
-.offer-merchant {
-  color: #eee9ff;
-}
-
-.offer-description {
-  margin: 0;
-  padding: 16px 20px;
-}
-
-.offer-bottom {
-  margin: 0 20px;
-  padding: 13px 0 16px;
-  border-top: 1px solid #efedf5;
-}
+    @media (max-width: 600px) {
+      .explore-page { padding: 23px 14px 34px; }
+      .page-header { align-items: flex-start; }
+      .add-button { min-height: 40px; padding: 0 11px; font-size: 12px; }
+      .cards-grid { grid-template-columns: 1fr; }
+    }
   </style>
 </head>
 
@@ -317,83 +325,100 @@
   <main class="explore-page">
     <header class="page-header">
       <div>
-        <p class="eyebrow">Discover</p>
+        <p class="eyebrow">Discover cards</p>
         <h1>Explore</h1>
-        <p class="subtitle">Find card offers and useful ways to make the most of your cards.</p>
+        <p class="subtitle">Browse cards by category and apply on the issuer’s website.</p>
       </div>
-      <a class="add-button" href="add-card.html">＋ Add Card</a>
+      <a class="add-button" href="add-card.html">＋ Add My Card</a>
     </header>
 
     <label class="search-box">
       <span aria-hidden="true">⌕</span>
-      <input id="offerSearch" type="search" placeholder="Search offers…" autocomplete="off">
+      <input id="cardSearch" type="search" placeholder="Search cards or issuers…" autocomplete="off">
     </label>
 
-    <nav class="categories" aria-label="Filter offers">
-      <button class="category-button active" type="button" data-category="all">All</button>
-      <button class="category-button" type="button" data-category="shopping">Shopping</button>
-      <button class="category-button" type="button" data-category="food">Food</button>
-      <button class="category-button" type="button" data-category="travel">Travel</button>
-      <button class="category-button" type="button" data-category="entertainment">Entertainment</button>
+    <nav class="categories" id="categories" aria-label="Filter cards by category">
+      <button class="category-button active" type="button" data-category="all" aria-pressed="true">All cards</button>
+      <button class="category-button" type="button" data-category="cashback" aria-pressed="false">Cashback</button>
+      <button class="category-button" type="button" data-category="shopping" aria-pressed="false">Shopping</button>
+      <button class="category-button" type="button" data-category="travel" aria-pressed="false">Travel</button>
+      <button class="category-button" type="button" data-category="dining" aria-pressed="false">Dining</button>
+      <button class="category-button" type="button" data-category="lifestyle" aria-pressed="false">Lifestyle</button>
     </nav>
 
     <section>
       <div class="section-heading">
-        <h2>Featured offers</h2>
+        <h2>Cards you can explore</h2>
         <span class="result-count" id="resultCount"></span>
       </div>
-      <div class="offers-grid" id="offersGrid" aria-live="polite"></div>
+      <div class="cards-grid" id="cardsGrid" aria-live="polite"></div>
+      <p class="disclaimer">
+        Card details, fees, availability, and eligibility may change. Check the issuer’s website before applying.
+        CardHub does not approve applications.
+      </p>
     </section>
   </main>
 
   <script>
-    const offers = [
+    const cards = [
       {
-        title: "Save on everyday shopping",
-        merchant: "Retail offers",
-        category: "shopping",
-        icon: "🛍️",
-        description: "Check your card provider’s current shopping rewards and discounts before you buy."
+        name: "CASHBACK SBI Card",
+        issuer: "SBI Card",
+        type: "Credit Card",
+        categories: ["cashback", "shopping"],
+        icon: "↗",
+        description: "Explore the issuer’s current features, fees, eligibility, and application information.",
+        applyUrl: "https://www.sbicard.com/en/personal/credit-cards.html"
       },
       {
-        title: "Dining rewards",
-        merchant: "Food and dining",
-        category: "food",
-        icon: "🍽️",
-        description: "Look for dining cashback, reward points, and partner restaurant offers on your cards."
+        name: "Amazon Pay ICICI Bank Credit Card",
+        issuer: "ICICI Bank",
+        type: "Credit Card",
+        categories: ["shopping", "cashback"],
+        icon: "◇",
+        description: "View current card details and check application eligibility on the issuer’s website.",
+        applyUrl: "https://campaigns.icicibank.com/Amazon_pay_ICICI/index.html"
       },
       {
-        title: "Plan your next trip",
-        merchant: "Travel benefits",
-        category: "travel",
-        icon: "✈️",
-        description: "Explore travel rewards, airport benefits, and partner deals available through your card."
+        name: "Flipkart Axis Bank Credit Card",
+        issuer: "Axis Bank",
+        type: "Credit Card",
+        categories: ["shopping", "cashback"],
+        icon: "▱",
+        description: "Review the issuer’s current terms, features, fees, and application details.",
+        applyUrl: "https://cug.axisbank.com/cards/credit-card/flipkart-axisbank-credit-card"
       },
       {
-        title: "Entertainment perks",
-        merchant: "Movies and events",
-        category: "entertainment",
-        icon: "🎟️",
-        description: "Check for movie, concert, and subscription offers linked to your card provider."
+        name: "SBI Card Miles",
+        issuer: "SBI Card",
+        type: "Travel Credit Card",
+        categories: ["travel", "lifestyle"],
+        icon: "✈",
+        description: "Browse SBI Card travel options and current application information.",
+        applyUrl: "https://www.sbicard.com/en/personal/credit-cards.html"
       },
       {
-        title: "Compare card benefits",
-        merchant: "CardHub guide",
-        category: "all",
-        icon: "💳",
-        description: "Review your saved cards and compare the benefits that matter most to you."
+        name: "Axis Bank Neo Credit Card",
+        issuer: "Axis Bank",
+        type: "Credit Card",
+        categories: ["dining", "shopping", "lifestyle"],
+        icon: "✦",
+        description: "Check current card terms, features, eligibility, and application details.",
+        applyUrl: "https://cug.axisbank.com/cards/credit-card/axis-bank-neo-credit-card"
       },
       {
-        title: "Keep your wallet organized",
-        merchant: "CardHub tip",
-        category: "all",
-        icon: "✨",
-        description: "Add your cards to CardHub so you can find their details quickly in one place."
+        name: "SimplySAVE SBI Card",
+        issuer: "SBI Card",
+        type: "Credit Card",
+        categories: ["dining", "shopping", "lifestyle"],
+        icon: "＋",
+        description: "View the issuer’s latest information and application options.",
+        applyUrl: "https://www.sbicard.com/en/personal/credit-cards.html"
       }
     ];
 
-    const grid = document.getElementById("offersGrid");
-    const search = document.getElementById("offerSearch");
+    const grid = document.getElementById("cardsGrid");
+    const search = document.getElementById("cardSearch");
     const count = document.getElementById("resultCount");
     const buttons = [...document.querySelectorAll(".category-button")];
     let selectedCategory = "all";
@@ -401,81 +426,97 @@
     function addText(parent, tag, text, className) {
       const element = document.createElement(tag);
       if (className) element.className = className;
-      element.textContent = text;
+      element.textContent = String(text ?? "");
       parent.appendChild(element);
       return element;
     }
 
-    function renderOffers() {
+    function renderCards() {
       const query = search.value.trim().toLowerCase();
-      const visible = offers.filter(offer => {
+
+      const visible = cards.filter(card => {
         const matchesCategory =
           selectedCategory === "all" ||
-          offer.category === selectedCategory ||
-          offer.category === "all";
+          card.categories.includes(selectedCategory);
 
-        const matchesSearch =
-          `${offer.title} ${offer.merchant} ${offer.description} ${offer.category}`
-            .toLowerCase()
-            .includes(query);
+        const searchText =
+          `${card.name} ${card.issuer} ${card.type} ${card.categories.join(" ")}`.toLowerCase();
 
-        return matchesCategory && matchesSearch;
+        return matchesCategory && searchText.includes(query);
       });
 
-      count.textContent = `${visible.length} ${visible.length === 1 ? "offer" : "offers"}`;
+      count.textContent = `${visible.length} ${visible.length === 1 ? "card" : "cards"}`;
 
       if (!visible.length) {
         const empty = document.createElement("div");
         empty.className = "empty-state";
-        addText(empty, "h3", "No offers found");
-        addText(empty, "p", "Try another search or category.");
+        addText(empty, "h3", "No cards found");
+        addText(empty, "p", "Try a different search or category.");
         grid.replaceChildren(empty);
         return;
       }
 
       const fragment = document.createDocumentFragment();
 
-      visible.forEach(offer => {
-        const card = document.createElement("article");
-        card.className = "offer-card";
+      visible.forEach(card => {
+        const article = document.createElement("article");
+        article.className = "catalog-card";
+
+        const face = document.createElement("div");
+        face.className = "card-face";
 
         const top = document.createElement("div");
-        top.className = "offer-top";
-        addText(top, "span", offer.icon, "offer-icon");
+        top.className = "card-face-top";
+        addText(top, "span", card.issuer, "card-brand");
+        addText(top, "span", card.type, "card-type");
 
-        const titleWrap = document.createElement("div");
-        addText(titleWrap, "h3", offer.title);
-        addText(titleWrap, "p", offer.merchant, "offer-merchant");
-        top.appendChild(titleWrap);
-
-        addText(card, "p", offer.description, "offer-description");
+        addText(face, "div", card.name, "card-product-name");
 
         const bottom = document.createElement("div");
-        bottom.className = "offer-bottom";
-        addText(bottom, "span", offer.category === "all" ? "CardHub" : offer.category, "offer-category");
+        bottom.className = "card-face-bottom";
+        addText(bottom, "span", "CARDHUB");
+        addText(bottom, "span", card.icon);
+        face.prepend(top);
+        face.appendChild(bottom);
 
-        const link = addText(bottom, "a", "Add a card →", "add-card-link");
-        link.href = "add-card.html";
+        addText(article, "p", card.description, "card-description");
 
-        card.prepend(top);
-        card.appendChild(bottom);
-        fragment.appendChild(card);
+        const tags = document.createElement("div");
+        tags.className = "tag-list";
+        card.categories.forEach(category => addText(tags, "span", category, "tag"));
+
+        const footer = document.createElement("div");
+        footer.className = "card-footer";
+        addText(footer, "span", card.issuer, "issuer-label");
+
+        const link = addText(footer, "a", "View & apply →", "apply-link");
+        link.href = card.applyUrl;
+        link.target = "_blank";
+        link.rel = "noopener noreferrer";
+
+        article.append(face, tags, footer);
+        grid.appendChild(fragment);
+        fragment.appendChild(article);
       });
 
       grid.replaceChildren(fragment);
     }
 
-    search.addEventListener("input", renderOffers);
+    search.addEventListener("input", renderCards);
 
     buttons.forEach(button => {
       button.addEventListener("click", () => {
         selectedCategory = button.dataset.category;
-        buttons.forEach(item => item.classList.toggle("active", item === button));
-        renderOffers();
+        buttons.forEach(item => {
+          const active = item === button;
+          item.classList.toggle("active", active);
+          item.setAttribute("aria-pressed", String(active));
+        });
+        renderCards();
       });
     });
 
-    renderOffers();
+    renderCards();
   </script>
 
   <script src="js/nav.js"></script>
