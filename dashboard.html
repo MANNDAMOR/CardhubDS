@@ -1,730 +1,546 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Dashboard - CardHub</title>
 
-    <title>Dashboard - CardHub</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/nav.css">
 
-    <link rel="stylesheet" href="css/style.css">
+  <style>
+    * { box-sizing: border-box; }
 
-<style id="cardhub-layout-repair">
-*{box-sizing:border-box}
-html{min-width:0!important}
-body{min-width:0!important;margin:0!important;background:#f3f4ff!important;color:#17172b}
-main.dashboard{margin:0!important;width:auto!important;max-width:none!important;min-height:100vh;padding:30px 30px 48px!important}
-.dashboard-header{display:flex;align-items:center;justify-content:space-between;gap:18px;max-width:1500px;margin:0 auto 24px!important;padding:0 0 18px!important;border-bottom:1px solid #e4e4f1}
-.dashboard-header h1{font-size:clamp(26px,2.3vw,34px)!important;line-height:1.2;color:#191833!important;margin:8px 0!important}
-.dashboard-header .welcome-text{font-size:14px!important;color:#717187!important;margin:0}
-.notification-button{min-width:44px;min-height:44px;border:1px solid #e2e1ef!important;border-radius:12px!important;background:#fff!important;box-shadow:0 4px 14px #2017470b}
-.summary-grid{max-width:1500px;margin:0 auto 24px!important;display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
-.summary-card{min-width:0;background:#fff!important;border:1px solid #e2e2f0!important;border-radius:16px!important;padding:22px!important;box-shadow:0 5px 18px #20174708}
-.summary-card p{margin:0 0 9px;color:#77778d;font-size:14px}
-.summary-card h2{margin:0;color:#5838bd;font-size:28px;font-weight:800;overflow-wrap:anywhere}
-.summary-icon{display:inline-grid;place-items:center;width:42px;height:42px;border-radius:13px;background:#eee9ff;color:#6041c1;font-size:20px;margin-bottom:14px}
-main.dashboard>section:not(.summary-grid),main.dashboard>.details-section,main.dashboard>.add-card-banner{max-width:1500px;margin-left:auto!important;margin-right:auto!important}
-main.dashboard h2{letter-spacing:-.02em}
-.add-card-banner{background:linear-gradient(115deg,#fff,#f0edff)!important;border:1px solid #e2ddfa!important;border-radius:18px!important;padding:28px 30px!important;margin-bottom:22px!important;box-shadow:0 9px 25px #281b6209}
-.add-card-banner h2,.add-card-banner h1{color:#5233b2!important;margin-top:0}
-.add-card-banner button,.add-card-banner a.button,.primary-button{border:0!important;border-radius:10px!important;background:#5b38c4!important;color:#fff!important;padding:11px 17px!important;font-weight:700;box-shadow:0 4px 10px #452b991c}
-.card-search input,.search-input{border:1px solid #dedcf0!important;background:#fff!important;border-radius:11px!important;padding:12px 14px!important;max-width:100%;outline:none}
-.filter-row{display:flex!important;flex-wrap:wrap;gap:9px!important}
-.filter-button{border:1px solid #dedbed!important;background:#fff!important;color:#514477!important;border-radius:10px!important;padding:10px 16px!important}
-.filter-button.active,.filter-button[aria-pressed="true"]{background:#5b38c4!important;color:#fff!important;border-color:#5b38c4!important}
-.my-cards-list{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px!important}
-.user-card-item{background:#fff!important;border:1px solid #e3e2ef!important;border-radius:17px!important;box-shadow:0 7px 22px #21174709;padding:18px!important;min-width:0}
-.mini-card{border-radius:14px!important;max-width:100%}
-.user-card-info{min-width:0}
-.user-card-info h2,.user-card-info h3{overflow-wrap:anywhere}
-.details-section{background:#fff!important;border:1px solid #e3e2ef!important;border-radius:16px!important;padding:22px!important;box-shadow:0 5px 18px #20174707}
-button,input,select{font:inherit}
-@media(max-width:1100px){main.dashboard{padding:24px 20px 36px!important}.summary-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.my-cards-list{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media(max-width:760px){main.dashboard{padding:20px 14px 32px!important}.summary-grid{grid-template-columns:1fr}.my-cards-list{grid-template-columns:1fr}.dashboard-header{align-items:flex-start}.add-card-banner{padding:22px!important}}
-/* Targeted fix: restore the dashboard card preview and quick-action tiles. */
-.dashboard-section{margin-top:24px!important}
-.section-header{display:flex!important;align-items:center!important;justify-content:space-between!important;gap:16px!important;margin:0 0 14px!important}
-.section-header h2{font-size:28px!important;font-weight:800!important;color:#5233b2!important;margin:0!important}
-.section-header .view-all{color:#5b38c4!important;text-decoration:none!important;font-size:14px!important;font-weight:700!important}
-.cards-scroll{display:grid!important;grid-template-columns:repeat(auto-fit,minmax(240px,1fr))!important;gap:16px!important;align-items:stretch!important}
-.cards-scroll:empty{display:block!important}
-.cards-scroll .user-card-item{width:100%!important;max-width:100%!important}
-.quick-actions{display:grid!important;grid-template-columns:repeat(auto-fit,minmax(150px,190px))!important;gap:14px!important;margin:0 0 24px!important}
-.action-card{display:flex!important;flex-direction:column!important;align-items:flex-start!important;justify-content:center!important;gap:12px!important;min-height:110px!important;width:100%!important;padding:20px!important;border:1px solid #e2e0f0!important;border-radius:15px!important;background:#fff!important;color:#292044!important;box-shadow:0 5px 18px #20174708!important;cursor:pointer!important;text-align:left!important;transition:transform .15s,box-shadow .15s!important}
-.action-card:hover{transform:translateY(-2px)!important;box-shadow:0 9px 24px #20174712!important}
-.action-card>span{display:grid!important;place-items:center!important;width:40px!important;height:40px!important;border-radius:12px!important;background:#eee9ff!important;color:#5b38c4!important;font-size:23px!important}
-.action-card p{margin:0!important;font-size:15px!important;font-weight:700!important;color:#282044!important}
-@media(max-width:760px){.cards-scroll{grid-template-columns:1fr!important}.quick-actions{grid-template-columns:repeat(2,minmax(0,1fr))!important}.section-header h2{font-size:24px!important}}
-/* Correct the double offset: body already reserves sidebar width. */
-main.dashboard{padding-left:30px!important}
-@media(max-width:1100px){main.dashboard{padding-left:20px!important}}
-@media(max-width:760px){main.dashboard{padding-left:14px!important}}
-/* Explicitly restore the quick-action tiles. */
-.quick-actions{display:flex!important;flex-wrap:wrap!important;align-items:stretch!important;gap:14px!important}
-.quick-actions .action-card{appearance:none!important;-webkit-appearance:none!important;display:flex!important;flex-direction:column!important;align-items:flex-start!important;justify-content:center!important;gap:12px!important;width:160px!important;min-height:110px!important;padding:20px!important;border:1px solid #e2e0f0!important;border-radius:15px!important;background:#fff!important;color:#292044!important;box-shadow:0 5px 18px #20174708!important;font-family:inherit!important;font-size:15px!important;line-height:1.4!important;cursor:pointer!important;text-align:left!important}
-.quick-actions .action-card>span{display:grid!important;place-items:center!important;width:40px!important;height:40px!important;border-radius:12px!important;background:#eee9ff!important;color:#5b38c4!important;font-size:23px!important}
-.quick-actions .action-card p{margin:0!important;font-size:15px!important;font-weight:700!important;color:#282044!important}
-/* Final dashboard layout and card preview restoration */
-main.dashboard{display:flex!important;flex-direction:column!important;align-items:stretch!important;gap:0!important}
-main.dashboard>.dashboard-header,main.dashboard>.summary-grid,main.dashboard>.dashboard-section{width:100%!important;max-width:1500px!important;flex:0 0 auto!important;align-self:stretch!important}
-main.dashboard>.dashboard-section{display:block!important;clear:both!important;float:none!important}
-main.dashboard>.quick-actions-section{order:3!important}
-main.dashboard>section.dashboard-section:last-child{order:4!important}
-.cards-scroll{display:grid!important;grid-template-columns:repeat(auto-fit,minmax(245px,1fr))!important;overflow:visible!important;padding:0!important}
-.card-preview{display:flex!important;flex-direction:column!important;justify-content:space-between!important;min-width:0!important;width:100%!important;height:180px!important;padding:20px!important;border-radius:18px!important;background:linear-gradient(135deg,#29264f 0%,#4c3b8e 55%,#7659d6 100%)!important;color:#fff!important;box-shadow:0 10px 25px #20174720!important;overflow:hidden!important}
-.card-preview .card-top{display:flex!important;justify-content:space-between!important;align-items:center!important;font-size:13px!important;font-weight:700!important;color:#fff!important}
-.card-preview .card-name{margin:12px 0 4px!important;font-size:16px!important;font-weight:700!important;color:#fff!important}
-.card-preview .card-number{margin:0!important;font-size:16px!important;letter-spacing:2px!important;color:#f6f3ff!important}
-.card-preview .card-bottom{display:flex!important;justify-content:space-between!important;gap:12px!important;margin-top:10px!important;font-size:11px!important;color:#f0ecff!important;opacity:.95!important}
-.quick-actions{display:flex!important;flex-wrap:wrap!important;align-items:stretch!important;gap:14px!important;margin:0 0 24px!important}
-.quick-actions .action-card{appearance:none!important;-webkit-appearance:none!important;display:flex!important;flex:0 0 160px!important;flex-direction:column!important;align-items:flex-start!important;justify-content:center!important;gap:12px!important;width:160px!important;min-height:120px!important;padding:20px!important;border:1px solid #e2e0f0!important;border-radius:15px!important;background:#fff!important;color:#292044!important;box-shadow:0 5px 18px #20174708!important;font-family:inherit!important;font-size:15px!important;line-height:1.4!important;cursor:pointer!important;text-align:left!important}
-.quick-actions .action-card>span{display:grid!important;place-items:center!important;flex:0 0 40px!important;width:40px!important;height:40px!important;border-radius:12px!important;background:#eee9ff!important;color:#5b38c4!important;font-size:23px!important}
-.quick-actions .action-card p{margin:0!important;font-size:15px!important;font-weight:700!important;color:#282044!important}
-.transaction-list{width:100%!important;display:block!important;clear:both!important}
-@media(max-width:760px){.cards-scroll{grid-template-columns:1fr!important}.quick-actions .action-card{flex-basis:calc(50% - 7px)!important;width:calc(50% - 7px)!important}}
+    body {
+      margin: 0;
+      min-width: 0;
+      background: #f3f4ff;
+      color: #17172b;
+      font-family: Arial, sans-serif;
+    }
 
-/* Keep the custom left navigation as the only desktop sidebar. */
-.cardhub-sidebar{box-sizing:border-box}
-body .bottom-navigation{display:none!important}
-</style>
+    main.dashboard {
+      width: 100%;
+      max-width: 1500px;
+      min-height: 100vh;
+      margin: 0 auto;
+      padding: 30px;
+    }
 
-<link rel="stylesheet" href="css/nav.css">
+    .dashboard-header,
+    .section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
 
+    .dashboard-header {
+      margin-bottom: 24px;
+      padding-bottom: 18px;
+      border-bottom: 1px solid #e4e4f1;
+    }
+
+    .dashboard-header h1 {
+      margin: 8px 0;
+      color: #191833;
+      font-size: clamp(26px, 2.3vw, 34px);
+      line-height: 1.2;
+    }
+
+    .welcome-text {
+      margin: 0;
+      color: #717187;
+      font-size: 14px;
+    }
+
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .summary-card,
+    .card-preview,
+    .transaction,
+    .empty-state {
+      min-width: 0;
+      border: 1px solid #e2e2f0;
+      border-radius: 16px;
+      background: #fff;
+      box-shadow: 0 5px 18px #2017470a;
+    }
+
+    .summary-card {
+      padding: 20px;
+    }
+
+    .summary-icon {
+      display: grid;
+      width: 42px;
+      height: 42px;
+      margin-bottom: 14px;
+      place-items: center;
+      border-radius: 13px;
+      background: #eee9ff;
+      color: #6041c1;
+      font-size: 20px;
+    }
+
+    .summary-card p {
+      margin: 0 0 8px;
+      color: #77778d;
+      font-size: 14px;
+    }
+
+    .summary-card h2 {
+      margin: 0;
+      color: #5838bd;
+      font-size: 28px;
+      overflow-wrap: anywhere;
+    }
+
+    .dashboard-section { margin-top: 24px; }
+
+    .section-header { margin-bottom: 14px; }
+
+    .section-header h2 {
+      margin: 0;
+      color: #5233b2;
+      font-size: 24px;
+    }
+
+    .view-all {
+      color: #5b38c4;
+      font-size: 14px;
+      font-weight: 700;
+      text-decoration: none;
+    }
+
+    .view-all:hover { text-decoration: underline; }
+
+    .cards-scroll {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, 245px), 1fr));
+      gap: 16px;
+    }
+
+    .card-preview {
+      display: flex;
+      min-height: 180px;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 20px;
+      border: 0;
+      background: linear-gradient(135deg, #29264f, #4c3b8e 55%, #7659d6);
+      color: #fff;
+      cursor: pointer;
+      text-align: left;
+    }
+
+    .card-preview:hover,
+    .action-card:hover {
+      transform: translateY(-2px);
+    }
+
+    .card-top,
+    .card-bottom {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .card-top { font-size: 13px; font-weight: 700; }
+    .card-name { margin: 12px 0 4px; font-weight: 700; }
+    .card-number { margin: 0; letter-spacing: 2px; }
+    .card-bottom { font-size: 11px; overflow-wrap: anywhere; }
+
+    .quick-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+    }
+
+    .action-card {
+      display: flex;
+      width: 160px;
+      min-height: 120px;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: center;
+      gap: 12px;
+      padding: 20px;
+      border: 1px solid #e2e0f0;
+      border-radius: 15px;
+      background: #fff;
+      color: #292044;
+      cursor: pointer;
+      text-align: left;
+      transition: transform .15s;
+    }
+
+    .action-card span {
+      display: grid;
+      width: 40px;
+      height: 40px;
+      place-items: center;
+      border-radius: 12px;
+      background: #eee9ff;
+      color: #5b38c4;
+      font-size: 22px;
+    }
+
+    .action-card p { margin: 0; font-weight: 700; }
+
+    .transaction-list {
+      display: grid;
+      gap: 10px;
+    }
+
+    .transaction {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 16px;
+      cursor: pointer;
+      text-align: left;
+    }
+
+    .transaction:hover { border-color: #bdb0ed; }
+
+    .transaction-icon {
+      display: grid;
+      width: 42px;
+      height: 42px;
+      flex: 0 0 42px;
+      place-items: center;
+      border-radius: 12px;
+      background: #eee9ff;
+    }
+
+    .transaction-info { min-width: 0; flex: 1; }
+    .transaction-info h3 { margin: 0 0 4px; font-size: 15px; overflow-wrap: anywhere; }
+    .transaction-info p,
+    .transaction-amount span { margin: 0; color: #77778d; font-size: 13px; }
+
+    .transaction-amount { text-align: right; }
+    .transaction-amount strong { display: block; }
+
+    .empty-state {
+      padding: 20px;
+      color: #717187;
+    }
+
+    .empty-state h3 { margin: 0 0 6px; color: #292044; }
+    .empty-state p { margin: 0; overflow-wrap: anywhere; }
+
+    button, a { font: inherit; }
+    button:focus-visible, a:focus-visible {
+      outline: 3px solid #9b84e8;
+      outline-offset: 3px;
+    }
+
+    @media (max-width: 760px) {
+      main.dashboard { padding: 20px 14px 32px; }
+      .summary-grid { grid-template-columns: 1fr; }
+      .dashboard-header { align-items: flex-start; }
+      .section-header h2 { font-size: 21px; }
+      .action-card { width: calc(50% - 7px); }
+    }
+  </style>
 </head>
 
 <body>
-<main class="dashboard">
+  <main class="dashboard">
+    <header class="dashboard-header">
+      <div>
+        <p class="welcome-text">Welcome back</p>
+        <h1 id="welcomeName">Welcome 👋</h1>
+      </div>
+    </header>
 
-        <!-- Header -->
-        <header class="dashboard-header">
+    <section class="summary-grid" aria-label="Account summary">
+      <article class="summary-card">
+        <span class="summary-icon" aria-hidden="true">💳</span>
+        <p>Total Cards</p>
+        <h2 id="totalCards">—</h2>
+      </article>
 
-            <div>
-                <p class="welcome-text">Welcome back</p>
-                <h1 id="welcomeName">Welcome 👋</h1>
-            </div>
+      <article class="summary-card">
+        <span class="summary-icon" aria-hidden="true">✓</span>
+        <p>Active Cards</p>
+        <h2 id="activeCards">—</h2>
+      </article>
 
-            <button class="notification-button">
-                🔔
-            </button>
+      <article class="summary-card">
+        <span class="summary-icon" aria-hidden="true">₹</span>
+        <p>Total Expense</p>
+        <h2 id="totalExpense">—</h2>
+      </article>
+    </section>
 
-        </header>
+    <section class="dashboard-section">
+      <div class="section-header">
+        <h2>My Cards</h2>
+        <a class="view-all" href="cards.html">View all</a>
+      </div>
+      <div class="cards-scroll" id="dashboardCards" aria-live="polite">
+        <p class="empty-state">Loading cards…</p>
+      </div>
+    </section>
 
+    <section class="dashboard-section">
+      <div class="section-header">
+        <h2>Quick Actions</h2>
+      </div>
+      <div class="quick-actions">
+        <button class="action-card" type="button" data-href="add-card.html">
+          <span aria-hidden="true">＋</span>
+          <p>Add Card</p>
+        </button>
+        <button class="action-card" type="button" data-href="explore.html">
+          <span aria-hidden="true">🔎</span>
+          <p>Explore</p>
+        </button>
+      </div>
+    </section>
 
-        <!-- Summary -->
-        <section class="summary-grid">
+    <section class="dashboard-section">
+      <div class="section-header">
+        <h2>Recent Transactions</h2>
+        <a class="view-all" href="transactions.html">View all</a>
+      </div>
+      <div class="transaction-list" id="dashboardTransactions" aria-live="polite">
+        <p class="empty-state">Loading transactions…</p>
+      </div>
+    </section>
+  </main>
 
-            <div class="summary-card">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+    const SUPABASE_URL = "https://wrsqhsuktqldnyjrbuma.supabase.co";
+    const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_1-wC9ij9iOkR0txvg6j5bA_i1XLPSj7";
+    const supabaseClient = window.supabase.createClient(
+      SUPABASE_URL,
+      SUPABASE_PUBLISHABLE_KEY
+    );
 
-                <span class="summary-icon">💳</span>
+    const byId = (id) => document.getElementById(id);
 
-                <div>
-                    <p>Total Cards</p>
-                    <h2 id="totalCards">0</h2>
-                </div>
+    function showMessage(container, title, message) {
+      const box = document.createElement("div");
+      box.className = "empty-state";
 
-            </div>
+      const heading = document.createElement("h3");
+      heading.textContent = title;
 
+      const text = document.createElement("p");
+      text.textContent = message;
 
-            <div class="summary-card">
+      box.append(heading, text);
+      container.replaceChildren(box);
+    }
 
-                <span class="summary-icon">✓</span>
+    function formatMoney(value) {
+      const amount = Number(value);
+      return "₹" + (Number.isFinite(amount) ? amount : 0).toLocaleString("en-IN", {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+      });
+    }
 
-                <div>
-                    <p>Active Cards</p>
-                    <h2 id="activeCards">0</h2>
-                </div>
+    async function loadDashboard() {
+      const { data, error } = await supabaseClient.auth.getUser();
 
-            </div>
-
-            <div class="summary-card">
-
-                <span class="summary-icon">₹</span>
-
-                <div>
-                    <p>Total Expense</p>
-                    <h2 id="totalExpense">₹0.00</h2>
-                </div>
-
-            </div>
-
-        </section>
-
-
-        <!-- My Cards -->
-        <section class="dashboard-section">
-
-            <div class="section-header">
-
-                <h2>My Cards</h2>
-
-                <a
-                    href="cards.html"
-                    class="view-all"
-                >
-                    View all
-                </a>
-
-            </div>
-
-
-            <div
-                class="cards-scroll"
-                id="dashboardCards"
-            >
-
-                <!-- Cards loaded by JavaScript -->
-
-            </div>
-
-        </section>
-
-
-        <!-- Quick Actions -->
-        <section class="dashboard-section quick-actions-section">
-            <div class="section-header">
-                <h2>Quick Actions</h2>
-            </div>
-            <div class="quick-actions">
-                <button class="action-card" type="button" onclick="window.location.href='add-card.html'">
-                    <span>＋</span>
-                    <p>Add Card</p>
-                </button>
-                <button class="action-card" type="button" onclick="window.location.href='explore.html'">
-                    <span>🔎</span>
-                    <p>Explore</p>
-                </button>
-            </div>
-        </section>
-
-        <!-- Recent Transactions -->
-        <section class="dashboard-section">
-
-            <div class="section-header">
-
-                <h2>Recent Transactions</h2>
-
-                <a
-                    href="transactions.html"
-                    class="view-all"
-                >
-                    View all
-                </a>
-
-            </div>
-
-
-            <div
-                class="transaction-list"
-                id="dashboardTransactions"
-            >
-
-                <!-- Transactions loaded by JavaScript -->
-
-            </div>
-
-        </section>
-
-
-        <!-- Bottom Navigation -->
-        
-
-
-    </main>
-
-
-    <!-- Dashboard JavaScript -->
-
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-
-    <script>
-
-        const SUPABASE_URL =
-            "https://wrsqhsuktqldnyjrbuma.supabase.co";
-
-
-        const SUPABASE_PUBLISHABLE_KEY =
-            "sb_publishable_1-wC9ij9iOkR0txvg6j5bA_i1XLPSj7";
-
-
-        const supabaseClient =
-            window.supabase.createClient(
-                SUPABASE_URL,
-                SUPABASE_PUBLISHABLE_KEY
-            );
-
-
-        /* ==============================
-           LOAD DASHBOARD
-           ============================== */
-
-       async function loadDashboard() {
-
-    const {
-        data: {
-            user
-        },
-        error: authError
-    } = await supabaseClient.auth.getUser();
-
-    if (authError || !user) {
+      if (error || !data.user) {
         window.location.href = "index.html";
         return;
+      }
+
+      const user = data.user;
+      const name = user.user_metadata?.full_name ||
+        user.user_metadata?.name ||
+        user.email?.split("@")[0] ||
+        "User";
+
+      byId("welcomeName").textContent = name + " 👋";
+
+      await Promise.all([
+        loadCards(),
+        loadTransactions()
+      ]);
     }
 
-    const welcomeName = document.getElementById("welcomeName");
+    async function loadCards() {
+      const container = byId("dashboardCards");
+      const { data: cards, error } = await supabaseClient
+        .from("cards")
+        .select("*")
+        .order("created_at", { ascending: false });
 
-    if (welcomeName) {
-        const name =
-            user.user_metadata?.full_name ||
-            user.user_metadata?.name ||
-            user.email?.split("@")[0] ||
-            "User";
+      if (error) {
+        console.error("Cards error:", error);
+        byId("totalCards").textContent = "—";
+        byId("activeCards").textContent = "—";
+        showMessage(container, "Could not load cards", error.message);
+        return;
+      }
 
-        welcomeName.textContent = name + " 👋";
+      const rows = cards || [];
+      byId("totalCards").textContent = String(rows.length);
+      byId("activeCards").textContent = String(
+        rows.filter(card => String(card.status || "").toLowerCase() === "active").length
+      );
+
+      if (!rows.length) {
+        showMessage(container, "No cards added yet", "Add your first card to see it here.");
+        return;
+      }
+
+      const fragment = document.createDocumentFragment();
+
+      rows.forEach(card => {
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = "card-preview";
+        button.setAttribute("aria-label", "Open card details");
+
+        button.addEventListener("click", () => {
+          window.location.href = "card-details.html?id=" + encodeURIComponent(card.id);
+        });
+
+        const top = document.createElement("div");
+        top.className = "card-top";
+        top.append(makeText("span", "CardHub"), makeText("span", "💳"));
+
+        const middle = document.createElement("div");
+        middle.append(
+          makeText("p", card.name || "Unnamed Card", "card-name"),
+          makeText("p", "•••• •••• •••• " + getLastFour(card), "card-number")
+        );
+
+        const bottom = document.createElement("div");
+        bottom.className = "card-bottom";
+        bottom.append(
+          makeText("span", card.issuer || "Unknown Bank"),
+          makeText("span", String(card.status || "ACTIVE").toUpperCase())
+        );
+
+        button.append(top, middle, bottom);
+        fragment.append(button);
+      });
+
+      container.replaceChildren(fragment);
     }
 
-    await loadCards();
-
-    await loadTransactions();
-}
-
-
-        /* ==============================
-           LOAD CARDS FROM SUPABASE
-           ============================== */
-
-        async function loadCards() {
-
-            const {
-                data: cards,
-                error
-            } =
-                await supabaseClient
-                    .from("cards")
-                    .select("*")
-                    .order("created_at", {
-                        ascending: false
-                    });
-
-
-            if (error) {
-
-                console.error(
-                    "Cards error:",
-                    error
-                );
-
-
-                document.getElementById(
-                    "totalCards"
-                ).textContent = "0";
-
-
-                document.getElementById(
-                    "activeCards"
-                ).textContent = "0";
-
-
-                return;
-
-            }
-
-
-            const safeCards =
-                cards || [];
-
-
-            /* TOTAL CARDS */
-
-            document.getElementById(
-                "totalCards"
-            ).textContent =
-                safeCards.length;
-
-
-            /* ACTIVE CARDS */
-
-            const activeCards =
-                safeCards.filter(
-                    function(card) {
-
-                        return String(
-                            card.status || ""
-                        ).toLowerCase() === "active";
-
-                    }
-                );
-
-
-            document.getElementById(
-                "activeCards"
-            ).textContent =
-                activeCards.length;
-
-
-            /* DISPLAY CARDS */
-
-            const dashboardCards =
-                document.getElementById(
-                    "dashboardCards"
-                );
-
-
-            if (safeCards.length === 0) {
-
-                dashboardCards.innerHTML = `
-
-                    <div class="empty-transactions">
-
-                        <h3>No cards added yet</h3>
-
-                        <p>
-                            Add your first card.
-                        </p>
-
-                    </div>
-
-                `;
-
-                return;
-
-            }
-
-
-            dashboardCards.innerHTML = "";
-
-
-            safeCards.forEach(
-                function(card) {
-
-                    const cardElement =
-                        document.createElement("div");
-
-
-                    cardElement.className =
-                        "card-preview";
-
-
-                    cardElement.style.cursor =
-                        "pointer";
-
-
-                    cardElement.onclick =
-                        function() {
-
-                            window.location.href =
-                                "card-details.html?id=" +
-                                encodeURIComponent(
-                                    card.id
-                                );
-
-                        };
-
-
-                    const last4 =
-                        card.number_last4 ||
-                        (
-                            card.number
-                                ? String(
-                                    card.number
-                                ).slice(-4)
-                                : "0000"
-                        );
-
-
-                    cardElement.innerHTML = `
-
-                        <div class="card-top">
-
-                            <span>
-                                CardHub
-                            </span>
-
-                            <span>
-                                💳
-                            </span>
-
-                        </div>
-
-
-                        <p class="card-name">
-
-                            ${escapeHtml(
-                                card.name ||
-                                "Unnamed Card"
-                            )}
-
-                        </p>
-
-
-                        <p class="card-number">
-
-                            •••• •••• •••• ${last4}
-
-                        </p>
-
-
-                        <div class="card-bottom">
-
-                            <span>
-
-                                ${escapeHtml(
-                                    card.issuer ||
-                                    "Unknown Bank"
-                                )}
-
-                            </span>
-
-
-                            <span>
-
-                                ${escapeHtml(
-                                    String(
-                                        card.status ||
-                                        "ACTIVE"
-                                    ).toUpperCase()
-                                )}
-
-                            </span>
-
-                        </div>
-
-                    `;
-
-
-                    dashboardCards.appendChild(
-                        cardElement
-                    );
-
-                }
-            );
-
+    function getLastFour(card) {
+      if (card.number_last4) return String(card.number_last4).slice(-4);
+      if (card.number) return String(card.number).slice(-4);
+      return "0000";
+    }
+
+    function makeText(tag, value, className) {
+      const element = document.createElement(tag);
+      if (className) element.className = className;
+      element.textContent = String(value);
+      return element;
+    }
+
+    async function loadTransactions() {
+      const container = byId("dashboardTransactions");
+
+      try {
+        const [recentResult, expenseResult] = await Promise.all([
+          supabaseClient
+            .from("transactions")
+            .select("id, card_id, merchant, amount, type, category, transaction_date")
+            .eq("type", "expense")
+            .order("transaction_date", { ascending: false })
+            .order("id", { ascending: false })
+            .limit(3),
+          supabaseClient
+            .from("transactions")
+            .select("amount")
+            .eq("type", "expense")
+        ]);
+
+        if (recentResult.error) throw recentResult.error;
+
+        const expenses = expenseResult.data || [];
+        if (!expenseResult.error) {
+          const total = expenses.reduce((sum, row) => sum + (Number(row.amount) || 0), 0);
+          byId("totalExpense").textContent = formatMoney(total);
+        } else {
+          console.error("Expense total error:", expenseResult.error);
+          byId("totalExpense").textContent = "—";
         }
 
-
-        /* ==============================
-           LOAD TRANSACTIONS FROM SUPABASE
-           ============================== */
-
-        async function loadTransactions() {
-
-            const dashboardTransactions =
-                document.getElementById("dashboardTransactions");
-
-            try {
-
-                const {
-                    data: transactions,
-                    error
-                } = await supabaseClient
-                    .from("transactions")
-                    .select("id, card_id, merchant, amount, type, category, transaction_date")
-                    .eq("type", "expense")
-                    .order("transaction_date", {
-                        ascending: false
-                    })
-                    .order("id", {
-                        ascending: false
-                    })
-                    .limit(3);
-
-                console.log("CardHub transactions:", transactions);
-                console.log("CardHub transaction error:", error);
-
-                if (error) {
-                    console.error("Transactions error:", error);
-
-                    dashboardTransactions.innerHTML = `
-                        <div class="empty-transactions">
-                            <h3>Transaction loading error</h3>
-                            <p>${escapeHtml(error.message || "Unable to load transactions.")}</p>
-                        </div>
-                    `;
-
-                    return;
-                }
-
-                const safeTransactions = transactions || [];
-
-                /* TOTAL EXPENSE */
-
-                const {
-                    data: expenseRows,
-                    error: expenseError
-                } = await supabaseClient
-                    .from("transactions")
-                    .select("amount")
-                    .eq("type", "expense");
-
-                if (!expenseError) {
-
-                    const totalExpense = (expenseRows || []).reduce(
-                        function(total, transaction) {
-                            return total + Number(transaction.amount || 0);
-                        },
-                        0
-                    );
-
-                    const totalExpenseElement =
-                        document.getElementById("totalExpense");
-
-                    if (totalExpenseElement) {
-                        totalExpenseElement.textContent =
-                            "₹" +
-                            totalExpense.toLocaleString("en-IN", {
-                                minimumFractionDigits: 2,
-                                maximumFractionDigits: 2
-                            });
-                    }
-                }
-
-                /* RECENT TRANSACTIONS */
-
-                if (safeTransactions.length === 0) {
-
-                    dashboardTransactions.innerHTML = `
-                        <div class="empty-transactions">
-                            <h3>No transactions found</h3>
-                            <p>Supabase returned 0 expense transactions for this account.</p>
-                        </div>
-                    `;
-
-                    return;
-                }
-
-                dashboardTransactions.innerHTML = "";
-
-                safeTransactions.forEach(
-                    function(transaction) {
-
-                        const transactionElement =
-                            document.createElement("div");
-
-                        transactionElement.className = "transaction";
-                        transactionElement.style.cursor = "pointer";
-
-                        transactionElement.onclick =
-                            function() {
-                                window.location.href =
-                                    "edit-transaction.html?id=" +
-                                    encodeURIComponent(transaction.id);
-                            };
-
-                        const amount =
-                            Number(transaction.amount || 0);
-
-                        const date =
-                            transaction.transaction_date
-                                ? new Date(
-                                    transaction.transaction_date + "T00:00:00"
-                                ).toLocaleDateString("en-IN")
-                                : "";
-
-                        transactionElement.innerHTML = `
-
-                            <div class="transaction-icon">
-                                💳
-                            </div>
-
-                            <div class="transaction-info">
-
-                                <h3>
-                                    ${escapeHtml(
-                                        transaction.merchant || "Transaction"
-                                    )}
-                                </h3>
-
-                                <p>
-                                    ${escapeHtml(date)}
-                                </p>
-
-                            </div>
-
-                            <div class="transaction-amount">
-
-                                <strong>
-                                    ₹${amount.toLocaleString("en-IN", {
-                                        minimumFractionDigits: 2,
-                                        maximumFractionDigits: 2
-                                    })}
-                                </strong>
-
-                                <span>
-                                    ${escapeHtml(transaction.category || "Expense")}
-                                </span>
-
-                            </div>
-
-                        `;
-
-                        dashboardTransactions.appendChild(
-                            transactionElement
-                        );
-
-                    }
-                );
-
-            } catch (err) {
-
-                console.error("CardHub transaction exception:", err);
-
-                dashboardTransactions.innerHTML = `
-                    <div class="empty-transactions">
-                        <h3>Something went wrong</h3>
-                        <p>${escapeHtml(err.message || "Unknown error")}</p>
-                    </div>
-                `;
-            }
+        const rows = recentResult.data || [];
+        if (!rows.length) {
+          showMessage(container, "No transactions yet", "Your recent expenses will appear here.");
+          return;
         }
 
+        const fragment = document.createDocumentFragment();
 
-        /* ==============================
-           SAFE TEXT
-           ============================== */
+        rows.forEach(transaction => {
+          const item = document.createElement("button");
+          item.type = "button";
+          item.className = "transaction";
+          item.addEventListener("click", () => {
+            window.location.href = "edit-transaction.html?id=" +
+              encodeURIComponent(transaction.id);
+          });
 
-        function escapeHtml(value) {
+          const icon = makeText("span", "💳", "transaction-icon");
+          icon.setAttribute("aria-hidden", "true");
 
-            return String(value)
+          const info = document.createElement("span");
+          info.className = "transaction-info";
+          info.append(
+            makeText("h3", transaction.merchant || "Transaction"),
+            makeText("p", formatDate(transaction.transaction_date))
+          );
 
-                .replace(
-                    /&/g,
-                    "&amp;"
-                )
+          const amount = document.createElement("span");
+          amount.className = "transaction-amount";
+          amount.append(
+            makeText("strong", formatMoney(transaction.amount)),
+            makeText("span", transaction.category || "Expense")
+          );
 
-                .replace(
-                    /</g,
-                    "&lt;"
-                )
+          item.append(icon, info, amount);
+          fragment.append(item);
+        });
 
-                .replace(
-                    />/g,
-                    "&gt;"
-                )
+        container.replaceChildren(fragment);
+      } catch (error) {
+        console.error("Transactions error:", error);
+        byId("totalExpense").textContent = "—";
+        showMessage(container, "Could not load transactions", error.message || "Please try again.");
+      }
+    }
 
-                .replace(
-                    /"/g,
-                    "&quot;"
-                )
+    function formatDate(value) {
+      if (!value) return "";
+      const date = new Date(value + "T00:00:00");
+      return Number.isNaN(date.getTime()) ? "" :
+        date.toLocaleDateString("en-IN");
+    }
 
-                .replace(
-                    /'/g,
-                    "&#039;"
-                );
+    document.querySelectorAll("[data-href]").forEach(button => {
+      button.addEventListener("click", () => {
+        window.location.href = button.dataset.href;
+      });
+    });
 
-        }
+    loadDashboard().catch(error => {
+      console.error("Dashboard error:", error);
+      showMessage(byId("dashboardCards"), "Dashboard error", "Please refresh and try again.");
+    });
+  </script>
 
-
-        /* ==============================
-           START
-           ============================== */
-
-        loadDashboard();
-
-    </script>
-
-
-<script src="js/nav.js"></script>
+  <script src="js/nav.js"></script>
 </body>
-
 </html>
