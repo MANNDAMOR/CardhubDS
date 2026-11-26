@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#191443">
-<title>Log in | CardHub</title>
-<link rel="stylesheet" href="css/auth.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#191443">
+    <title>Log in | CardHub</title>
+    <link rel="stylesheet" href="css/auth.css">
 </head>
 <body>
 
@@ -13,7 +13,6 @@
 
     <!-- LEFT PANEL -->
     <section class="auth-visual">
-
         <div class="brand">
             <div class="brand-mark">C</div>
             <span class="brand-name">CardHub</span>
@@ -41,7 +40,6 @@
                 <span>MEMBER</span>
             </div>
         </div>
-
     </section>
 
     <!-- RIGHT PANEL -->
@@ -57,7 +55,6 @@
             <p class="auth-subtitle">Log in to manage your cards.</p>
 
             <form id="loginForm">
-
                 <div class="input-group">
                     <label for="email">Email address</label>
                     <input
@@ -79,7 +76,9 @@
                             autocomplete="current-password"
                             required
                         >
-                        <button type="button" id="showPassword" class="show-password">Show</button>
+                        <button type="button" id="showPassword" class="show-password">
+                            Show
+                        </button>
                     </div>
                 </div>
 
@@ -91,15 +90,18 @@
                     <span class="google-g">G</span>
                     Continue with Google
                 </button>
-<button type="button" id="guestDemoButton" class="google-button">
-    Explore as guest
-</button>
-<p>Try CardHub with sample data. No account needed.</p>
+
+                <button type="button" id="guestDemoButton" class="google-button">
+                    Explore as guest
+                </button>
+                <p>Try CardHub with sample data. No account needed.</p>
             </form>
 
             <p class="register-text">
                 Don't have an account?
-                <button type="button" id="registerButton" class="link-button">Create account</button>
+                <button type="button" id="registerButton" class="link-button">
+                    Create account
+                </button>
             </p>
 
             <div class="auth-foot">
@@ -113,6 +115,12 @@
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="js/script.js"></script>
+<script>
+    document.getElementById("guestDemoButton").addEventListener("click", () => {
+        sessionStorage.setItem("cardhub_guest_mode", "true");
+        window.location.href = "dashboard.html?guest=1";
+    });
+</script>
 
 </body>
 </html>
