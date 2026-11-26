@@ -72,9 +72,7 @@
       box-shadow: 0 5px 18px #2017470a;
     }
 
-    .summary-card {
-      padding: 20px;
-    }
+    .summary-card { padding: 20px; }
 
     .summary-icon {
       display: grid;
@@ -139,11 +137,6 @@
       text-align: left;
     }
 
-    .card-preview:hover,
-    .action-card:hover {
-      transform: translateY(-2px);
-    }
-
     .card-top,
     .card-bottom {
       display: flex;
@@ -177,7 +170,6 @@
       color: #292044;
       cursor: pointer;
       text-align: left;
-      transition: transform .15s;
     }
 
     .action-card span {
@@ -207,8 +199,6 @@
       text-align: left;
     }
 
-    .transaction:hover { border-color: #bdb0ed; }
-
     .transaction-icon {
       display: grid;
       width: 42px;
@@ -236,10 +226,6 @@
     .empty-state p { margin: 0; overflow-wrap: anywhere; }
 
     button, a { font: inherit; }
-    button:focus-visible, a:focus-visible {
-      outline: 3px solid #9b84e8;
-      outline-offset: 3px;
-    }
 
     @media (max-width: 760px) {
       main.dashboard { padding: 20px 14px 32px; }
@@ -321,30 +307,31 @@
   <script>
     const SUPABASE_URL = "https://wrsqhsuktqldnyjrbuma.supabase.co";
     const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_1-wC9ij9iOkR0txvg6j5bA_i1XLPSj7";
+
     const supabaseClient = window.supabase.createClient(
       SUPABASE_URL,
       SUPABASE_PUBLISHABLE_KEY
     );
 
-    const byId = (id) => document.getElementById(id);
+    const byId = id => document.getElementById(id);
+
+    function makeText(tag, value, className) {
+      const element = document.createElement(tag);
+      if (className) element.className = className;
+      element.textContent = String(value ?? "");
+      return element;
+    }
 
     function showMessage(container, title, message) {
       const box = document.createElement("div");
       box.className = "empty-state";
-
-      const heading = document.createElement("h3");
-      heading.textContent = title;
-
-      const text = document.createElement("p");
-      text.textContent = message;
-
-      box.append(heading, text);
+      box.append(makeText("h3", title), makeText("p", message));
       container.replaceChildren(box);
     }
 
     function formatMoney(value) {
-      const amount = Number(value);
-      return "₹" + (Number.isFinite(amount) ? amount : 0).toLocaleString("en-IN", {
+      const amount = Number(value) || 0;
+      return "₹" + amount.toLocaleString("en-IN", {
         minimumFractionDigits: 2,
         maximumFractionDigits: 2
       });
@@ -366,14 +353,12 @@
 
       byId("welcomeName").textContent = name + " 👋";
 
-      await Promise.all([
-        loadCards(),
-        loadTransactions()
-      ]);
+      await Promise.all([loadCards(), loadTransactions()]);
     }
 
     async function loadCards() {
       const container = byId("dashboardCards");
+
       const { data: cards, error } = await supabaseClient
         .from("cards")
         .select("*")
@@ -388,10 +373,10 @@
       }
 
       const rows = cards || [];
-      byId("totalCards").textContent = String(rows.length);
-      byId("activeCards").textContent = String(
-        rows.filter(card => String(card.status || "").toLowerCase() === "active").length
-      );
+      byId("totalCards").textContent = rows.length;
+      byId("activeCards").textContent = rows.filter(
+        card => String(card.status || "").toLowerCase() === "active"
+      ).length;
 
       if (!rows.length) {
         showMessage(container, "No cards added yet", "Add your first card to see it here.");
@@ -404,10 +389,9 @@
         const button = document.createElement("button");
         button.type = "button";
         button.className = "card-preview";
-        button.setAttribute("aria-label", "Open card details");
-
         button.addEventListener("click", () => {
-          window.location.href = "card-details.html?id=" + encodeURIComponent(card.id);
+          window.location.href = "card-details.html?id=" +
+            encodeURIComponent(card.id);
         });
 
         const top = document.createElement("div");
@@ -417,7 +401,10 @@
         const middle = document.createElement("div");
         middle.append(
           makeText("p", card.name || "Unnamed Card", "card-name"),
-          makeText("p", "•••• •••• •••• " + getLastFour(card), "card-number")
+          makeText("p", "•••• •••• •••• " + (
+            card.number_last4 ||
+            (card.number ? String(card.number).slice(-4) : "0000")
+          ), "card-number")
         );
 
         const bottom = document.createElement("div");
@@ -434,99 +421,77 @@
       container.replaceChildren(fragment);
     }
 
-    function getLastFour(card) {
-      if (card.number_last4) return String(card.number_last4).slice(-4);
-      if (card.number) return String(card.number).slice(-4);
-      return "0000";
-    }
-
-    function makeText(tag, value, className) {
-      const element = document.createElement(tag);
-      if (className) element.className = className;
-      element.textContent = String(value);
-      return element;
-    }
-
     async function loadTransactions() {
       const container = byId("dashboardTransactions");
 
-      try {
-        const [recentResult, expenseResult] = await Promise.all([
-          supabaseClient
-            .from("transactions")
-            .select("id, card_id, merchant, amount, type, category, transaction_date")
-            .eq("type", "expense")
-            .order("transaction_date", { ascending: false })
-            .order("id", { ascending: false })
-            .limit(3),
-          supabaseClient
-            .from("transactions")
-            .select("amount")
-            .eq("type", "expense")
-        ]);
+      const [recentResult, expensesResult] = await Promise.all([
+        supabaseClient
+          .from("transactions")
+          .select("id, merchant, amount, category, transaction_date, type")
+          .eq("type", "expense")
+          .order("transaction_date", { ascending: false })
+          .order("id", { ascending: false })
+          .limit(3),
 
-        if (recentResult.error) throw recentResult.error;
+        supabaseClient
+          .from("transactions")
+          .select("amount")
+          .eq("type", "expense")
+      ]);
 
-        const expenses = expenseResult.data || [];
-        if (!expenseResult.error) {
-          const total = expenses.reduce((sum, row) => sum + (Number(row.amount) || 0), 0);
-          byId("totalExpense").textContent = formatMoney(total);
-        } else {
-          console.error("Expense total error:", expenseResult.error);
-          byId("totalExpense").textContent = "—";
-        }
+      if (recentResult.error) {
+        console.error("Transactions error:", recentResult.error);
+        showMessage(container, "Could not load transactions", recentResult.error.message);
+        return;
+      }
 
-        const rows = recentResult.data || [];
-        if (!rows.length) {
-          showMessage(container, "No transactions yet", "Your recent expenses will appear here.");
-          return;
-        }
+      if (!expensesResult.error) {
+        const total = (expensesResult.data || []).reduce(
+          (sum, row) => sum + (Number(row.amount) || 0), 0
+        );
+        byId("totalExpense").textContent = formatMoney(total);
+      }
 
-        const fragment = document.createDocumentFragment();
+      const rows = recentResult.data || [];
 
-        rows.forEach(transaction => {
-          const item = document.createElement("button");
-          item.type = "button";
-          item.className = "transaction";
-          item.addEventListener("click", () => {
-            window.location.href = "edit-transaction.html?id=" +
-              encodeURIComponent(transaction.id);
-          });
+      if (!rows.length) {
+        showMessage(container, "No transactions yet", "Your recent expenses will appear here.");
+        return;
+      }
 
-          const icon = makeText("span", "💳", "transaction-icon");
-          icon.setAttribute("aria-hidden", "true");
+      const fragment = document.createDocumentFragment();
 
-          const info = document.createElement("span");
-          info.className = "transaction-info";
-          info.append(
-            makeText("h3", transaction.merchant || "Transaction"),
-            makeText("p", formatDate(transaction.transaction_date))
-          );
-
-          const amount = document.createElement("span");
-          amount.className = "transaction-amount";
-          amount.append(
-            makeText("strong", formatMoney(transaction.amount)),
-            makeText("span", transaction.category || "Expense")
-          );
-
-          item.append(icon, info, amount);
-          fragment.append(item);
+      rows.forEach(transaction => {
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = "transaction";
+        button.addEventListener("click", () => {
+          window.location.href = "edit-transaction.html?id=" +
+            encodeURIComponent(transaction.id);
         });
 
-        container.replaceChildren(fragment);
-      } catch (error) {
-        console.error("Transactions error:", error);
-        byId("totalExpense").textContent = "—";
-        showMessage(container, "Could not load transactions", error.message || "Please try again.");
-      }
-    }
+        const icon = makeText("span", "💳", "transaction-icon");
+        const info = document.createElement("span");
+        info.className = "transaction-info";
+        info.append(
+          makeText("h3", transaction.merchant || "Transaction"),
+          makeText("p", transaction.transaction_date
+            ? new Date(transaction.transaction_date + "T00:00:00").toLocaleDateString("en-IN")
+            : "")
+        );
 
-    function formatDate(value) {
-      if (!value) return "";
-      const date = new Date(value + "T00:00:00");
-      return Number.isNaN(date.getTime()) ? "" :
-        date.toLocaleDateString("en-IN");
+        const amount = document.createElement("span");
+        amount.className = "transaction-amount";
+        amount.append(
+          makeText("strong", formatMoney(transaction.amount)),
+          makeText("span", transaction.category || "Expense")
+        );
+
+        button.append(icon, info, amount);
+        fragment.append(button);
+      });
+
+      container.replaceChildren(fragment);
     }
 
     document.querySelectorAll("[data-href]").forEach(button => {
