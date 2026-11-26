@@ -77,6 +77,32 @@
 
     .add-button:hover { background: #5033b3; }
 
+    .guest-notice {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 22px;
+      padding: 14px 16px;
+      border: 1px solid #d9d1ff;
+      border-radius: 13px;
+      background: #f4f0ff;
+      color: #342563;
+    }
+
+    .guest-notice p { margin: 4px 0 0; color: #625b78; }
+
+    .guest-exit {
+      flex: 0 0 auto;
+      padding: 9px 13px;
+      border: 0;
+      border-radius: 9px;
+      background: #6041c1;
+      color: #fff;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
     .toolbar {
       display: flex;
       align-items: center;
@@ -292,6 +318,7 @@
       .toolbar { align-items: flex-start; flex-direction: column; }
       .search-box { width: 100%; }
       .cards-grid { grid-template-columns: 1fr; }
+      .guest-notice { align-items: flex-start; flex-direction: column; }
     }
   </style>
 </head>
@@ -304,8 +331,16 @@
         <h1>My Cards</h1>
         <p class="subtitle">Keep your cards together in one place.</p>
       </div>
-      <a class="add-button" href="add-card.html">＋ Add Card</a>
+      <a class="add-button" id="addCardLink" href="add-card.html">＋ Add Card</a>
     </header>
+
+    <aside class="guest-notice" id="guestNotice" hidden>
+      <div>
+        <strong>You’re exploring CardHub as a guest</strong>
+        <p>These are sample cards. Your real account and cards are not changed.</p>
+      </div>
+      <button class="guest-exit" id="exitGuestButton" type="button">Exit demo</button>
+    </aside>
 
     <div class="toolbar">
       <label class="search-box">
@@ -332,10 +367,16 @@
   <script>
     const SUPABASE_URL = "https://wrsqhsuktqldnyjrbuma.supabase.co";
     const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_1-wC9ij9iOkR0txvg6j5bA_i1XLPSj7";
-    const supabaseClient = window.supabase.createClient(
-      SUPABASE_URL,
-      SUPABASE_PUBLISHABLE_KEY
-    );
+
+    const params = new URLSearchParams(window.location.search);
+    if (params.get("guest") === "1") {
+      sessionStorage.setItem("cardhub_guest_mode", "true");
+    }
+
+    const isGuest = sessionStorage.getItem("cardhub_guest_mode") === "true";
+    const supabaseClient = isGuest
+      ? null
+      : window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
 
     const cardsList = document.getElementById("myCardsList");
     const searchInput = document.getElementById("cardSearch");
@@ -345,12 +386,45 @@
     let allCards = [];
     let selectedFilter = "all";
 
+    const demoCards = [
+      {
+        id: "demo-card-1",
+        name: "Everyday Rewards",
+        issuer: "CardHub Bank",
+        type: "credit",
+        status: "active",
+        number_last4: "5464"
+      },
+      {
+        id: "demo-card-2",
+        name: "Travel Plus",
+        issuer: "Northstar Bank",
+        type: "debit",
+        status: "active",
+        number_last4: "2198"
+      },
+      {
+        id: "demo-card-3",
+        name: "Transit Pass",
+        issuer: "City Transit",
+        type: "transport",
+        status: "inactive",
+        number_last4: "8072"
+      }
+    ];
+
     function addText(parent, tag, text, className) {
       const element = document.createElement(tag);
       if (className) element.className = className;
       element.textContent = String(text ?? "");
       parent.appendChild(element);
       return element;
+    }
+
+    function guestUrl(path, query = {}) {
+      const params = new URLSearchParams(query);
+      if (isGuest) params.set("guest", "1");
+      return path + (params.size ? "?" + params.toString() : "");
     }
 
     function cardType(card) {
@@ -392,10 +466,12 @@
         addText(message, "p", allCards.length
           ? "Try a different search or filter."
           : "Add your first card to see it here.");
+
         if (!allCards.length) {
           const link = addText(message, "a", "Add a card");
-          link.href = "add-card.html";
+          link.href = guestUrl("add-card.html");
         }
+
         cardsList.replaceChildren(message);
         return;
       }
@@ -410,8 +486,7 @@
         item.setAttribute("aria-label", `Open ${card.name || "card"} details`);
 
         const openCard = () => {
-          window.location.href = "card-details.html?id=" +
-            encodeURIComponent(card.id);
+          window.location.href = guestUrl("card-details.html", { id: card.id });
         };
 
         item.addEventListener("click", openCard);
@@ -432,6 +507,7 @@
 
         const lastFour = card.number_last4 ||
           (card.number ? String(card.number).slice(-4) : "••••");
+
         addText(preview, "p", `••••  ••••  ••••  ${lastFour}`, "bank-card-number");
 
         const bottom = document.createElement("div");
@@ -448,9 +524,11 @@
         addText(details, "h2", card.name || "Unnamed Card");
         addText(details, "p", `${card.issuer || "Unknown issuer"} · ${card.type || "Other"}`);
 
-        const status = String(card.status || "Active");
-        const badge = addText(info, "span", status, "status-badge");
-        if (status.toLowerCase() !== "active") badge.classList.add("inactive");
+        const statusText = String(card.status || "Active");
+        const badge = addText(info, "span", statusText, "status-badge");
+        if (statusText.toLowerCase() !== "active") {
+          badge.classList.add("inactive");
+        }
 
         info.prepend(details);
         item.append(preview, info);
@@ -461,7 +539,17 @@
     }
 
     async function loadCards() {
-      cardsList.innerHTML = '<div class="message"><p>Loading your cards…</p></div>';
+      cardsList.replaceChildren();
+      const loading = document.createElement("div");
+      loading.className = "message";
+      addText(loading, "p", "Loading your cards…");
+      cardsList.appendChild(loading);
+
+      if (isGuest) {
+        allCards = demoCards;
+        renderCards();
+        return;
+      }
 
       const { data: authData, error: authError } =
         await supabaseClient.auth.getUser();
@@ -479,6 +567,7 @@
       if (error) {
         console.error("Could not load cards:", error);
         cardCount.textContent = "Could not load cards";
+
         const message = document.createElement("div");
         message.className = "message";
         addText(message, "h2", "Cards couldn’t load");
@@ -505,6 +594,16 @@
 
         renderCards();
       });
+    });
+
+    if (isGuest) {
+      document.getElementById("guestNotice").hidden = false;
+      document.getElementById("addCardLink").href = guestUrl("add-card.html");
+    }
+
+    document.getElementById("exitGuestButton").addEventListener("click", () => {
+      sessionStorage.removeItem("cardhub_guest_mode");
+      window.location.href = "index.html";
     });
 
     loadCards().catch(error => {
