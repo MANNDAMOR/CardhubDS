@@ -4,10 +4,10 @@
 
   const currentPage = location.pathname.split("/").pop().toLowerCase();
   const items = [
-    ["Dashboard", "▦", "dashboard.html"],
-    ["Cards", "▱", "cards.html"],
-    ["Transactions", "⇄", "transactions.html"],
-    ["Explore", "◎", "explore.html"]
+    ["Dashboard", "Dashboard", "dashboard.html"],
+    ["Cards", "My Cards", "cards.html"],
+    ["Transactions", "Transations", "transactions.html"],
+    ["Explore", "Explore", "explore.html"]
   ];
 
   const sidebar = document.createElement("aside");
