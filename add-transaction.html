@@ -17,7 +17,7 @@
 
 <style id="cardhub-transaction-page-layout">
 :root {
-  --ch-sidebar-width: 244px;
+  --ch-sidebar-width: 244px;F
   --ch-bg: #f5f6ff;
   --ch-panel: #ffffff;
   --ch-ink: #1c2350;
@@ -652,20 +652,14 @@ document
              * to the selected Supabase card.
              */
 
-            const transaction = {
-
-                type: type,
-
-                amount: amount,
-
-                merchant: merchant,
-
-                transaction_date: transactionDate,
-                date: transactionDate,
-                card_id: cardId,
-                category: category
-
-            };
+           const transaction = {
+    type: type,
+    amount: amount,
+    merchant: merchant,
+    transaction_date: transactionDate,
+    card_id: cardId,
+    category: category
+};
 
 
             const { error } =
