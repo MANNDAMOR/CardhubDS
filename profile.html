@@ -1,172 +1,557 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>CardHub — Profile Settings</title>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<style>
-:root{--sidebar:244px;--sidebar-mini:82px;--ink:#111426;--muted:#5d6070;--purple:#5b3db8;--purple2:#7048d0;--line:#d1d0df;--panel:#fff;--bg:#eef0ff;--danger:#a34848}
-*{box-sizing:border-box}body{margin:0;font-family:Inter,Arial,sans-serif;color:var(--ink);background:linear-gradient(120deg,#f1f2ff,#e9ebff);font-size:14px}
-button,input{font:inherit}button{cursor:pointer}.app{min-height:100vh}.nav a,.nav a:hover,.nav .icon,.main{margin-left:0;padding:24px 30px 26px;transition:margin-left .2s;max-width:1800px}.topline{display:flex;align-items:center;gap:14px;margin-bottom:23px}.page-title{font-size:25px;font-weight:800;letter-spacing:-.6px;margin:0 0 5px}.subtitle{margin:0;color:#4f5263;font-size:15px}.layout{display:grid;grid-template-columns:minmax(0,1.75fr) minmax(300px,.9fr);gap:16px;align-items:start}.left-col,.right-col{display:flex;flex-direction:column;gap:15px}.panel{background:rgba(255,255,255,.94);border:1px solid #cbcbdc;border-radius:13px;padding:16px;box-shadow:0 1px 1px #14113b05}.identity{display:flex;align-items:center;gap:25px;min-height:192px;padding:14px 16px}.photo-wrap{position:relative;flex-shrink:0}.avatar{width:132px;height:132px;border-radius:50%;background:linear-gradient(135deg,#9eaceb,#e6d8ff);display:grid;place-items:center;color:#fff;font-size:38px;font-weight:700;overflow:hidden;border:1px solid #d1d1e7}.avatar img{width:100%;height:100%;object-fit:cover}.camera{position:absolute;right:0;bottom:0;border:0;border-radius:50%;width:40px;height:40px;color:white;background:var(--purple);box-shadow:0 2px 6px #24105235;font-size:19px}.identity-info{min-width:0}.identity-info h2{font-size:25px;margin:0 0 5px;color:#080912;letter-spacing:-.6px}.identity-info p{font-size:15px;margin:6px 0;color:#111}.identity-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:13px}.btn{border:0;border-radius:9px;padding:10px 16px;background:linear-gradient(135deg,var(--purple2),#5536af);color:#fff;font-weight:600;box-shadow:0 2px 5px #20104728}.btn:hover{filter:brightness(1.06)}.btn-outline{background:#fff;color:#914747;border:1px solid #c78c8c;box-shadow:none}.btn-secondary{background:#f3f2fb;color:#40366c;border:1px solid var(--line);box-shadow:none}.btn:disabled{opacity:.55;cursor:wait}.forms-grid{display:grid;grid-template-columns:1fr 1.03fr;gap:16px;align-items:start}.panel h3{font-size:18px;margin:0 0 15px;font-weight:700;letter-spacing:-.25px}.field{margin-bottom:13px}.field label{display:block;margin-bottom:6px;font-weight:500;font-size:14px}.field input{width:100%;height:39px;border:1px solid #c9c9d8;border-radius:10px;padding:0 13px;background:#f0f1ff;color:#171727;outline:none}.field input:focus{border-color:#7457c9;box-shadow:0 0 0 3px #7457c91c}.field input[readonly]{background:#e5e6ee;color:#55586a}.two-fields{display:grid;grid-template-columns:1fr 1fr;gap:14px}.form-actions{display:flex;justify-content:flex-end;margin-top:22px}.security-panel{min-height:365px}.security-panel .field{margin-bottom:12px}.security-panel input{background:#fff}.toggle-row{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:24px 0 19px}.toggle-title{font-weight:500;font-size:14px}.toggle-sub{font-size:12px;color:#777;margin-top:4px}.switch{width:54px;height:31px;border:0;border-radius:30px;background:#c5c5cf;padding:3px;flex-shrink:0;transition:.2s}.switch:after{content:"";display:block;width:25px;height:25px;background:white;border-radius:50%;box-shadow:0 1px 4px #0002;transition:.2s}.switch[aria-checked="true"]{background:var(--purple)}.switch[aria-checked="true"]:after{transform:translateX(23px)}.plain-action{border:0;background:none;padding:0;color:#171727;text-align:left;font-weight:500}.plain-action:hover{color:var(--purple)}.notice{font-size:12px;color:var(--muted);margin-top:8px;min-height:15px}.notifications{padding:17px 16px 20px}.notification-grid{display:grid;grid-template-columns:minmax(0,1fr) 62px 62px;gap:13px 8px;align-items:center}.notification-grid .column-head{text-align:center;font-weight:500;font-size:14px}.notification-grid .row-label{font-size:14px}.switch.small{width:42px;height:23px;padding:2px;justify-self:center}.switch.small:after{width:19px;height:19px}.switch.small[aria-checked="true"]:after{transform:translateX(19px)}.connected{padding-bottom:11px}.connected h3{margin-bottom:9px}.connected-row{display:flex;align-items:center;gap:10px;width:100%;border:0;background:transparent;padding:8px 0;text-align:left;color:#171727;font-size:14px}.connected-row:hover{color:var(--purple)}.social-icon{width:28px;height:28px;border-radius:50%;display:grid;place-items:center;color:white;font-weight:700;font-size:14px;flex-shrink:0;background:#111}.social-icon.fb{background:#2580d4;font-size:20px}.social-icon.ig{background:linear-gradient(135deg,#6744c7,#ef4b83,#f5a13a)}.chevron{margin-left:auto;font-size:22px;color:#676a77}.delete-row{display:flex;align-items:center;justify-content:space-between;width:100%;border:0;background:transparent;padding:1px 0;color:#181827;font-size:17px;font-weight:600}.bottom-actions{display:flex;justify-content:flex-end;margin-top:5px}.status{font-size:12px;color:#4c8a64;margin-top:9px;min-height:15px}.toast{position:fixed;right:20px;bottom:20px;background:#20184e;color:#fff;padding:12px 17px;border-radius:10px;box-shadow:0 8px 30px #0002;z-index:20;display:none;max-width:min(420px,calc(100vw - 40px))}.toast.show{display:block}.modal-backdrop{position:fixed;inset:0;background:#0c0b22a6;display:none;align-items:center;justify-content:center;padding:20px;z-index:30}.modal-backdrop.show{display:flex}.modal{width:min(420px,100%);background:#fff;border-radius:15px;padding:22px;box-shadow:0 20px 80px #0004}.modal h3{margin:0 0 10px;font-size:20px}.modal p{color:#56586a;line-height:1.5}.modal-actions{display:flex;justify-content:flex-end;gap:10px;margin-top:20px}.danger{background:#a73e4a}
-@media(max-width:1050px){.main{padding:22px 20px}.layout{grid-template-columns:1fr}.right-col{display:grid;grid-template-columns:1fr 1fr;align-items:start}.right-col .delete-panel,.right-col .save-panel{grid-column:1/-1}.identity{min-height:170px}.notifications{min-height:220px}}
-@media(max-width:720px){.sidebar.open{transform:translateX(0)}.mobile-overlay.show{display:block;position:fixed;inset:0;background:#0a092b77;z-index:4}.main{margin-left:0;padding:18px 14px 24px}.topline{align-items:flex-start;margin-bottom:18px}.page-title{font-size:22px}.subtitle{font-size:13px;line-height:1.4}.forms-grid{grid-template-columns:1fr}.identity{align-items:flex-start;gap:15px;padding:14px;flex-wrap:wrap}.avatar{width:94px;height:94px;font-size:28px}.camera{width:33px;height:33px;font-size:16px}.identity-info{flex:1;min-width:170px;padding-top:4px}.identity-info h2{font-size:20px}.identity-info p{font-size:13px;overflow-wrap:anywhere}.identity-actions{width:100%;margin-top:0}.btn{padding:10px 12px}.right-col{display:flex}.two-fields{gap:10px}.panel{padding:15px}.notification-grid{grid-template-columns:minmax(0,1fr) 50px 50px}.bottom-actions .btn{width:100%}}
-@media(max-width:380px){.two-fields{grid-template-columns:1fr;gap:0}.identity-info{min-width:145px}.identity-actions button{flex:1}.notification-grid{gap:12px 4px}.notification-grid .row-label{font-size:12px}}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Profile Settings - CardHub</title>
+
+  <link rel="stylesheet" href="css/style.css">
   <link rel="stylesheet" href="css/nav.css">
+
+  <style>
+    * { box-sizing: border-box; }
+
+    body {
+      min-width: 0;
+      margin: 0;
+      background: #f5f6fc;
+      color: #24213b;
+      font-family: Inter, Arial, sans-serif;
+    }
+
+    .page {
+      width: 100%;
+      max-width: 1400px;
+      min-height: 100vh;
+      margin: 0 auto;
+      padding: 32px clamp(16px, 4vw, 48px) 48px;
+    }
+
+    .page-header { margin-bottom: 24px; }
+
+    .eyebrow {
+      margin: 0 0 6px;
+      color: #7255d7;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 0;
+      color: #211c45;
+      font-size: clamp(27px, 3vw, 36px);
+    }
+
+    .subtitle { margin: 8px 0 0; color: #77788e; }
+
+    .profile-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1.4fr) minmax(280px, .8fr);
+      gap: 18px;
+      align-items: start;
+    }
+
+    .column { display: grid; gap: 18px; }
+
+    .panel {
+      min-width: 0;
+      padding: 22px;
+      border: 1px solid #e8e7f0;
+      border-radius: 17px;
+      background: white;
+      box-shadow: 0 8px 24px #28204a0a;
+    }
+
+    .panel h2 { margin: 0 0 17px; color: #292541; font-size: 18px; }
+
+    .identity {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .avatar {
+      display: grid;
+      width: 68px;
+      height: 68px;
+      flex: 0 0 68px;
+      place-items: center;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #7860db, #b39df2);
+      color: white;
+      font-size: 23px;
+      font-weight: 700;
+    }
+
+    .identity h2 { margin: 0 0 5px; }
+    .identity p { margin: 4px 0; color: #77788e; font-size: 13px; overflow-wrap: anywhere; }
+
+    .field { margin-bottom: 14px; }
+    .field label { display: block; margin-bottom: 6px; color: #45435e; font-size: 13px; font-weight: 600; }
+
+    .field input {
+      width: 100%;
+      min-height: 44px;
+      padding: 0 12px;
+      border: 1px solid #e2e0eb;
+      border-radius: 10px;
+      background: #fff;
+      color: #292541;
+      font: inherit;
+    }
+
+    .field input:focus {
+      outline: 3px solid #6042c522;
+      border-color: #8068d1;
+    }
+
+    .field input[readonly] { background: #f4f4f8; color: #77788e; }
+
+    .two-fields {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .button-row {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      gap: 9px;
+      margin-top: 16px;
+    }
+
+    .button {
+      min-height: 41px;
+      padding: 0 14px;
+      border: 1px solid #e4e2ee;
+      border-radius: 10px;
+      background: white;
+      color: #51427d;
+      font: inherit;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .button-primary { border-color: #6042c5; background: #6042c5; color: white; }
+    .button-danger { border-color: #f0d6dc; color: #ad3f54; }
+    .button:disabled { opacity: .6; cursor: wait; }
+
+    .status {
+      min-height: 18px;
+      margin: 10px 0 0;
+      color: #34784e;
+      font-size: 13px;
+    }
+
+    .status.error { color: #ad3f54; }
+
+    .preference-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 13px 0;
+      border-bottom: 1px solid #efedf5;
+    }
+
+    .preference-row:last-of-type { border-bottom: 0; }
+    .preference-row strong { display: block; color: #35324c; font-size: 13px; }
+    .preference-row span { display: block; margin-top: 4px; color: #77788e; font-size: 12px; }
+
+    .switch {
+      position: relative;
+      width: 46px;
+      height: 26px;
+      flex: 0 0 46px;
+      border: 0;
+      border-radius: 999px;
+      background: #c9c8d3;
+      cursor: pointer;
+    }
+
+    .switch::after {
+      position: absolute;
+      top: 3px;
+      left: 3px;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: white;
+      box-shadow: 0 1px 4px #0002;
+      content: "";
+      transition: transform .18s ease;
+    }
+
+    .switch[aria-checked="true"] { background: #6042c5; }
+    .switch[aria-checked="true"]::after { transform: translateX(20px); }
+
+    .info-note {
+      margin: 12px 0 0;
+      color: #77788e;
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    .security-note {
+      padding: 13px;
+      border-radius: 11px;
+      background: #f5f2ff;
+      color: #62577f;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    @media (max-width: 850px) {
+      .profile-layout { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 520px) {
+      .page { padding: 23px 14px 32px; }
+      .panel { padding: 17px; }
+      .two-fields { grid-template-columns: 1fr; gap: 0; }
+      .button-row .button { flex: 1; }
+    }
+  </style>
 </head>
+
 <body>
-<div class="app">
-  <main class="main">
-    <header class="topline">
-      <div><h1 class="page-title">Profile Settings</h1><p class="subtitle">Manage and personalize your profile settings</p></div>
+  <main class="page">
+    <header class="page-header">
+      <p class="eyebrow">Account</p>
+      <h1>Profile Settings</h1>
+      <p class="subtitle">Manage your profile and account preferences.</p>
     </header>
-    <div class="layout">
-      <section class="left-col">
+
+    <div class="profile-layout">
+      <div class="column">
         <section class="panel identity">
-          <div class="photo-wrap"><div class="avatar" id="avatar">U</div></div>
-          <div class="identity-info">
-            <h2 id="displayName">Your Name</h2><p id="displayEmail">Sign in to load your email</p><p id="joinedDate">CardHub member</p>
+          <div class="avatar" id="avatar" aria-hidden="true">U</div>
+          <div>
+            <h2 id="displayName">Loading profile…</h2>
+            <p id="displayEmail"></p>
+            <p id="joinedDate"></p>
           </div>
         </section>
-        <div class="forms-grid">
-          <form class="panel" id="personalForm">
-            <h3>Personal Information</h3>
-            <div class="two-fields">
-              <div class="field"><label for="firstName">First Name</label><input id="firstName" name="firstName" autocomplete="given-name" placeholder="First name" maxlength="80"></div>
-              <div class="field"><label for="lastName">Last Name</label><input id="lastName" name="lastName" autocomplete="family-name" placeholder="Last name" maxlength="80"></div>
+
+        <form class="panel" id="personalForm">
+          <h2>Personal Information</h2>
+
+          <div class="two-fields">
+            <div class="field">
+              <label for="firstName">First name</label>
+              <input id="firstName" autocomplete="given-name" maxlength="80">
             </div>
-            <div class="field"><label for="email">Email</label><input id="email" type="email" readonly aria-readonly="true"></div>
-            <div class="field"><label for="phone">Phone Number</label><input id="phone" type="tel" autocomplete="tel" placeholder="+91 0000000000" maxlength="25"></div>
-            <div class="form-actions"><button class="btn" type="submit">Save</button></div><div class="notice" id="personalStatus" role="status"></div>
-          </form>
-          <form class="panel security-panel" id="passwordForm">
-            <h3>Account Security</h3>
-            <div class="field"><label for="currentPassword">Change Password</label><input id="currentPassword" type="password" placeholder="Current password" autocomplete="current-password"></div>
-            <div class="field"><label for="newPassword" class="sr-only" style="display:none">New password</label><input id="newPassword" type="password" placeholder="New password (8+ characters)" autocomplete="new-password" minlength="8"></div>
-            <div class="field"><label for="confirmPassword" class="sr-only" style="display:none">Confirm password</label><input id="confirmPassword" type="password" placeholder="Confirm Password" autocomplete="new-password"></div>
-            <div class="toggle-row"><div><div class="toggle-title">Two-Factor Authentication</div><div class="toggle-sub" id="twoFactorText">Off · UI preference only</div></div><button class="switch" id="twoFactorSwitch" type="button" role="switch" aria-checked="false" aria-label="Toggle two-factor authentication"></button></div>
-            <button class="plain-action" id="signOutAllBtn" type="button">Sign Out of All Devices</button>
-            <div class="form-actions"><button class="btn" type="submit">Update Password</button></div><div class="notice" id="securityStatus" role="status"></div>
-          </form>
-        </div>
-      </section>
-      <aside class="right-col">
-        <section class="panel notifications">
-          <h3>Notification Preferences</h3>
-          <div class="notification-grid">
-            <div></div><div class="column-head">Email</div><div class="column-head">Push</div>
-            <div class="row-label">Payment Alerts</div><button class="switch small pref-switch" data-pref="paymentEmail" aria-label="Payment alerts by email" role="switch" aria-checked="true"></button><button class="switch small pref-switch" data-pref="paymentPush" aria-label="Payment alerts by push" role="switch" aria-checked="true"></button>
-            <div class="row-label">Budget Alerts</div><button class="switch small pref-switch" data-pref="budgetEmail" aria-label="Budget alerts by email" role="switch" aria-checked="true"></button><button class="switch small pref-switch" data-pref="budgetPush" aria-label="Budget alerts by push" role="switch" aria-checked="true"></button>
-            <div class="row-label">Security Alerts</div><button class="switch small pref-switch" data-pref="securityEmail" aria-label="Security alerts by email" role="switch" aria-checked="true"></button><button class="switch small pref-switch" data-pref="securityPush" aria-label="Security alerts by push" role="switch" aria-checked="true"></button>
-          </div><div class="notice" id="notificationStatus" role="status"></div>
+            <div class="field">
+              <label for="lastName">Last name</label>
+              <input id="lastName" autocomplete="family-name" maxlength="80">
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="email">Email</label>
+            <input id="email" type="email" readonly>
+          </div>
+
+          <div class="field">
+            <label for="phone">Phone number</label>
+            <input id="phone" type="tel" autocomplete="tel" maxlength="25" placeholder="+91 0000000000">
+          </div>
+
+          <div class="button-row">
+            <button class="button button-primary" id="saveProfileButton" type="submit">Save profile</button>
+          </div>
+          <p class="status" id="personalStatus" role="status"></p>
+        </form>
+
+        <form class="panel" id="passwordForm">
+          <h2>Change Password</h2>
+
+          <div class="field">
+            <label for="newPassword">New password</label>
+            <input id="newPassword" type="password" autocomplete="new-password"
+              minlength="8" placeholder="At least 8 characters" required>
+          </div>
+
+          <div class="field">
+            <label for="confirmPassword">Confirm new password</label>
+            <input id="confirmPassword" type="password" autocomplete="new-password"
+              minlength="8" required>
+          </div>
+
+          <div class="button-row">
+            <button class="button button-primary" id="passwordButton" type="submit">Update password</button>
+          </div>
+          <p class="status" id="securityStatus" role="status"></p>
+        </form>
+      </div>
+
+      <aside class="column">
+        <section class="panel">
+          <h2>Notification Preferences</h2>
+
+          <div class="preference-row">
+            <div><strong>Payment alerts by email</strong><span>Saved on this device</span></div>
+            <button class="switch preference-switch" type="button" data-pref="paymentEmail"
+              role="switch" aria-checked="true" aria-label="Payment alerts by email"></button>
+          </div>
+
+          <div class="preference-row">
+            <div><strong>Budget alerts by email</strong><span>Saved on this device</span></div>
+            <button class="switch preference-switch" type="button" data-pref="budgetEmail"
+              role="switch" aria-checked="true" aria-label="Budget alerts by email"></button>
+          </div>
+
+          <div class="preference-row">
+            <div><strong>Security alerts by email</strong><span>Saved on this device</span></div>
+            <button class="switch preference-switch" type="button" data-pref="securityEmail"
+              role="switch" aria-checked="true" aria-label="Security alerts by email"></button>
+          </div>
+
+          <p class="info-note" id="notificationStatus" role="status"></p>
         </section>
-        <section class="panel connected">
-          <h3>Connected Accounts</h3>
-          <button class="connected-row" data-connect="Facebook"><span class="social-icon fb">f</span><span>Social media</span><span class="chevron">›</span></button>
-          <button class="connected-row" data-connect="Threads"><span class="social-icon">@</span><span>Linke account</span><span class="chevron">›</span></button>
-          <button class="connected-row" data-connect="X"><span class="social-icon">𝕏</span><span>Other accounts</span><span class="chevron">›</span></button>
-          <button class="connected-row" data-connect="Instagram"><span class="social-icon ig">◎</span><span>Other account</span><span class="chevron">›</span></button>
-          <div class="notice">Social linking needs provider OAuth setup.</div>
+
+        <section class="panel">
+          <h2>Account Security</h2>
+          <p class="security-note">
+            Two-factor authentication is not configured on this page. To use real two-factor
+            authentication, enable it in your Supabase Auth settings.
+          </p>
+          <div class="button-row">
+            <button class="button button-danger" id="signOutButton" type="button">Sign out of all devices</button>
+          </div>
         </section>
-        <section class="save-panel bottom-actions"><button class="btn" id="saveAllBtn">Save Changes</button></section>
+
+        <section class="panel">
+          <h2>Connected Accounts</h2>
+          <p class="info-note">
+            Social account linking is not configured yet. Connect a provider in Supabase Auth before adding sign-in buttons here.
+          </p>
+        </section>
       </aside>
     </div>
   </main>
-</div>
-<div class="toast" id="toast" role="status"></div>
-<div class="modal-backdrop" id="modalBackdrop" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
-  <div class="modal"><h3 id="modalTitle">Confirm action</h3><p id="modalText"></p><div class="modal-actions"><button class="btn btn-secondary" id="modalCancel">Cancel</button><button class="btn danger" id="modalConfirm">Confirm</button></div></div>
-</div>
-<script>
-/* CardHub profile page.
-   Configure the same Supabase project credentials used by the rest of your site below.
-   Profile fields are stored in auth user_metadata and copied to the profiles table;
-   notification preferences are stored in localStorage until you connect them to a database table. */
-const SUPABASE_URL = 'https://wrsqhsuktqldnyjrbuma.supabase.co';
-const SUPABASE_ANON_KEY = 'sb_publishable_1-wC9ij9iOkR0txvg6j5bA_i1XLPSj7';
-const supabaseClient = (window.supabase && SUPABASE_URL && SUPABASE_ANON_KEY)
-  ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY) : null;
-let currentUser = null;
-let modalAction = null;
-const $ = id => document.getElementById(id);
-const defaultPrefs = {paymentEmail:true,paymentPush:true,budgetEmail:true,budgetPush:true,securityEmail:true,securityPush:true};
-let preferences = {...defaultPrefs, ...JSON.parse(localStorage.getItem('cardhubNotificationPreferences') || '{}')};
-function toast(message){const el=$('toast');el.textContent=message;el.classList.add('show');clearTimeout(toast.timer);toast.timer=setTimeout(()=>el.classList.remove('show'),3500)}
-function setStatus(id,message,good=true){const el=$(id);el.textContent=message;el.style.color=good?'#4c8a64':'#a34848'}
-function getFullName(){return [$('firstName').value.trim(),$('lastName').value.trim()].filter(Boolean).join(' ') || currentUser?.user_metadata?.full_name || currentUser?.email?.split('@')[0] || 'Your Name'}
-/* Avatar shows the person's initials only (no photo option). */
-function renderAvatar(name){const initials=(name||'U').split(/\s+/).filter(Boolean).slice(0,2).map(x=>x[0]).join('').toUpperCase()||'U';$('avatar').textContent=initials}
-function updateIdentity(){const name=getFullName();$('displayName').textContent=name;$('displayEmail').textContent=currentUser?.email||$('email').value||'Not signed in';renderAvatar(name)}
-function renderPreferences(){document.querySelectorAll('.pref-switch').forEach(btn=>{const on=!!preferences[btn.dataset.pref];btn.setAttribute('aria-checked',String(on))})}
-async function initProfile(){
- const savedName=localStorage.getItem('cardhubProfileName')||'';
- const savedPhone=localStorage.getItem('cardhubProfilePhone')||'';
- if(!supabaseClient){setStatus('personalStatus','Supabase client unavailable.');return}
- try{
-  const {data:{user},error}=await supabaseClient.auth.getUser();
-  if(error) throw error;
-  currentUser=user;
-  if(!user){$('displayName').textContent='Not signed in';$('displayEmail').textContent='Please sign in to edit your profile.';$('email').value='';$('joinedDate').textContent='';setStatus('personalStatus','Sign in first to save profile changes.',false);return}
-  const meta=user.user_metadata||{};
-  const full=meta.full_name||meta.name||savedName;
-  const parts=full.split(' ');
-  $('firstName').value=meta.first_name||parts.shift()||'';
-  $('lastName').value=meta.last_name||parts.join(' ')||'';
-  $('email').value=user.email||'';
-  /* "mobile" is saved by the Create Account page; "phone" is saved by this page */
-  $('phone').value=meta.phone||meta.mobile||savedPhone||'';
-  $('joinedDate').textContent='Joined: '+new Date(user.created_at).toLocaleDateString(undefined,{year:'numeric',month:'short',day:'numeric'});
-  updateIdentity();
- }catch(err){setStatus('personalStatus','Could not load profile: '+(err.message||'unknown error'),false)}
-}
-async function saveProfile(){
- if(!currentUser){setStatus('personalStatus','Sign in first to save profile changes.',false);return false}
- const first=$('firstName').value.trim(),last=$('lastName').value.trim(),phone=$('phone').value.trim();
- if(!first){setStatus('personalStatus','Please enter your first name.',false);return false}
- const full=[first,last].filter(Boolean).join(' ');
- const {error}=await supabaseClient.auth.updateUser({data:{first_name:first,last_name:last,full_name:full,phone}});
- if(error){setStatus('personalStatus','Could not save: '+error.message,false);return false}
- /* Keep the profiles table in step with the account details */
- const {error:profileError}=await supabaseClient.from('profiles').update({full_name:full,mobile:phone||null}).eq('id',currentUser.id);
- if(profileError){console.error('profiles update error:',profileError)}
- localStorage.setItem('cardhubProfileName',full);localStorage.setItem('cardhubProfilePhone',phone);
- updateIdentity();setStatus('personalStatus','Profile saved successfully.');toast('Profile details saved.');return true
-}
-$('personalForm').addEventListener('submit',async e=>{e.preventDefault();await saveProfile()});
-$('saveAllBtn').addEventListener('click',async()=>{const ok=await saveProfile();preferences={...preferences};localStorage.setItem('cardhubNotificationPreferences',JSON.stringify(preferences));setStatus('notificationStatus','Notification preferences saved on this device.');if(ok)toast('Changes saved.')});
-document.querySelectorAll('.pref-switch').forEach(btn=>btn.addEventListener('click',()=>{const key=btn.dataset.pref;preferences[key]=!preferences[key];renderPreferences();localStorage.setItem('cardhubNotificationPreferences',JSON.stringify(preferences));setStatus('notificationStatus','Preferences saved on this device.')}));
-function setSwitch(btn,on){btn.setAttribute('aria-checked',String(on))}
-const twoFactorKey='cardhubTwoFactorUiPreference';
-setSwitch($('twoFactorSwitch'),localStorage.getItem(twoFactorKey)==='true');
-$('twoFactorText').textContent=localStorage.getItem(twoFactorKey)==='true'?'On · UI preference only':'Off · UI preference only';
-$('twoFactorSwitch').addEventListener('click',()=>{const on=$('twoFactorSwitch').getAttribute('aria-checked')!=='true';setSwitch($('twoFactorSwitch'),on);localStorage.setItem(twoFactorKey,String(on));$('twoFactorText').textContent=(on?'On':'Off')+' · UI preference only';toast('Display preference updated. Configure real MFA in your auth settings to enable account-level 2FA.')});
-$('passwordForm').addEventListener('submit',async e=>{
- e.preventDefault();if(!currentUser){setStatus('securityStatus','Sign in first.',false);return}
- const current=$('currentPassword').value,newPass=$('newPassword').value,confirm=$('confirmPassword').value;
- if(!current||!newPass||!confirm){setStatus('securityStatus','Fill in all password fields.',false);return}
- if(newPass.length<8){setStatus('securityStatus','New password must be at least 8 characters.',false);return}
- if(newPass!==confirm){setStatus('securityStatus','New passwords do not match.',false);return}
- // Supabase password updates require an authenticated session; current password is not directly verifiable here.
- const {error}=await supabaseClient.auth.updateUser({password:newPass});
- if(error){setStatus('securityStatus','Password update failed: '+error.message,false);return}
- $('currentPassword').value='';$('newPassword').value='';$('confirmPassword').value='';setStatus('securityStatus','Password updated successfully.')
-});
-$('signOutAllBtn').addEventListener('click',()=>openModal('Sign out of all devices','This will sign out the current session and request sign-out across sessions supported by Supabase.',async()=>{
- if(!supabaseClient)return;
- const {error}=await supabaseClient.auth.signOut({scope:'global'});
- if(error){toast('Sign-out failed: '+error.message);return}
- window.location.href='index.html'
-}));
-document.querySelectorAll('.connected-row').forEach(btn=>btn.addEventListener('click',()=>toast(btn.dataset.connect+' linking is not configured yet. Set up the provider in Supabase Auth first.')));
-function openModal(title,text,action){$('modalTitle').textContent=title;$('modalText').textContent=text;modalAction=action;$('modalBackdrop').classList.add('show')}
-function closeModal(){$('modalBackdrop').classList.remove('show');modalAction=null}
-$('modalCancel').addEventListener('click',closeModal);$('modalConfirm').addEventListener('click',async()=>{const action=modalAction;closeModal();if(action)await action()});$('modalBackdrop').addEventListener('click',e=>{if(e.target===$('modalBackdrop'))closeModal()});
 
-renderPreferences();initProfile();
-</script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+    const SUPABASE_URL = "https://wrsqhsuktqldnyjrbuma.supabase.co";
+    const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_1-wC9ij9iOkR0txvg6j5bA_i1XLPSj7";
+    const supabaseClient = window.supabase.createClient(
+      SUPABASE_URL,
+      SUPABASE_PUBLISHABLE_KEY
+    );
+
+    const byId = id => document.getElementById(id);
+    let currentUser = null;
+
+    const preferenceDefaults = {
+      paymentEmail: true,
+      budgetEmail: true,
+      securityEmail: true
+    };
+
+    function setStatus(id, message, isError = false) {
+      const element = byId(id);
+      element.textContent = message;
+      element.classList.toggle("error", isError);
+    }
+
+    function profileName() {
+      return [byId("firstName").value.trim(), byId("lastName").value.trim()]
+        .filter(Boolean)
+        .join(" ") || currentUser?.email?.split("@")[0] || "CardHub User";
+    }
+
+    function updateIdentity() {
+      const name = profileName();
+      byId("displayName").textContent = name;
+      byId("displayEmail").textContent = currentUser?.email || "";
+      byId("avatar").textContent = name
+        .split(/\s+/)
+        .filter(Boolean)
+        .slice(0, 2)
+        .map(part => part[0].toUpperCase())
+        .join("") || "U";
+    }
+
+    async function loadProfile() {
+      const { data, error } = await supabaseClient.auth.getUser();
+
+      if (error || !data.user) {
+        location.href = "index.html";
+        return;
+      }
+
+      currentUser = data.user;
+      const metadata = currentUser.user_metadata || {};
+      const fullName = metadata.full_name || metadata.name || "";
+      const nameParts = fullName.trim().split(/\s+/).filter(Boolean);
+
+      byId("firstName").value = metadata.first_name || nameParts.shift() || "";
+      byId("lastName").value = metadata.last_name || nameParts.join(" ") || "";
+      byId("email").value = currentUser.email || "";
+      byId("phone").value = metadata.phone || metadata.mobile || "";
+
+      byId("joinedDate").textContent = currentUser.created_at
+        ? "Member since " + new Date(currentUser.created_at).toLocaleDateString(undefined, {
+            year: "numeric",
+            month: "short"
+          })
+        : "";
+
+      updateIdentity();
+    }
+
+    async function saveProfile(event) {
+      event.preventDefault();
+
+      if (!currentUser) {
+        setStatus("personalStatus", "Please sign in again.", true);
+        return;
+      }
+
+      const firstName = byId("firstName").value.trim();
+      const lastName = byId("lastName").value.trim();
+      const phone = byId("phone").value.trim();
+
+      if (!firstName) {
+        setStatus("personalStatus", "Enter your first name.", true);
+        return;
+      }
+
+      const fullName = [firstName, lastName].filter(Boolean).join(" ");
+      const button = byId("saveProfileButton");
+      button.disabled = true;
+      button.textContent = "Saving…";
+
+      try {
+        const { error } = await supabaseClient.auth.updateUser({
+          data: {
+            first_name: firstName,
+            last_name: lastName,
+            full_name: fullName,
+            phone: phone
+          }
+        });
+
+        if (error) throw error;
+
+        // This update matches the profiles table fields used by the existing page.
+        const { error: profileError } = await supabaseClient
+          .from("profiles")
+          .update({ full_name: fullName, mobile: phone || null })
+          .eq("id", currentUser.id);
+
+        if (profileError) {
+          console.warn("Profile table update failed:", profileError.message);
+          setStatus("personalStatus", "Account profile saved. The profiles table was not updated.", true);
+        } else {
+          setStatus("personalStatus", "Profile saved.");
+        }
+
+        currentUser.user_metadata = {
+          ...currentUser.user_metadata,
+          first_name: firstName,
+          last_name: lastName,
+          full_name: fullName,
+          phone
+        };
+        updateIdentity();
+      } catch (error) {
+        console.error("Profile save error:", error);
+        setStatus("personalStatus", error.message || "Could not save profile.", true);
+      } finally {
+        button.disabled = false;
+        button.textContent = "Save profile";
+      }
+    }
+
+    function loadPreferences() {
+      let saved = {};
+      try {
+        saved = JSON.parse(localStorage.getItem("cardhubNotificationPreferences") || "{}");
+      } catch {
+        saved = {};
+      }
+
+      const preferences = { ...preferenceDefaults, ...saved };
+
+      document.querySelectorAll(".preference-switch").forEach(button => {
+        button.setAttribute("aria-checked", String(Boolean(preferences[button.dataset.pref])));
+
+        button.addEventListener("click", () => {
+          preferences[button.dataset.pref] =
+            button.getAttribute("aria-checked") !== "true";
+
+          button.setAttribute("aria-checked", String(preferences[button.dataset.pref]));
+          localStorage.setItem("cardhubNotificationPreferences", JSON.stringify(preferences));
+          setStatus("notificationStatus", "Preference saved on this device.");
+        });
+      });
+    }
+
+    async function updatePassword(event) {
+      event.preventDefault();
+
+      const password = byId("newPassword").value;
+      const confirmation = byId("confirmPassword").value;
+
+      if (password.length < 8) {
+        setStatus("securityStatus", "Use at least 8 characters for your password.", true);
+        return;
+      }
+
+      if (password !== confirmation) {
+        setStatus("securityStatus", "The passwords do not match.", true);
+        return;
+      }
+
+      const button = byId("passwordButton");
+      button.disabled = true;
+      button.textContent = "Updating…";
+
+      try {
+        const { error } = await supabaseClient.auth.updateUser({ password });
+        if (error) throw error;
+
+        byId("passwordForm").reset();
+        setStatus("securityStatus", "Password updated.");
+      } catch (error) {
+        console.error("Password update error:", error);
+        setStatus("securityStatus", error.message || "Could not update password.", true);
+      } finally {
+        button.disabled = false;
+        button.textContent = "Update password";
+      }
+    }
+
+    async function signOutAll() {
+      if (!confirm("Sign out of all devices?")) return;
+
+      const { error } = await supabaseClient.auth.signOut({ scope: "global" });
+
+      if (error) {
+        alert("Could not sign out: " + error.message);
+        return;
+      }
+
+      location.href = "index.html";
+    }
+
+    byId("personalForm").addEventListener("submit", saveProfile);
+    byId("passwordForm").addEventListener("submit", updatePassword);
+    byId("signOutButton").addEventListener("click", signOutAll);
+
+    loadPreferences();
+    loadProfile().catch(error => {
+      console.error("Profile load error:", error);
+      setStatus("personalStatus", "Could not load your profile.", true);
+    });
+  </script>
+
   <script src="js/nav.js"></script>
 </body>
 </html>
