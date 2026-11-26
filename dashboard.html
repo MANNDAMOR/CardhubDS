@@ -54,6 +54,32 @@
       font-size: 14px;
     }
 
+    .guest-notice {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 22px;
+      padding: 14px 16px;
+      border: 1px solid #d9d1ff;
+      border-radius: 13px;
+      background: #f4f0ff;
+      color: #342563;
+    }
+
+    .guest-notice p { margin: 4px 0 0; color: #625b78; }
+
+    .guest-exit {
+      flex: 0 0 auto;
+      padding: 9px 13px;
+      border: 0;
+      border-radius: 9px;
+      background: #6041c1;
+      color: #fff;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
     .summary-grid {
       display: grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -234,6 +260,10 @@
       .section-header h2 { font-size: 21px; }
       .action-card { width: calc(50% - 7px); }
     }
+
+    @media (max-width: 480px) {
+      .guest-notice { align-items: flex-start; flex-direction: column; }
+    }
   </style>
 </head>
 
@@ -241,10 +271,18 @@
   <main class="dashboard">
     <header class="dashboard-header">
       <div>
-        <p class="welcome-text">Welcome back</p>
+        <p class="welcome-text" id="welcomeText">Welcome back</p>
         <h1 id="welcomeName">Welcome 👋</h1>
       </div>
     </header>
+
+    <aside class="guest-notice" id="guestNotice" hidden>
+      <div>
+        <strong>You’re exploring CardHub as a guest</strong>
+        <p>This demo uses sample data. Your real account and cards are not changed.</p>
+      </div>
+      <button class="guest-exit" id="exitGuestButton" type="button">Exit demo</button>
+    </aside>
 
     <section class="summary-grid" aria-label="Account summary">
       <article class="summary-card">
@@ -308,12 +346,78 @@
     const SUPABASE_URL = "https://wrsqhsuktqldnyjrbuma.supabase.co";
     const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_1-wC9ij9iOkR0txvg6j5bA_i1XLPSj7";
 
-    const supabaseClient = window.supabase.createClient(
-      SUPABASE_URL,
-      SUPABASE_PUBLISHABLE_KEY
-    );
-
     const byId = id => document.getElementById(id);
+    const params = new URLSearchParams(window.location.search);
+    const guestRequested = params.get("guest") === "1";
+
+    if (guestRequested) {
+      sessionStorage.setItem("cardhub_guest_mode", "true");
+    }
+
+    const isGuest = sessionStorage.getItem("cardhub_guest_mode") === "true";
+
+    const demoCards = [
+      {
+        id: "demo-card-1",
+        name: "Everyday Rewards",
+        number_last4: "5464",
+        issuer: "CardHub Bank",
+        status: "active"
+      },
+      {
+        id: "demo-card-2",
+        name: "Travel Plus",
+        number_last4: "2198",
+        issuer: "Northstar Bank",
+        status: "active"
+      },
+      {
+        id: "demo-card-3",
+        name: "Backup Debit",
+        number_last4: "8072",
+        issuer: "City Bank",
+        status: "inactive"
+      }
+    ];
+
+    const demoTransactions = [
+      {
+        id: "demo-transaction-1",
+        merchant: "Fresh Market",
+        amount: 1840,
+        category: "Groceries",
+        transaction_date: "2026-11-23",
+        type: "expense"
+      },
+      {
+        id: "demo-transaction-2",
+        merchant: "Metro Travel",
+        amount: 620,
+        category: "Transport",
+        transaction_date: "2026-11-21",
+        type: "expense"
+      },
+      {
+        id: "demo-transaction-3",
+        merchant: "Cafe Corner",
+        amount: 390,
+        category: "Food",
+        transaction_date: "2026-11-19",
+        type: "expense"
+      },
+      {
+        id: "demo-transaction-4",
+        merchant: "Monthly allowance",
+        amount: 12000,
+        category: "Income",
+        transaction_date: "2026-11-15",
+        type: "income"
+      }
+    ];
+
+    const supabaseClient = isGuest
+      ? null
+      : window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
 
     function makeText(tag, value, className) {
       const element = document.createElement(tag);
@@ -337,46 +441,21 @@
       });
     }
 
-    async function loadDashboard() {
-      const { data, error } = await supabaseClient.auth.getUser();
-
-      if (error || !data.user) {
-        window.location.href = "index.html";
-        return;
-      }
-
-      const user = data.user;
-      const name = user.user_metadata?.full_name ||
-        user.user_metadata?.name ||
-        user.email?.split("@")[0] ||
-        "User";
-
-      byId("welcomeName").textContent = name + " 👋";
-
-      await Promise.all([loadCards(), loadTransactions()]);
+    function formatDate(value) {
+      if (!value) return "";
+      const date = new Date(value + "T00:00:00");
+      return Number.isNaN(date.getTime())
+        ? String(value)
+        : date.toLocaleDateString("en-IN");
     }
 
-    async function loadCards() {
+    function renderCards(rows) {
       const container = byId("dashboardCards");
 
-      const { data: cards, error } = await supabaseClient
-        .from("cards")
-        .select("*")
-        .order("created_at", { ascending: false });
-
-      if (error) {
-        console.error("Cards error:", error);
-        byId("totalCards").textContent = "—";
-        byId("activeCards").textContent = "—";
-        showMessage(container, "Could not load cards", error.message);
-        return;
-      }
-
-      const rows = cards || [];
-      byId("totalCards").textContent = rows.length;
-      byId("activeCards").textContent = rows.filter(
+      byId("totalCards").textContent = String(rows.length);
+      byId("activeCards").textContent = String(rows.filter(
         card => String(card.status || "").toLowerCase() === "active"
-      ).length;
+      ).length);
 
       if (!rows.length) {
         showMessage(container, "No cards added yet", "Add your first card to see it here.");
@@ -390,21 +469,21 @@
         button.type = "button";
         button.className = "card-preview";
         button.addEventListener("click", () => {
-          window.location.href = "card-details.html?id=" +
-            encodeURIComponent(card.id);
+          const query = new URLSearchParams({ id: card.id });
+          window.location.href = "card-details.html?" + query.toString();
         });
 
         const top = document.createElement("div");
         top.className = "card-top";
         top.append(makeText("span", "CardHub"), makeText("span", "💳"));
 
+        const lastFour = card.number_last4 ||
+          (card.number ? String(card.number).slice(-4) : "0000");
+
         const middle = document.createElement("div");
         middle.append(
           makeText("p", card.name || "Unnamed Card", "card-name"),
-          makeText("p", "•••• •••• •••• " + (
-            card.number_last4 ||
-            (card.number ? String(card.number).slice(-4) : "0000")
-          ), "card-number")
+          makeText("p", "•••• •••• •••• " + lastFour, "card-number")
         );
 
         const bottom = document.createElement("div");
@@ -421,47 +500,30 @@
       container.replaceChildren(fragment);
     }
 
-    async function loadTransactions() {
+    function renderTransactions(rows) {
       const container = byId("dashboardTransactions");
+      const expenses = rows.filter(
+        transaction => String(transaction.type || "expense").toLowerCase() === "expense"
+      );
 
-      const [recentResult, expensesResult] = await Promise.all([
-        supabaseClient
-          .from("transactions")
-          .select("id, merchant, amount, category, transaction_date, type")
-          .eq("type", "expense")
-          .order("transaction_date", { ascending: false })
-          .order("id", { ascending: false })
-          .limit(3),
+      byId("totalExpense").textContent = formatMoney(
+        expenses.reduce((sum, row) => sum + (Number(row.amount) || 0), 0)
+      );
 
-        supabaseClient
-          .from("transactions")
-          .select("amount")
-          .eq("type", "expense")
-      ]);
+      const recent = [...expenses]
+        .sort((a, b) => String(b.transaction_date || "").localeCompare(
+          String(a.transaction_date || "")
+        ))
+        .slice(0, 3);
 
-      if (recentResult.error) {
-        console.error("Transactions error:", recentResult.error);
-        showMessage(container, "Could not load transactions", recentResult.error.message);
-        return;
-      }
-
-      if (!expensesResult.error) {
-        const total = (expensesResult.data || []).reduce(
-          (sum, row) => sum + (Number(row.amount) || 0), 0
-        );
-        byId("totalExpense").textContent = formatMoney(total);
-      }
-
-      const rows = recentResult.data || [];
-
-      if (!rows.length) {
+      if (!recent.length) {
         showMessage(container, "No transactions yet", "Your recent expenses will appear here.");
         return;
       }
 
       const fragment = document.createDocumentFragment();
 
-      rows.forEach(transaction => {
+      recent.forEach(transaction => {
         const button = document.createElement("button");
         button.type = "button";
         button.className = "transaction";
@@ -475,9 +537,7 @@
         info.className = "transaction-info";
         info.append(
           makeText("h3", transaction.merchant || "Transaction"),
-          makeText("p", transaction.transaction_date
-            ? new Date(transaction.transaction_date + "T00:00:00").toLocaleDateString("en-IN")
-            : "")
+          makeText("p", formatDate(transaction.transaction_date))
         );
 
         const amount = document.createElement("span");
@@ -494,13 +554,78 @@
       container.replaceChildren(fragment);
     }
 
+    async function loadGuestDashboard() {
+      byId("welcomeText").textContent = "Guest demo";
+      byId("welcomeName").textContent = "Explore CardHub 👋";
+      byId("guestNotice").hidden = false;
+
+      renderCards(demoCards);
+      renderTransactions(demoTransactions);
+    }
+
+    async function loadUserDashboard() {
+      const { data, error } = await supabaseClient.auth.getUser();
+
+      if (error || !data.user) {
+        window.location.href = "index.html";
+        return;
+      }
+
+      const user = data.user;
+      const name = user.user_metadata?.full_name ||
+        user.user_metadata?.name ||
+        user.email?.split("@")[0] ||
+        "User";
+
+      byId("welcomeName").textContent = name + " 👋";
+
+      const [cardsResult, transactionsResult] = await Promise.all([
+        supabaseClient
+          .from("cards")
+          .select("*")
+          .order("created_at", { ascending: false }),
+
+        supabaseClient
+          .from("transactions")
+          .select("id, merchant, amount, category, transaction_date, type")
+          .eq("type", "expense")
+          .order("transaction_date", { ascending: false })
+      ]);
+
+      if (cardsResult.error) {
+        console.error("Cards error:", cardsResult.error);
+        byId("totalCards").textContent = "—";
+        byId("activeCards").textContent = "—";
+        showMessage(byId("dashboardCards"), "Could not load cards", cardsResult.error.message);
+      } else {
+        renderCards(cardsResult.data || []);
+      }
+
+      if (transactionsResult.error) {
+        console.error("Transactions error:", transactionsResult.error);
+        showMessage(
+          byId("dashboardTransactions"),
+          "Could not load transactions",
+          transactionsResult.error.message
+        );
+        byId("totalExpense").textContent = "—";
+      } else {
+        renderTransactions(transactionsResult.data || []);
+      }
+    }
+
     document.querySelectorAll("[data-href]").forEach(button => {
       button.addEventListener("click", () => {
         window.location.href = button.dataset.href;
       });
     });
 
-    loadDashboard().catch(error => {
+    byId("exitGuestButton").addEventListener("click", () => {
+      sessionStorage.removeItem("cardhub_guest_mode");
+      window.location.href = "index.html";
+    });
+
+    (isGuest ? loadGuestDashboard() : loadUserDashboard()).catch(error => {
       console.error("Dashboard error:", error);
       showMessage(byId("dashboardCards"), "Dashboard error", "Please refresh and try again.");
     });
