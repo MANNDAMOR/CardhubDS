@@ -1,206 +1,551 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Transactions | CardHub</title>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/nav.css">
-<style>
-:root{--sidebar:244px;--ink:#17172b;--muted:#727487;--purple:#5b3db8;--purple-dark:#17133f;--line:#e1e1ed;--bg:#f0f1ff;--white:#fff;--green:#16845b;--red:#d44d63}
-*{box-sizing:border-box}body{margin:0;background:linear-gradient(120deg,#f4f4ff,#eceeff);font-family:Inter,Arial,sans-serif;color:var(--ink)}button,input,select{font:inherit}button{cursor:pointer}
-.sidebar{position:fixed;inset:0 auto 0 0;width:var(--sidebar);background:linear-gradient(165deg,#10102f,#171344 58%,#100f2d);color:#f7f6ff;padding:22px 12px 14px;display:flex;flex-direction:column;z-index:10;overflow-y:auto}.brand{display:flex;align-items:center;gap:10px;padding:0 13px 25px;font-size:22px;font-weight:800;white-space:nowrap}.brand-icon{font-size:28px}.nav{display:flex;flex-direction:column;gap:4px}.nav a,.side-bottom a{height:40px;border-radius:9px;display:flex;align-items:center;gap:12px;padding:0 15px;color:#e5e3f5;text-decoration:none;white-space:nowrap;transition:.15s}.nav a:hover,.side-bottom a:hover{background:#ffffff13}.nav a.active{background:linear-gradient(100deg,#352768,#2b2059)}.icon{width:19px;flex:0 0 19px;text-align:center;font-size:18px;color:#c9c4e5}.nav-sep{height:1px;background:#ffffff26;margin:9px 15px}.side-bottom{margin-top:auto;border-top:1px solid #ffffff13;padding-top:13px;display:flex;flex-direction:column;gap:5px}.user-pill{display:flex;align-items:center;gap:9px;background:#2b2357;border-radius:10px;padding:7px 10px;white-space:nowrap;overflow:hidden}.avatar-small{width:27px;height:27px;border-radius:50%;background:#6b4bc4;display:grid;place-items:center;color:#fff;font-weight:700;flex-shrink:0}
-.main{margin-left:var(--sidebar);padding:29px 32px 40px;max-width:1800px}.page-head{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:24px}.page-title{font-size:28px;font-weight:800;letter-spacing:-.8px;margin:0 0 7px}.subtitle{color:#696b7e;margin:0;font-size:14px}.head-actions{display:flex;gap:10px;align-items:center}.btn{border:0;border-radius:10px;padding:11px 16px;background:linear-gradient(135deg,#704bd0,#5336ae);color:#fff;font-weight:600;box-shadow:0 3px 7px #2b1a6422}.btn:hover{filter:brightness(1.06)}.btn:disabled{opacity:.6;cursor:wait}.btn-light{background:#fff;color:#453b75;border:1px solid var(--line);box-shadow:none}.menu-btn{display:none;border:1px solid var(--line);background:#fff;border-radius:9px;padding:9px 11px}
-.summary{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:15px;margin-bottom:19px}.stat{background:#fff;border:1px solid var(--line);border-radius:14px;padding:18px 20px;box-shadow:0 3px 12px #21194d06}.stat-top{display:flex;align-items:center;justify-content:space-between;color:var(--muted);font-size:13px;font-weight:500}.stat-icon{height:36px;width:36px;border-radius:11px;background:#eee9ff;color:#6042bd;display:grid;place-items:center;font-size:18px}.stat-value{font-size:25px;font-weight:800;margin-top:13px;letter-spacing:-.5px}.stat-foot{color:var(--muted);font-size:12px;margin-top:5px}
-.panel{background:rgba(255,255,255,.96);border:1px solid var(--line);border-radius:14px;box-shadow:0 3px 14px #21194d07;overflow:hidden}.panel-header{padding:20px 21px 15px;display:flex;align-items:center;justify-content:space-between;gap:14px}.panel-header h2{font-size:18px;margin:0;font-weight:750}.result-count{font-size:12px;color:var(--muted)}
-.filters{display:grid;grid-template-columns:minmax(190px,1.6fr) repeat(4,minmax(130px,1fr)) auto;gap:10px;padding:0 21px 18px}.control{width:100%;height:41px;border:1px solid #dedeea;border-radius:9px;background:#fff;padding:0 12px;color:#39394d;outline:none;min-width:0}.control:focus{border-color:#8168d0;box-shadow:0 0 0 3px #8168d018}.search-wrap{position:relative}.search-wrap span{position:absolute;left:12px;top:11px;color:#88899a}.search-wrap input{padding-left:35px}.clear-btn{border:1px solid #dedeea;border-radius:9px;background:#f7f6ff;color:#55448d;padding:0 13px;height:41px;font-weight:600;white-space:nowrap}
-.list{padding:0 21px 12px}.transaction{display:grid;grid-template-columns:44px minmax(0,1fr) auto;gap:13px;align-items:center;padding:15px 0;border-top:1px solid #eeeef5}.transaction-icon{height:42px;width:42px;border-radius:12px;background:#f0ebff;color:#6142bd;display:grid;place-items:center;font-size:21px;font-weight:700}.transaction-icon.income{background:#e6f7ef;color:var(--green)}.transaction-info{min-width:0}.transaction-info h3{margin:0 0 5px;font-size:14px;font-weight:700;overflow-wrap:anywhere}.transaction-info p{margin:3px 0;color:var(--muted);font-size:12px;line-height:1.4}.transaction-right{display:flex;align-items:center;gap:16px}.amount{font-weight:800;font-size:14px;white-space:nowrap}.amount.expense{color:var(--red)}.amount.income{color:var(--green)}.transaction-actions{display:flex;gap:6px}.icon-btn{width:32px;height:32px;border:1px solid #e5e3ef;background:#fff;border-radius:8px;color:#5c5578}.icon-btn:hover{background:#f2efff;color:var(--purple)}.empty{padding:48px 20px;text-align:center;color:var(--muted)}.empty-icon{font-size:32px;margin-bottom:9px}.empty h3{color:var(--ink);margin:0 0 7px}.empty p{margin:0;font-size:13px}.message{padding:12px 20px;color:#8c4250;font-size:13px;display:none}.message.show{display:block}.loading{padding:38px;text-align:center;color:var(--muted)}.toast{position:fixed;right:20px;bottom:20px;background:#21184f;color:white;padding:12px 17px;border-radius:10px;box-shadow:0 8px 30px #0002;z-index:30;display:none}.toast.show{display:block}.mobile-overlay{display:none}
-@media(max-width:1250px){.filters{grid-template-columns:repeat(3,minmax(0,1fr))}.search-wrap{grid-column:span 2}.summary{gap:10px}.main{padding:25px 22px}.stat{padding:16px}}
-@media(max-width:760px){.sidebar{transform:translateX(-100%);transition:transform .2s;width:244px}.sidebar.open{transform:translateX(0)}.mobile-overlay.show{display:block;position:fixed;inset:0;background:#0a092b77;z-index:9}.main{margin-left:0;padding:18px 14px 30px}.menu-btn{display:block}.page-head{align-items:flex-start}.page-title{font-size:23px}.subtitle{font-size:13px;line-height:1.4}.head-actions .btn{padding:10px 11px;font-size:12px}.summary{grid-template-columns:1fr;gap:10px}.stat{padding:14px 16px}.stat-value{font-size:22px;margin-top:8px}.filters{grid-template-columns:1fr 1fr;padding:0 14px 15px}.search-wrap{grid-column:1/-1}.panel-header{padding:17px 14px 13px}.list{padding:0 14px 10px}.transaction{grid-template-columns:38px minmax(0,1fr);gap:10px}.transaction-icon{width:38px;height:38px}.transaction-right{grid-column:2;justify-content:space-between;width:100%;padding-top:2px}.transaction-info h3{font-size:13px}.amount{font-size:13px}.panel-header h2{font-size:16px}}
-@media(max-width:390px){.filters{grid-template-columns:1fr}.search-wrap{grid-column:auto}.head-actions .btn{font-size:11px;padding:9px}.transaction-actions{gap:4px}}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Transactions - CardHub</title>
 
-<style id="cardhub-layout-repair">
-*{box-sizing:border-box}
-html{min-width:0!important}
-body{min-width:0!important;margin:0!important;background:#f3f4ff!important;color:#17172b}
-main.dashboard{margin:0!important;width:auto!important;max-width:none!important;min-height:100vh;padding:30px 30px 48px 280px!important}
-.dashboard-header{display:flex;align-items:center;justify-content:space-between;gap:18px;max-width:1500px;margin:0 auto 24px!important;padding:0 0 18px!important;border-bottom:1px solid #e4e4f1}
-.dashboard-header h1{font-size:clamp(26px,2.3vw,34px)!important;line-height:1.2;color:#191833!important;margin:8px 0!important}
-.dashboard-header .welcome-text{font-size:14px!important;color:#717187!important;margin:0}
-.notification-button{min-width:44px;min-height:44px;border:1px solid #e2e1ef!important;border-radius:12px!important;background:#fff!important;box-shadow:0 4px 14px #2017470b}
-.summary-grid{max-width:1500px;margin:0 auto 24px!important;display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
-.summary-card{min-width:0;background:#fff!important;border:1px solid #e2e2f0!important;border-radius:16px!important;padding:22px!important;box-shadow:0 5px 18px #20174708}
-.summary-card p{margin:0 0 9px;color:#77778d;font-size:14px}
-.summary-card h2{margin:0;color:#5838bd;font-size:28px;font-weight:800;overflow-wrap:anywhere}
-.summary-icon{display:inline-grid;place-items:center;width:42px;height:42px;border-radius:13px;background:#eee9ff;color:#6041c1;font-size:20px;margin-bottom:14px}
-main.dashboard>section:not(.summary-grid),main.dashboard>.details-section,main.dashboard>.add-card-banner{max-width:1500px;margin-left:auto!important;margin-right:auto!important}
-main.dashboard h2{letter-spacing:-.02em}
-.add-card-banner{background:linear-gradient(115deg,#fff,#f0edff)!important;border:1px solid #e2ddfa!important;border-radius:18px!important;padding:28px 30px!important;margin-bottom:22px!important;box-shadow:0 9px 25px #281b6209}
-.add-card-banner h2,.add-card-banner h1{color:#5233b2!important;margin-top:0}
-.add-card-banner button,.add-card-banner a.button,.primary-button{border:0!important;border-radius:10px!important;background:#5b38c4!important;color:#fff!important;padding:11px 17px!important;font-weight:700;box-shadow:0 4px 10px #452b991c}
-.card-search input,.search-input{border:1px solid #dedcf0!important;background:#fff!important;border-radius:11px!important;padding:12px 14px!important;max-width:100%;outline:none}
-.filter-row{display:flex!important;flex-wrap:wrap;gap:9px!important}
-.filter-button{border:1px solid #dedbed!important;background:#fff!important;color:#514477!important;border-radius:10px!important;padding:10px 16px!important}
-.filter-button.active,.filter-button[aria-pressed="true"]{background:#5b38c4!important;color:#fff!important;border-color:#5b38c4!important}
-.my-cards-list{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px!important}
-.user-card-item{background:#fff!important;border:1px solid #e3e2ef!important;border-radius:17px!important;box-shadow:0 7px 22px #21174709;padding:18px!important;min-width:0}
-.mini-card{border-radius:14px!important;max-width:100%}
-.user-card-info{min-width:0}
-.user-card-info h2,.user-card-info h3{overflow-wrap:anywhere}
-.details-section{background:#fff!important;border:1px solid #e3e2ef!important;border-radius:16px!important;padding:22px!important;box-shadow:0 5px 18px #20174707}
-button,input,select{font:inherit}
-@media(max-width:1100px){main.dashboard{padding:24px 20px 36px 270px!important}.summary-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.my-cards-list{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media(max-width:760px){main.dashboard{padding:20px 14px 32px!important}.summary-grid{grid-template-columns:1fr}.my-cards-list{grid-template-columns:1fr}.dashboard-header{align-items:flex-start}.add-card-banner{padding:22px!important}}
-/* Keep the custom left navigation as the only desktop sidebar. */
-.cardhub-sidebar{box-sizing:border-box}
-body .bottom-navigation{display:none!important}
-</style>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/nav.css">
 
+  <style>
+    * { box-sizing: border-box; }
+
+    body {
+      min-width: 0;
+      margin: 0;
+      background: #f5f6fc;
+      color: #24213b;
+      font-family: Inter, Arial, sans-serif;
+    }
+
+    .page {
+      width: 100%;
+      max-width: 1440px;
+      min-height: 100vh;
+      margin: 0 auto;
+      padding: 32px clamp(16px, 4vw, 48px) 48px;
+    }
+
+    .page-header,
+    .section-heading,
+    .filters,
+    .transaction,
+    .transaction-actions {
+      display: flex;
+      align-items: center;
+    }
+
+    .page-header,
+    .section-heading {
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .page-header { margin-bottom: 24px; }
+
+    .eyebrow {
+      margin: 0 0 6px;
+      color: #7656d6;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+
+    h1 { margin: 0; color: #211c45; font-size: clamp(27px, 3vw, 35px); }
+    .subtitle { margin: 8px 0 0; color: #77788e; }
+
+    .button {
+      min-height: 42px;
+      padding: 0 15px;
+      border: 1px solid #e4e2ee;
+      border-radius: 11px;
+      background: white;
+      color: #51427d;
+      font: inherit;
+      font-size: 13px;
+      font-weight: 700;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .button-primary { border-color: #6042c5; background: #6042c5; color: white; }
+    .button-danger { color: #b43d55; }
+    .button:disabled { opacity: .6; cursor: wait; }
+
+    .summary {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+      margin-bottom: 20px;
+    }
+
+    .stat, .panel {
+      border: 1px solid #e8e7f0;
+      border-radius: 16px;
+      background: white;
+      box-shadow: 0 8px 24px #28204a0a;
+    }
+
+    .stat { padding: 18px; }
+    .stat-label { color: #77788e; font-size: 13px; }
+    .stat-value { margin-top: 9px; color: #292541; font-size: 25px; font-weight: 800; }
+
+    .panel { overflow: hidden; }
+
+    .section-heading {
+      padding: 20px 20px 14px;
+    }
+
+    .section-heading h2 { margin: 0; color: #292541; font-size: 18px; }
+    .result-count { color: #77788e; font-size: 13px; }
+
+    .filters {
+      flex-wrap: wrap;
+      gap: 10px;
+      padding: 0 20px 18px;
+    }
+
+    .control {
+      min-width: 130px;
+      height: 42px;
+      padding: 0 12px;
+      border: 1px solid #e4e2ee;
+      border-radius: 10px;
+      background: white;
+      color: #302d48;
+      font: inherit;
+      font-size: 13px;
+    }
+
+    .search-control { flex: 1 1 230px; }
+    .filters select { flex: 1 1 140px; }
+    .clear-button { flex: 0 0 auto; }
+
+    .message {
+      margin: 0 20px 18px;
+      padding: 12px 14px;
+      border-radius: 10px;
+      background: #fff4f4;
+      color: #a23d50;
+      font-size: 13px;
+    }
+
+    .list { padding: 0 20px 12px; }
+
+    .transaction {
+      gap: 13px;
+      padding: 14px 0;
+      border-top: 1px solid #efedf5;
+    }
+
+    .transaction-icon {
+      display: grid;
+      width: 42px;
+      height: 42px;
+      flex: 0 0 42px;
+      place-items: center;
+      border-radius: 13px;
+      background: #f0ebff;
+      font-size: 19px;
+    }
+
+    .transaction-info { min-width: 0; flex: 1; }
+    .transaction-info h3 { margin: 0 0 4px; color: #302d48; font-size: 14px; overflow-wrap: anywhere; }
+    .transaction-info p { margin: 0; color: #77788e; font-size: 12px; line-height: 1.5; }
+
+    .transaction-right { display: flex; align-items: center; gap: 14px; }
+    .amount { color: #b43d55; font-size: 14px; white-space: nowrap; }
+    .amount.income { color: #21804f; }
+
+    .transaction-actions { gap: 6px; }
+
+    .icon-button {
+      width: 34px;
+      height: 34px;
+      border: 1px solid #e5e3ef;
+      border-radius: 9px;
+      background: white;
+      color: #51427d;
+      cursor: pointer;
+    }
+
+    .empty {
+      padding: 38px 20px;
+      color: #77788e;
+      text-align: center;
+    }
+
+    .empty h3 { margin: 0 0 7px; color: #302d48; }
+    .empty p { margin: 0; font-size: 13px; }
+
+    @media (max-width: 760px) {
+      .page { padding: 22px 14px 32px; }
+      .summary { grid-template-columns: 1fr; gap: 10px; }
+      .stat { padding: 15px; }
+      .stat-value { font-size: 22px; }
+      .filters { padding: 0 14px 15px; }
+      .section-heading { padding: 17px 14px 13px; }
+      .list { padding: 0 14px 10px; }
+      .message { margin: 0 14px 14px; }
+      .transaction { flex-wrap: wrap; }
+      .transaction-right { width: 100%; justify-content: space-between; padding-left: 55px; }
+    }
+
+    @media (max-width: 420px) {
+      .page-header { align-items: flex-start; flex-direction: column; }
+      .filters .control { flex-basis: 100%; }
+      .clear-button { width: 100%; }
+    }
+  </style>
 </head>
-<body>
-<main class="main">
-  <header class="page-head">
-    <div style="display:flex;gap:12px;align-items:flex-start"><button class="menu-btn" id="menuBtn" aria-label="Open navigation">☰</button><div><h1 class="page-title">Transactions</h1><p class="subtitle">Track, search, and manage your card activity.</p></div></div>
-    <div class="head-actions"><button class="btn btn-light" id="refreshBtn" type="button">↻ Refresh</button><button class="btn" id="addBtn" type="button">＋ Add Transaction</button></div>
-  </header>
-  <section class="summary">
-    <article class="stat"><div class="stat-top"><span>Total Expenses</span><span class="stat-icon">↘</span></div><div class="stat-value" id="totalSpent">₹0.00</div><div class="stat-foot">Expenses in the loaded transactions</div></article>
-    <article class="stat"><div class="stat-top"><span>Total Income</span><span class="stat-icon">↗</span></div><div class="stat-value" id="totalIncome">₹0.00</div><div class="stat-foot">Income in the loaded transactions</div></article>
-    <article class="stat"><div class="stat-top"><span>Transactions</span><span class="stat-icon">⇄</span></div><div class="stat-value" id="totalCount">0</div><div class="stat-foot">Matching your current filters</div></article>
-  </section>
-  <section class="panel">
-    <div class="panel-header"><h2>All Transactions</h2><span class="result-count" id="resultCount">Loading…</span></div>
-    <div class="filters">
-      <div class="search-wrap"><span>⌕</span><input class="control" id="searchInput" placeholder="Search merchant or description…" type="search"></div>
-      <select class="control" id="typeFilter" aria-label="Filter by transaction type"><option value="">All types</option><option value="expense">Expenses</option><option value="income">Income</option></select>
-      <select class="control" id="categoryFilter" aria-label="Filter by category"><option value="">All categories</option></select>
-      <select class="control" id="cardFilter" aria-label="Filter by card"><option value="">All cards</option></select>
-      <input class="control" id="fromDate" type="date" aria-label="From date">
-      <input class="control" id="toDate" type="date" aria-label="To date">
-      <button class="clear-btn" id="clearFilters" type="button">Clear filters</button>
-    </div>
-    <div class="message" id="pageMessage" role="alert"></div>
-    <div class="list" id="transactionList"><div class="loading">Loading your transactions…</div></div>
-  </section>
-</main>
-<div class="toast" id="toast" role="status"></div>
-<script>
-const SUPABASE_URL='https://wrsqhsuktqldnyjrbuma.supabase.co';
-const SUPABASE_ANON_KEY='sb_publishable_1-wC9ij9iOkR0txvg6j5bA_i1XLPSj7';
-const supabaseClient=window.supabase?.createClient(SUPABASE_URL,SUPABASE_ANON_KEY);
-const $=id=>document.getElementById(id);
-let currentUser=null, transactions=[], cardsMap={};
-function escapeHtml(v){return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]))}
-function money(v){return '₹'+Number(v||0).toLocaleString('en-IN',{minimumFractionDigits:2,maximumFractionDigits:2})}
-function showToast(s){$('toast').textContent=s;$('toast').classList.add('show');clearTimeout(showToast.timer);showToast.timer=setTimeout(()=>$('toast').classList.remove('show'),3000)}
-function showMessage(s){$('pageMessage').textContent=s;$('pageMessage').classList.add('show')}
-function hideMessage(){$('pageMessage').textContent='';$('pageMessage').classList.remove('show')}
-function dateValue(t){return t.transaction_date||t.date||t.created_at?.slice(0,10)||''}
-function displayDate(t){const d=dateValue(t);if(!d)return 'Date not set';const parsed=new Date(d+'T00:00:00');return isNaN(parsed)?escapeHtml(d):parsed.toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'})}
-function txnName(t){return t.description||t.merchant||t.title||t.name||'Transaction'}
-function txnCategory(t){return t.category||'Other'}
-function txnCardName(t){return cardsMap[String(t.card_id)]?.name||t.card_name||t.cardName||'Card not linked'}
-function txnType(t){return String(t.type||'expense').toLowerCase()==='income'?'income':'expense'}
-function fillSelects(){
- const cats=[...new Set(transactions.map(txnCategory).filter(Boolean))].sort();
- const oldCat=$('categoryFilter').value,oldCard=$('cardFilter').value;
- $('categoryFilter').innerHTML='<option value="">All categories</option>'+cats.map(c=>`<option value="${escapeHtml(c)}">${escapeHtml(c)}</option>`).join('');
- const cardIds=[...new Set(transactions.map(t=>String(t.card_id??'' )).filter(Boolean))];
- $('cardFilter').innerHTML='<option value="">All cards</option>'+cardIds.map(id=>`<option value="${escapeHtml(id)}">${escapeHtml(cardsMap[id]?.name||'Card')}</option>`).join('');
- if(cats.includes(oldCat))$('categoryFilter').value=oldCat;if(cardIds.includes(oldCard))$('cardFilter').value=oldCard;
-}
-function applyFilters(){
- const q=$('searchInput').value.trim().toLowerCase(),type=$('typeFilter').value,cat=$('categoryFilter').value,card=$('cardFilter').value,from=$('fromDate').value,to=$('toDate').value;
- const list=transactions.filter(t=>{
-  const text=[txnName(t),txnCategory(t),txnCardName(t)].join(' ').toLowerCase(),d=dateValue(t);
-  return (!q||text.includes(q))&&(!type||txnType(t)===type)&&(!cat||txnCategory(t)===cat)&&(!card||String(t.card_id??'')===card)&&(!from||!d||d>=from)&&(!to||!d||d<=to);
- });
- renderTransactions(list);
-}
-function renderTransactions(list){
- const expenses=list.filter(t=>txnType(t)==='expense').reduce((s,t)=>s+Number(t.amount||0),0);
- const income=list.filter(t=>txnType(t)==='income').reduce((s,t)=>s+Number(t.amount||0),0);
- $('totalSpent').textContent=money(expenses);$('totalIncome').textContent=money(income);$('totalCount').textContent=list.length;$('resultCount').textContent=`${list.length} ${list.length===1?'result':'results'}`;
- const container=$('transactionList');
- if(!list.length){container.innerHTML=`<div class="empty"><div class="empty-icon">🧾</div><h3>No transactions found</h3><p>Try changing your search or filters, or add a transaction.</p></div>`;return}
- container.innerHTML='';
- [...list].sort((a,b)=>String(dateValue(b)).localeCompare(String(dateValue(a)))).forEach(t=>{
-  const type=txnType(t),amount=Number(t.amount||0),row=document.createElement('article');row.className='transaction';
-  row.innerHTML=`<div class="transaction-icon ${type==='income'?'income':''}">${type==='income'?'↗':'↘'}</div>
-  <div class="transaction-info"><h3>${escapeHtml(txnName(t))}</h3><p>${escapeHtml(displayDate(t))} · ${escapeHtml(txnCategory(t))}</p><p>${escapeHtml(txnCardName(t))}</p></div>
-  <div class="transaction-right"><strong class="amount ${type}">${type==='income'?'+':'−'}${money(amount)}</strong><div class="transaction-actions"><button class="icon-btn" type="button" title="Edit transaction" aria-label="Edit transaction">✎</button><button class="icon-btn" type="button" title="Delete transaction" aria-label="Delete transaction">×</button></div></div>`;
-  const [editBtn,deleteBtn]=row.querySelectorAll('button');editBtn.addEventListener('click',()=>editTransaction(t.id));deleteBtn.addEventListener('click',()=>deleteTransaction(t.id));container.appendChild(row);
- });
-}
-async function loadTransactions(){
- hideMessage();$('transactionList').innerHTML='<div class="loading">Loading your transactions…</div>';$('refreshBtn').disabled=true;
- try{
-  if(!supabaseClient)throw new Error('Supabase did not load. Check your internet connection.');
-  const {data:{user},error:authError}=await supabaseClient.auth.getUser();
-  if(authError)throw authError;
-  if(!user){$('transactionList').innerHTML='<div class="empty"><div class="empty-icon">🔐</div><h3>Please sign in</h3><p>Sign in to view your CardHub transactions.</p></div>';$('resultCount').textContent='Not signed in';$('totalSpent').textContent=money(0);$('totalIncome').textContent=money(0);$('totalCount').textContent='0';return}
-  currentUser=user;const displayName=user.user_metadata?.full_name||user.email||'Personal account';
-   const navName=document.querySelector('.profile-details strong');
-   const navAvatar=document.querySelector('.profile-avatar');
-   if(navName)navName.textContent='My CardHub';
-   if(navAvatar)navAvatar.textContent=(displayName[0]||'U').toUpperCase();
-  // Get this user's cards first so the transaction view only includes transactions linked to their cards.
-  const {data:cards,error:cardError}=await supabaseClient.from('cards').select('id,name').eq('user_id',user.id);
-  if(cardError)console.warn('Cards lookup:',cardError.message);
-  cardsMap={};(cards||[]).forEach(c=>cardsMap[String(c.id)]=c);
-  let query=supabaseClient.from('transactions').select('*').order('transaction_date',{ascending:false});
-  const {data:rows,error}=await query;
-  if(error)throw error;
-  const all=rows||[];
-  // When cards are linked, scope by card IDs. If the project stores owner IDs directly on transactions,
-  // scope by that owner field as well. RLS should also be enabled in Supabase.
-  transactions=all.filter(t=>{
-   if(t.user_id&&t.user_id!==user.id)return false;
-   if(t.card_id!=null&&Object.keys(cardsMap).length)return Boolean(cardsMap[String(t.card_id)]);
-   return true;
-  });
-  fillSelects();applyFilters();
- }catch(err){console.error(err);showMessage('Unable to load transactions: '+(err.message||'Unknown error'));$('transactionList').innerHTML='<div class="empty"><div class="empty-icon">⚠️</div><h3>Transactions could not be loaded</h3><p>Check your Supabase table, column names, and Row Level Security policies.</p></div>';$('resultCount').textContent='Load failed'}
- finally{$('refreshBtn').disabled=false}
-}
-function editTransaction(id){window.location.href='edit-transaction.html?id='+encodeURIComponent(id)}
-async function deleteTransaction(id){
- if(!currentUser){showToast('Please sign in first.');return}
- if(!confirm('Delete this transaction? This action cannot be undone.'))return;
- try{
-  const t=transactions.find(x=>String(x.id)===String(id));if(!t)return;
-  // Restrict deletion to a transaction associated with the signed-in user, or rely on RLS for direct user-owned rows.
-  if(t.user_id&&t.user_id!==currentUser.id){showToast('You cannot delete this transaction.');return}
-  let q=supabaseClient.from('transactions').delete().eq('id',id);
-  if(t.user_id)q=q.eq('user_id',currentUser.id);
-  const {error}=await q;
-  if(error)throw error;
-  transactions=transactions.filter(x=>String(x.id)!==String(id));fillSelects();applyFilters();showToast('Transaction deleted.');
- }catch(err){console.error(err);showToast('Delete failed: '+(err.message||'Unknown error'))}
-}
-['searchInput','typeFilter','categoryFilter','cardFilter','fromDate','toDate'].forEach(id=>$(id).addEventListener(id==='searchInput'?'input':'change',applyFilters));
-$('clearFilters').addEventListener('click',()=>{['searchInput','typeFilter','categoryFilter','cardFilter','fromDate','toDate'].forEach(id=>$(id).value='');applyFilters()});
-$('refreshBtn').addEventListener('click',loadTransactions);$('addBtn').addEventListener('click',()=>window.location.href='add-transaction.html');
 
-loadTransactions();
-</script>
-<script id="cardhub-sidebar-controls">
-(function(){
- const side=document.getElementById('cardhubSidebar'), overlay=document.getElementById('chSidebarOverlay');
- if(!side||!overlay)return;
- const btn=document.createElement('button');btn.className='ch-mobile-menu';btn.type='button';btn.textContent='☰';btn.setAttribute('aria-label','Open navigation');
- const heading=document.querySelector('h1');
- if(heading&&heading.parentElement){heading.parentElement.insertBefore(btn,heading);}
- btn.addEventListener('click',()=>{side.classList.add('open');overlay.classList.add('show')});
- overlay.addEventListener('click',()=>{side.classList.remove('open');overlay.classList.remove('show')});
- const name=document.getElementById('welcomeName');
- const userName=document.getElementById('chSidebarName');
- if(name&&userName)userName.textContent=name.textContent.replace(/\\s*👋\\s*$/,'')||'My CardHub';
-})();
-</script>
-<script src="js/nav.js"></script>
+<body>
+  <main class="page">
+    <header class="page-header">
+      <div>
+        <p class="eyebrow">Your activity</p>
+        <h1>Transactions</h1>
+        <p class="subtitle">Search and manage your income and expenses.</p>
+      </div>
+      <a class="button button-primary" href="add-transaction.html">＋ Add Transaction</a>
+    </header>
+
+    <section class="summary" aria-label="Transaction summary">
+      <article class="stat">
+        <div class="stat-label">Expenses in results</div>
+        <div class="stat-value" id="totalSpent">₹0.00</div>
+      </article>
+      <article class="stat">
+        <div class="stat-label">Income in results</div>
+        <div class="stat-value" id="totalIncome">₹0.00</div>
+      </article>
+      <article class="stat">
+        <div class="stat-label">Transactions in results</div>
+        <div class="stat-value" id="totalCount">0</div>
+      </article>
+    </section>
+
+    <section class="panel">
+      <div class="section-heading">
+        <h2>All Transactions</h2>
+        <span class="result-count" id="resultCount">Loading…</span>
+      </div>
+
+      <div class="filters">
+        <input class="control search-control" id="searchInput" type="search"
+          placeholder="Search merchant or category…" aria-label="Search transactions">
+
+        <select class="control" id="typeFilter" aria-label="Filter by type">
+          <option value="">All types</option>
+          <option value="expense">Expenses</option>
+          <option value="income">Income</option>
+        </select>
+
+        <select class="control" id="categoryFilter" aria-label="Filter by category">
+          <option value="">All categories</option>
+        </select>
+
+        <select class="control" id="cardFilter" aria-label="Filter by card">
+          <option value="">All cards</option>
+        </select>
+
+        <input class="control" id="fromDate" type="date" aria-label="From date">
+        <input class="control" id="toDate" type="date" aria-label="To date">
+
+        <button class="button clear-button" id="clearFilters" type="button">Clear filters</button>
+        <button class="button" id="refreshButton" type="button">Refresh</button>
+      </div>
+
+      <div id="pageMessage" hidden></div>
+      <div class="list" id="transactionList" aria-live="polite">
+        <div class="empty">Loading transactions…</div>
+      </div>
+    </section>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+    const SUPABASE_URL = "https://wrsqhsuktqldnyjrbuma.supabase.co";
+    const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_1-wC9ij9iOkR0txvg6j5bA_i1XLPSj7";
+    const supabaseClient = window.supabase.createClient(
+      SUPABASE_URL,
+      SUPABASE_PUBLISHABLE_KEY
+    );
+
+    const byId = id => document.getElementById(id);
+    let transactions = [];
+    let cardNames = {};
+
+    function money(value) {
+      const amount = Number(value) || 0;
+      return "₹" + amount.toLocaleString("en-IN", {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+      });
+    }
+
+    function getType(transaction) {
+      return String(transaction.type || "expense").toLowerCase() === "income"
+        ? "income"
+        : "expense";
+    }
+
+    function getDate(transaction) {
+      return transaction.transaction_date || "";
+    }
+
+    function addText(parent, tag, text, className) {
+      const element = document.createElement(tag);
+      if (className) element.className = className;
+      element.textContent = String(text ?? "");
+      parent.appendChild(element);
+      return element;
+    }
+
+    function showMessage(text) {
+      const message = byId("pageMessage");
+      message.textContent = text;
+      message.className = "message";
+      message.hidden = false;
+    }
+
+    function clearMessage() {
+      byId("pageMessage").hidden = true;
+      byId("pageMessage").textContent = "";
+    }
+
+    function formatDate(value) {
+      if (!value) return "Date not set";
+      const date = new Date(value + "T00:00:00");
+      return Number.isNaN(date.getTime())
+        ? value
+        : date.toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" });
+    }
+
+    function fillFilters() {
+      const categories = [...new Set(
+        transactions.map(item => item.category).filter(Boolean)
+      )].sort();
+
+      const categorySelect = byId("categoryFilter");
+      const oldCategory = categorySelect.value;
+      categorySelect.replaceChildren(new Option("All categories", ""));
+
+      categories.forEach(category => {
+        categorySelect.add(new Option(category, category));
+      });
+
+      if (categories.includes(oldCategory)) categorySelect.value = oldCategory;
+
+      const cardSelect = byId("cardFilter");
+      const oldCard = cardSelect.value;
+      cardSelect.replaceChildren(new Option("All cards", ""));
+
+      const ids = [...new Set(
+        transactions.map(item => String(item.card_id || "")).filter(Boolean)
+      )];
+
+      ids.forEach(id => {
+        cardSelect.add(new Option(cardNames[id] || "Card", id));
+      });
+
+      if (ids.includes(oldCard)) cardSelect.value = oldCard;
+
+      const queryCardId = new URLSearchParams(location.search).get("card_id");
+      if (queryCardId && ids.includes(queryCardId)) cardSelect.value = queryCardId;
+    }
+
+    function renderTransactions() {
+      const search = byId("searchInput").value.trim().toLowerCase();
+      const type = byId("typeFilter").value;
+      const category = byId("categoryFilter").value;
+      const cardId = byId("cardFilter").value;
+      const from = byId("fromDate").value;
+      const to = byId("toDate").value;
+
+      const filtered = transactions.filter(item => {
+        const cardName = cardNames[String(item.card_id)] || "";
+        const searchText = `${item.merchant || ""} ${item.category || ""} ${cardName}`.toLowerCase();
+        const date = getDate(item);
+
+        return (!search || searchText.includes(search)) &&
+          (!type || getType(item) === type) &&
+          (!category || item.category === category) &&
+          (!cardId || String(item.card_id || "") === cardId) &&
+          (!from || !date || date >= from) &&
+          (!to || !date || date <= to);
+      });
+
+      const expenses = filtered
+        .filter(item => getType(item) === "expense")
+        .reduce((sum, item) => sum + (Number(item.amount) || 0), 0);
+
+      const income = filtered
+        .filter(item => getType(item) === "income")
+        .reduce((sum, item) => sum + (Number(item.amount) || 0), 0);
+
+      byId("totalSpent").textContent = money(expenses);
+      byId("totalIncome").textContent = money(income);
+      byId("totalCount").textContent = String(filtered.length);
+      byId("resultCount").textContent =
+        `${filtered.length} ${filtered.length === 1 ? "result" : "results"}`;
+
+      const list = byId("transactionList");
+
+      if (!filtered.length) {
+        const empty = document.createElement("div");
+        empty.className = "empty";
+        addText(empty, "h3", transactions.length ? "No matching transactions" : "No transactions yet");
+        addText(empty, "p", transactions.length
+          ? "Try changing your search or filters."
+          : "Add a transaction to see it here.");
+        list.replaceChildren(empty);
+        return;
+      }
+
+      const fragment = document.createDocumentFragment();
+
+      filtered.sort((a, b) => String(getDate(b)).localeCompare(String(getDate(a))));
+
+      filtered.forEach(item => {
+        const row = document.createElement("article");
+        row.className = "transaction";
+
+        const icon = addText(row, "span", getType(item) === "income" ? "↗" : "↘", "transaction-icon");
+        icon.setAttribute("aria-hidden", "true");
+
+        const info = document.createElement("div");
+        info.className = "transaction-info";
+        addText(info, "h3", item.merchant || "Transaction");
+        addText(
+          info,
+          "p",
+          `${formatDate(getDate(item))} · ${item.category || "Other"} · ${cardNames[String(item.card_id)] || "Card"}`
+        );
+
+        const right = document.createElement("div");
+        right.className = "transaction-right";
+
+        const amount = addText(
+          right,
+          "strong",
+          `${getType(item) === "income" ? "+" : "−"}${money(item.amount)}`,
+          `amount ${getType(item)}`
+        );
+
+        const actions = document.createElement("div");
+        actions.className = "transaction-actions";
+
+        const edit = addText(actions, "button", "Edit", "icon-button");
+        edit.type = "button";
+        edit.addEventListener("click", () => {
+          location.href = "edit-transaction.html?id=" + encodeURIComponent(item.id);
+        });
+
+        const remove = addText(actions, "button", "Delete", "icon-button");
+        remove.type = "button";
+        remove.addEventListener("click", () => deleteTransaction(item));
+
+        right.appendChild(actions);
+        row.append(icon, info, right);
+        fragment.appendChild(row);
+      });
+
+      list.replaceChildren(fragment);
+    }
+
+    async function loadTransactions() {
+      clearMessage();
+      byId("refreshButton").disabled = true;
+      byId("transactionList").replaceChildren(
+        Object.assign(document.createElement("div"), {
+          className: "empty",
+          textContent: "Loading transactions…"
+        })
+      );
+
+      try {
+        const { data: authData, error: authError } =
+          await supabaseClient.auth.getUser();
+
+        if (authError || !authData.user) {
+          location.href = "index.html";
+          return;
+        }
+
+        const user = authData.user;
+
+        const { data: cards, error: cardError } = await supabaseClient
+          .from("cards")
+          .select("id, name")
+          .eq("user_id", user.id);
+
+        if (cardError) console.warn("Card names could not be loaded:", cardError.message);
+
+        cardNames = {};
+        (cards || []).forEach(card => {
+          cardNames[String(card.id)] = card.name || "Card";
+        });
+
+        const { data, error } = await supabaseClient
+          .from("transactions")
+          .select("id, card_id, merchant, amount, type, category, transaction_date")
+          .order("transaction_date", { ascending: false });
+
+        if (error) throw error;
+
+        transactions = data || [];
+        fillFilters();
+        renderTransactions();
+      } catch (error) {
+        console.error("Transaction loading error:", error);
+        showMessage("Could not load transactions: " + (error.message || "Please try again."));
+        byId("resultCount").textContent = "Load failed";
+        byId("transactionList").replaceChildren();
+      } finally {
+        byId("refreshButton").disabled = false;
+      }
+    }
+
+    async function deleteTransaction(item) {
+      if (!confirm("Delete this transaction? This cannot be undone.")) return;
+
+      try {
+        const { error } = await supabaseClient
+          .from("transactions")
+          .delete()
+          .eq("id", item.id);
+
+        if (error) throw error;
+
+        transactions = transactions.filter(row => String(row.id) !== String(item.id));
+        fillFilters();
+        renderTransactions();
+      } catch (error) {
+        console.error("Delete error:", error);
+        showMessage("Could not delete transaction: " + (error.message || "Check your Supabase permissions."));
+      }
+    }
+
+    ["searchInput", "typeFilter", "categoryFilter", "cardFilter", "fromDate", "toDate"]
+      .forEach(id => byId(id).addEventListener(
+        id === "searchInput" ? "input" : "change",
+        renderTransactions
+      ));
+
+    byId("clearFilters").addEventListener("click", () => {
+      ["searchInput", "typeFilter", "categoryFilter", "cardFilter", "fromDate", "toDate"]
+        .forEach(id => { byId(id).value = ""; });
+      renderTransactions();
+    });
+
+    byId("refreshButton").addEventListener("click", loadTransactions);
+
+    loadTransactions();
+  </script>
+
+  <script src="js/nav.js"></script>
 </body>
 </html>
