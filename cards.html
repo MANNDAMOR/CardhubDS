@@ -1,554 +1,518 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>My Cards - CardHub</title>
 
-    <title>My Cards - CardHub</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/nav.css">
 
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/nav.css">
+  <style>
+    * { box-sizing: border-box; }
 
-<style id="cardhub-shared-layout-fix">
-    main.dashboard {
-        margin-left: 250px !important;
-        width: auto !important;
-        max-width: none !important;
-        box-sizing: border-box;
+    body {
+      min-width: 0;
+      margin: 0;
+      background: #f5f6fc;
+      color: #20213a;
+      font-family: Inter, Arial, sans-serif;
     }
-    @media (max-width: 800px) {
-        main.dashboard {
-            margin-left: 0 !important;
-        }
+
+    .cards-page {
+      width: 100%;
+      max-width: 1440px;
+      min-height: 100vh;
+      margin: 0 auto;
+      padding: 36px clamp(18px, 4vw, 52px);
     }
-</style>
+
+    .page-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      margin-bottom: 30px;
+    }
+
+    .eyebrow {
+      margin: 0 0 7px;
+      color: #7255d7;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 0;
+      color: #211c45;
+      font-size: clamp(28px, 4vw, 38px);
+      letter-spacing: -.04em;
+    }
+
+    .subtitle {
+      margin: 9px 0 0;
+      color: #77788e;
+      font-size: 15px;
+    }
+
+    .add-button {
+      display: inline-flex;
+      min-height: 46px;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 0 18px;
+      border: 0;
+      border-radius: 12px;
+      background: #6042c5;
+      color: white;
+      font: inherit;
+      font-weight: 700;
+      text-decoration: none;
+      box-shadow: 0 7px 18px #6042c52b;
+      cursor: pointer;
+    }
+
+    .add-button:hover { background: #5033b3; }
+
+    .toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 20px;
+    }
+
+    .search-box {
+      display: flex;
+      width: min(100%, 390px);
+      min-height: 46px;
+      align-items: center;
+      gap: 10px;
+      padding: 0 14px;
+      border: 1px solid #e5e4ef;
+      border-radius: 12px;
+      background: white;
+      color: #85859a;
+    }
+
+    .search-box input {
+      width: 100%;
+      min-width: 0;
+      border: 0;
+      outline: 0;
+      background: transparent;
+      color: #20213a;
+      font: inherit;
+    }
+
+    .search-box input:focus { box-shadow: none; }
+
+    .card-count {
+      color: #77788e;
+      font-size: 14px;
+      white-space: nowrap;
+    }
+
+    .filters {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 9px;
+      margin-bottom: 24px;
+    }
+
+    .filter-button {
+      min-height: 38px;
+      padding: 0 15px;
+      border: 1px solid #e4e2ee;
+      border-radius: 999px;
+      background: white;
+      color: #626278;
+      font: inherit;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .filter-button:hover { border-color: #a99adb; }
+
+    .filter-button.active {
+      border-color: #6042c5;
+      background: #6042c5;
+      color: white;
+    }
+
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(min(100%, 290px), 1fr));
+      gap: 20px;
+    }
+
+    .card-item {
+      overflow: hidden;
+      padding: 14px;
+      border: 1px solid #e8e7f0;
+      border-radius: 18px;
+      background: white;
+      box-shadow: 0 8px 24px #28204a0a;
+      cursor: pointer;
+      transition: transform .18s ease, box-shadow .18s ease;
+    }
+
+    .card-item:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 14px 30px #28204a16;
+    }
+
+    .bank-card {
+      display: flex;
+      min-height: 174px;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 20px;
+      border-radius: 14px;
+      color: white;
+      background: linear-gradient(135deg, #34245f, #6549bd);
+    }
+
+    .bank-card.color-1 { background: linear-gradient(135deg, #163c59, #3186a0); }
+    .bank-card.color-2 { background: linear-gradient(135deg, #71364f, #c56878); }
+    .bank-card.color-3 { background: linear-gradient(135deg, #24534b, #5c9b7c); }
+
+    .bank-card-top,
+    .bank-card-bottom {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .bank-card-brand {
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: .04em;
+    }
+
+    .bank-card-type {
+      padding: 5px 9px;
+      border: 1px solid #ffffff55;
+      border-radius: 999px;
+      background: #ffffff18;
+      font-size: 10px;
+      text-transform: uppercase;
+    }
+
+    .bank-card-number {
+      margin: 22px 0;
+      font-size: 17px;
+      letter-spacing: .16em;
+    }
+
+    .bank-card-bottom {
+      color: #f0edff;
+      font-size: 12px;
+    }
+
+    .card-info {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 15px 4px 3px;
+    }
+
+    .card-info h2 {
+      margin: 0;
+      color: #272440;
+      font-size: 16px;
+      overflow-wrap: anywhere;
+    }
+
+    .card-info p {
+      margin: 5px 0 0;
+      color: #7c7b90;
+      font-size: 13px;
+    }
+
+    .status-badge {
+      flex: 0 0 auto;
+      padding: 6px 9px;
+      border-radius: 999px;
+      background: #e9f8ef;
+      color: #21804f;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: capitalize;
+    }
+
+    .status-badge.inactive {
+      background: #f0eff4;
+      color: #777487;
+    }
+
+    .message {
+      grid-column: 1 / -1;
+      padding: 34px 20px;
+      border: 1px dashed #d9d6e8;
+      border-radius: 16px;
+      background: #fff;
+      color: #77788e;
+      text-align: center;
+    }
+
+    .message h2 {
+      margin: 0 0 7px;
+      color: #302b4d;
+      font-size: 18px;
+    }
+
+    .message p { margin: 0; }
+
+    .message a {
+      display: inline-block;
+      margin-top: 15px;
+      color: #6042c5;
+      font-weight: 700;
+      text-decoration: none;
+    }
+
+    button:focus-visible,
+    a:focus-visible,
+    .card-item:focus-visible {
+      outline: 3px solid #a18be5;
+      outline-offset: 3px;
+    }
+
+    @media (max-width: 600px) {
+      .cards-page { padding: 24px 15px 34px; }
+      .page-header { align-items: flex-start; }
+      .add-button { min-height: 42px; padding: 0 12px; font-size: 13px; }
+      .toolbar { align-items: flex-start; flex-direction: column; }
+      .search-box { width: 100%; }
+      .cards-grid { grid-template-columns: 1fr; }
+    }
+  </style>
 </head>
 
 <body>
-
-    <main class="dashboard">
-
-        <!-- Header -->
-        <header class="dashboard-header">
-            <div>
-                <p class="welcome-text">CardHub</p>
-                <h1>My Cards</h1>
-            </div>
-
-            <button
-                class="notification-button"
-                onclick="window.location.href='dashboard.html'"
-            >
-                ←
-            </button>
-        </header>
-
-
-        <!-- Add Card -->
-        <section class="add-card-banner">
-
-            <div>
-                <h2>Add an existing card</h2>
-                <p>
-                    Keep all your cards together in one place.
-                </p>
-            </div>
-
-            <button
-                class="add-card-button"
-                onclick="window.location.href='add-card.html'"
-            >
-                + Add Card
-            </button>
-
-        </section>
-
-
-        <!-- Search -->
-        <div class="card-search">
-
-            <span>🔎</span>
-
-            <input
-                type="text"
-                id="cardSearch"
-                placeholder="Search your cards..."
-            >
-
-        </div>
-
-
-        <!-- Filters -->
-        <div class="filter-row">
-
-            <button class="filter-button active" data-filter="all">
-                All
-            </button>
-
-            <button class="filter-button" data-filter="credit">
-                Credit
-            </button>
-
-            <button class="filter-button" data-filter="debit">
-                Debit
-            </button>
-
-            <button class="filter-button" data-filter="prepaid">
-                Prepaid
-            </button>
-
-            <button class="filter-button" data-filter="transport">
-                Transport
-            </button>
-
-        </div>
-
-
-        <!-- Cards -->
-        <section class="my-cards-list" id="myCardsList">
-        </section>
-
-
-        <!-- Bottom Navigation -->
-        
-
-    </main>
-
-
-    <!-- Supabase -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-    <script>
-
-        /* =========================================
-           SUPABASE CONNECTION
-           ========================================= */
-
-        const SUPABASE_URL =
-            "https://wrsqhsuktqldnyjrbuma.supabase.co";
-
-        const SUPABASE_PUBLISHABLE_KEY =
-            "sb_publishable_1-wC9ij9iOkR0txvg6j5bA_i1XLPSj7";
-
-        const supabaseClient =
-            window.supabase.createClient(
-                SUPABASE_URL,
-                SUPABASE_PUBLISHABLE_KEY
-            );
-
-
-        /* =========================================
-           ELEMENTS
-           ========================================= */
-
-        const cardsList =
-            document.getElementById("myCardsList");
-
-        const searchInput =
-            document.getElementById("cardSearch");
-
-        const filterButtons =
-            document.querySelectorAll(".filter-button");
-
-
-        let allCards = [];
-
-        let selectedFilter = "all";
-
-
-        /* =========================================
-           DISPLAY CARDS
-           ========================================= */
-
-        function displayCards(cards) {
-
-            cardsList.innerHTML = "";
-
-
-            if (cards.length === 0) {
-
-                cardsList.innerHTML = `
-                    <div class="empty-cards">
-
-                        <h3>No cards found</h3>
-
-                        <p>
-                            Add your first card to CardHub.
-                        </p>
-
-                        <button
-                            class="add-card-button"
-                            onclick="window.location.href='add-card.html'"
-                        >
-                            + Add Card
-                        </button>
-
-                    </div>
-                `;
-
-                return;
-            }
-
-
-            cards.forEach(function(card) {
-
-                const cardElement =
-                    document.createElement("div");
-
-
-                cardElement.className =
-                    "user-card-item";
-
-
-                cardElement.onclick =
-                    function() {
-
-                        window.location.href =
-                            "card-details.html?id=" +
-                            encodeURIComponent(card.id);
-
-                    };
-
-
-                const lastFour =
-                    card.number_last4 ||
-                    (
-                        card.number
-                            ? String(card.number).slice(-4)
-                            : "----"
-                    );
-
-
-                const status =
-                    card.status ||
-                    "Active";
-
-
-                const type =
-                    card.type ||
-                    "other";
-
-
-                cardElement.innerHTML = `
-
-                    <div class="mini-card credit-card">
-
-                        <div class="mini-card-top">
-
-                            <span>
-                                CardHub
-                            </span>
-
-                            <span>
-                                💳
-                            </span>
-
-                        </div>
-
-
-                        <div class="mini-card-number">
-
-                            •••• ${lastFour}
-
-                        </div>
-
-
-                        <div class="mini-card-bottom">
-
-                            <span>
-                                ${escapeHtml(card.issuer || "Unknown")}
-                            </span>
-
-                            <span>
-                                ${escapeHtml(status).toUpperCase()}
-                            </span>
-
-                        </div>
-
-                    </div>
-
-
-                    <div class="user-card-info">
-
-                        <h3>
-                            ${escapeHtml(card.name || "Unnamed Card")}
-                        </h3>
-
-                        <p>
-                            ${escapeHtml(type)} •
-                            ${escapeHtml(card.issuer || "Unknown")}
-                        </p>
-
-                        <span class="active-badge">
-                            ${escapeHtml(status)}
-                        </span>
-
-                    </div>
-
-
-                    <span class="card-arrow">
-                        ›
-                    </span>
-
-                `;
-
-
-                cardsList.appendChild(
-                    cardElement
-                );
-
-            });
-
+  <main class="cards-page">
+    <header class="page-header">
+      <div>
+        <p class="eyebrow">Your wallet</p>
+        <h1>My Cards</h1>
+        <p class="subtitle">Keep your cards together in one place.</p>
+      </div>
+      <a class="add-button" href="add-card.html">＋ Add Card</a>
+    </header>
+
+    <div class="toolbar">
+      <label class="search-box">
+        <span aria-hidden="true">⌕</span>
+        <input id="cardSearch" type="search" placeholder="Search cards or banks…" autocomplete="off">
+      </label>
+      <span class="card-count" id="cardCount">Loading cards…</span>
+    </div>
+
+    <nav class="filters" aria-label="Filter cards">
+      <button class="filter-button active" type="button" data-filter="all" aria-pressed="true">All cards</button>
+      <button class="filter-button" type="button" data-filter="credit" aria-pressed="false">Credit</button>
+      <button class="filter-button" type="button" data-filter="debit" aria-pressed="false">Debit</button>
+      <button class="filter-button" type="button" data-filter="prepaid" aria-pressed="false">Prepaid</button>
+      <button class="filter-button" type="button" data-filter="transport" aria-pressed="false">Transport</button>
+    </nav>
+
+    <section class="cards-grid" id="myCardsList" aria-live="polite">
+      <div class="message"><p>Loading your cards…</p></div>
+    </section>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+    const SUPABASE_URL = "https://wrsqhsuktqldnyjrbuma.supabase.co";
+    const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_1-wC9ij9iOkR0txvg6j5bA_i1XLPSj7";
+    const supabaseClient = window.supabase.createClient(
+      SUPABASE_URL,
+      SUPABASE_PUBLISHABLE_KEY
+    );
+
+    const cardsList = document.getElementById("myCardsList");
+    const searchInput = document.getElementById("cardSearch");
+    const cardCount = document.getElementById("cardCount");
+    const filterButtons = [...document.querySelectorAll(".filter-button")];
+
+    let allCards = [];
+    let selectedFilter = "all";
+
+    function addText(parent, tag, text, className) {
+      const element = document.createElement(tag);
+      if (className) element.className = className;
+      element.textContent = String(text ?? "");
+      parent.appendChild(element);
+      return element;
+    }
+
+    function cardType(card) {
+      return String(card.type || "other").trim().toLowerCase();
+    }
+
+    function matchesFilter(card) {
+      const type = cardType(card);
+      if (selectedFilter === "all") return true;
+      if (selectedFilter === "transport") {
+        return type === "transport" || type === "bus";
+      }
+      return type === selectedFilter;
+    }
+
+    function renderCards() {
+      const search = searchInput.value.trim().toLowerCase();
+
+      const visibleCards = allCards.filter(card => {
+        const text = [
+          card.name,
+          card.issuer,
+          card.type,
+          card.status,
+          card.number_last4,
+          card.number ? String(card.number).slice(-4) : ""
+        ].join(" ").toLowerCase();
+
+        return text.includes(search) && matchesFilter(card);
+      });
+
+      cardCount.textContent =
+        `${visibleCards.length} ${visibleCards.length === 1 ? "card" : "cards"}`;
+
+      if (!visibleCards.length) {
+        const message = document.createElement("div");
+        message.className = "message";
+        addText(message, "h2", allCards.length ? "No cards match" : "No cards yet");
+        addText(message, "p", allCards.length
+          ? "Try a different search or filter."
+          : "Add your first card to see it here.");
+        if (!allCards.length) {
+          const link = addText(message, "a", "Add a card");
+          link.href = "add-card.html";
         }
-
-
-        /* =========================================
-           ESCAPE HTML
-           ========================================= */
-
-        function escapeHtml(value) {
-
-            return String(value)
-                .replace(/&/g, "&amp;")
-                .replace(/</g, "&lt;")
-                .replace(/>/g, "&gt;")
-                .replace(/"/g, "&quot;")
-                .replace(/'/g, "&#039;");
-
-        }
-
-
-        /* =========================================
-           FILTER + SEARCH
-           ========================================= */
-
-        function updateCards() {
-
-            const searchValue =
-                searchInput.value
-                    .toLowerCase()
-                    .trim();
-
-
-            const filteredCards =
-                allCards.filter(
-                    function(card) {
-
-                        const name =
-                            String(
-                                card.name || ""
-                            ).toLowerCase();
-
-
-                        const issuer =
-                            String(
-                                card.issuer || ""
-                            ).toLowerCase();
-
-
-                        const type =
-                            String(
-                                card.type || ""
-                            ).toLowerCase();
-
-
-                        const searchMatch =
-                            name.includes(searchValue) ||
-                            issuer.includes(searchValue);
-
-
-                        let filterMatch = true;
-
-
-                        if (
-                            selectedFilter !==
-                            "all"
-                        ) {
-
-                            if (
-                                selectedFilter ===
-                                "transport"
-                            ) {
-
-                                filterMatch =
-                                    type ===
-                                    "transport" ||
-                                    type === "bus";
-
-                            } else {
-
-                                filterMatch =
-                                    type ===
-                                    selectedFilter;
-
-                            }
-
-                        }
-
-
-                        return (
-                            searchMatch &&
-                            filterMatch
-                        );
-
-                    }
-                );
-
-
-            displayCards(
-                filteredCards
-            );
-
-        }
-
-
-        /* =========================================
-           SEARCH
-           ========================================= */
-
-        if (searchInput) {
-
-            searchInput.addEventListener(
-                "input",
-                updateCards
-            );
-
-        }
-
-
-        /* =========================================
-           FILTER BUTTONS
-           ========================================= */
-
-        filterButtons.forEach(
-            function(button) {
-
-                button.addEventListener(
-                    "click",
-                    function() {
-
-                        filterButtons.forEach(
-                            function(btn) {
-
-                                btn.classList.remove(
-                                    "active"
-                                );
-
-                            }
-                        );
-
-
-                        button.classList.add(
-                            "active"
-                        );
-
-
-                        selectedFilter =
-                            button.dataset.filter;
-
-
-                        updateCards();
-
-                    }
-                );
-
-            }
-        );
-
-
-        /* =========================================
-           LOAD CARDS FROM SUPABASE
-           ========================================= */
-
-        async function loadCards() {
-
-            cardsList.innerHTML = `
-
-                <div class="empty-cards">
-
-                    <h3>
-                        Loading cards...
-                    </h3>
-
-                    <p>
-                        Connecting to CardHub database.
-                    </p>
-
-                </div>
-
-            `;
-
-
-            const {
-                data,
-                error
-            } =
-                await supabaseClient
-                    .from("cards")
-                    .select("*")
-                    .order(
-                        "created_at",
-                        {
-                            ascending: false
-                        }
-                    );
-
-
-            if (error) {
-
-                console.error(
-                    "Supabase error:",
-                    error
-                );
-
-
-                cardsList.innerHTML = `
-
-                    <div class="empty-cards">
-
-                        <h3>
-                            Could not load cards
-                        </h3>
-
-                        <p>
-                            ${escapeHtml(
-                                error.message
-                            )}
-                        </p>
-
-                        <button
-                            class="add-card-button"
-                            onclick="loadCards()"
-                        >
-                            Try Again
-                        </button>
-
-                    </div>
-
-                `;
-
-                return;
-
-            }
-
-
-            allCards =
-                data || [];
-
-
-            updateCards();
-
-        }
-
-
-        /* =========================================
-           START
-           ========================================= */
-
-        loadCards();
-
-    </script>
-
-    <script src="js/nav.js"></script>
+        cardsList.replaceChildren(message);
+        return;
+      }
+
+      const fragment = document.createDocumentFragment();
+
+      visibleCards.forEach((card, index) => {
+        const item = document.createElement("article");
+        item.className = "card-item";
+        item.tabIndex = 0;
+        item.setAttribute("role", "link");
+        item.setAttribute("aria-label", `Open ${card.name || "card"} details`);
+
+        const openCard = () => {
+          window.location.href = "card-details.html?id=" +
+            encodeURIComponent(card.id);
+        };
+
+        item.addEventListener("click", openCard);
+        item.addEventListener("keydown", event => {
+          if (event.key === "Enter" || event.key === " ") {
+            event.preventDefault();
+            openCard();
+          }
+        });
+
+        const preview = document.createElement("div");
+        preview.className = `bank-card color-${index % 4}`;
+
+        const top = document.createElement("div");
+        top.className = "bank-card-top";
+        addText(top, "span", card.issuer || "CardHub", "bank-card-brand");
+        addText(top, "span", card.type || "Card", "bank-card-type");
+
+        const lastFour = card.number_last4 ||
+          (card.number ? String(card.number).slice(-4) : "••••");
+        addText(preview, "p", `••••  ••••  ••••  ${lastFour}`, "bank-card-number");
+
+        const bottom = document.createElement("div");
+        bottom.className = "bank-card-bottom";
+        addText(bottom, "span", card.name || "Unnamed card");
+        addText(bottom, "span", "CARDHUB");
+        preview.prepend(top);
+        preview.append(bottom);
+
+        const info = document.createElement("div");
+        info.className = "card-info";
+
+        const details = document.createElement("div");
+        addText(details, "h2", card.name || "Unnamed Card");
+        addText(details, "p", `${card.issuer || "Unknown issuer"} · ${card.type || "Other"}`);
+
+        const status = String(card.status || "Active");
+        const badge = addText(info, "span", status, "status-badge");
+        if (status.toLowerCase() !== "active") badge.classList.add("inactive");
+
+        info.prepend(details);
+        item.append(preview, info);
+        fragment.appendChild(item);
+      });
+
+      cardsList.replaceChildren(fragment);
+    }
+
+    async function loadCards() {
+      cardsList.innerHTML = '<div class="message"><p>Loading your cards…</p></div>';
+
+      const { data: authData, error: authError } =
+        await supabaseClient.auth.getUser();
+
+      if (authError || !authData.user) {
+        window.location.href = "index.html";
+        return;
+      }
+
+      const { data, error } = await supabaseClient
+        .from("cards")
+        .select("*")
+        .order("created_at", { ascending: false });
+
+      if (error) {
+        console.error("Could not load cards:", error);
+        cardCount.textContent = "Could not load cards";
+        const message = document.createElement("div");
+        message.className = "message";
+        addText(message, "h2", "Cards couldn’t load");
+        addText(message, "p", error.message || "Please try again.");
+        cardsList.replaceChildren(message);
+        return;
+      }
+
+      allCards = data || [];
+      renderCards();
+    }
+
+    searchInput.addEventListener("input", renderCards);
+
+    filterButtons.forEach(button => {
+      button.addEventListener("click", () => {
+        selectedFilter = button.dataset.filter;
+
+        filterButtons.forEach(filter => {
+          const active = filter === button;
+          filter.classList.toggle("active", active);
+          filter.setAttribute("aria-pressed", String(active));
+        });
+
+        renderCards();
+      });
+    });
+
+    loadCards().catch(error => {
+      console.error("Cards page error:", error);
+      cardCount.textContent = "Could not load cards";
+    });
+  </script>
+
+  <script src="js/nav.js"></script>
 </body>
 </html>
