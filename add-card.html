@@ -434,6 +434,164 @@ main.dashboard .notification-button{width:44px;height:44px;border:1px solid #e2e
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
+    <script>
+  const SUPABASE_URL = "https://wrsqhsuktqldnyjrbuma.supabase.co";
+  const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_1-wC9ij9iOkR0txvg6j5bA_i1XLPSj7";
+
+  const params = new URLSearchParams(window.location.search);
+  if (params.get("guest") === "1") {
+    sessionStorage.setItem("cardhub_guest_mode", "true");
+  }
+
+  const isGuest = sessionStorage.getItem("cardhub_guest_mode") === "true";
+  const supabaseClient = isGuest
+    ? null
+    : window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
+
+  const demoDefaults = [
+    {
+      id: "demo-card-1",
+      name: "Everyday Rewards",
+      issuer: "CardHub Bank",
+      type: "credit",
+      status: "active",
+      number_last4: "5464"
+    },
+    {
+      id: "demo-card-2",
+      name: "Travel Plus",
+      issuer: "Northstar Bank",
+      type: "debit",
+      status: "active",
+      number_last4: "2198"
+    },
+    {
+      id: "demo-card-3",
+      name: "Transit Pass",
+      issuer: "City Transit",
+      type: "transport",
+      status: "inactive",
+      number_last4: "8072"
+    }
+  ];
+
+  function getDemoCards() {
+    try {
+      const saved = sessionStorage.getItem("cardhub_demo_cards");
+      if (saved === null) {
+        sessionStorage.setItem("cardhub_demo_cards", JSON.stringify(demoDefaults));
+        return [...demoDefaults];
+      }
+
+      const cards = JSON.parse(saved);
+      return Array.isArray(cards) ? cards : [...demoDefaults];
+    } catch (error) {
+      console.error("Could not read guest demo cards:", error);
+      return [...demoDefaults];
+    }
+  }
+
+  const form = document.getElementById("addCardForm");
+  const cardNumberInput = document.getElementById("cardNumber");
+
+  if (isGuest) {
+    document.getElementById("guestNotice").hidden = false;
+  }
+
+  document.getElementById("exitGuestButton").addEventListener("click", () => {
+    sessionStorage.removeItem("cardhub_guest_mode");
+    sessionStorage.removeItem("cardhub_demo_cards");
+    window.location.href = "index.html";
+  });
+
+  form.addEventListener("submit", async event => {
+    event.preventDefault();
+
+    const type = document.getElementById("cardType").value.trim();
+    const name = document.getElementById("cardName").value.trim();
+    const issuer = document.getElementById("issuer").value.trim();
+    const number = cardNumberInput.value.replace(/\D/g, "").slice(0, 16);
+    const expiry = document.getElementById("expiry").value;
+    const status = document.getElementById("status").value;
+    const notes = document.getElementById("notes").value.trim();
+
+    if (!type || !name || !issuer || number.length < 12) {
+      alert("Please complete the required fields and enter a valid card number.");
+      return;
+    }
+
+    if (isGuest) {
+      const cards = getDemoCards();
+
+      if (cards.some(card => String(card.name || "").toLowerCase() === name.toLowerCase())) {
+        alert("A card with this name already exists in the demo.");
+        return;
+      }
+
+      const newCard = {
+        id: "demo-card-" + Date.now(),
+        type,
+        name,
+        issuer,
+        number_last4: number.slice(-4),
+        expiry: expiry || null,
+        status,
+        notes: notes || null
+      };
+
+      cards.push(newCard);
+
+      try {
+        sessionStorage.setItem("cardhub_demo_cards", JSON.stringify(cards));
+      } catch (error) {
+        console.error("Could not save guest demo card:", error);
+        alert("Could not save this demo card in your browser session.");
+        return;
+      }
+
+      alert("Demo card added for this session.");
+      window.location.href = "cards.html?guest=1";
+      return;
+    }
+
+    try {
+      const { data: { user }, error: userError } =
+        await supabaseClient.auth.getUser();
+
+      if (userError || !user) {
+        alert("Please log in again before saving your card.");
+        return;
+      }
+
+      const { error } = await supabaseClient
+        .from("cards")
+        .insert({
+          user_id: user.id,
+          name,
+          type,
+          issuer,
+          number_last4: number.slice(-4),
+          expiry: expiry || null,
+          status,
+          notes: notes || null
+        });
+
+      if (error) throw error;
+
+      alert("Card added successfully.");
+      window.location.href = "cards.html";
+    } catch (error) {
+      console.error("Could not save card:", error);
+      alert("Could not save card: " + (error.message || "Please try again."));
+    }
+  });
+
+  cardNumberInput.addEventListener("input", function () {
+    const digits = this.value.replace(/\D/g, "").slice(0, 16);
+    this.value = (digits.match(/.{1,4}/g) || []).join(" ");
+  });
+</script>
+
 <script>
 
 /* =========================================
